@@ -1,0 +1,8 @@
+[submodule "scripts/flows"]
+	path = scripts/flows
+	url = git@github.com:thomasve-DANS/prefect-master.git
+	branch = main
+[submodule "scripts/tasks"]
+	path = scripts/tasks
+	url = git@github.com:thomasve-DANS/prefect-load.git
+	branch = main

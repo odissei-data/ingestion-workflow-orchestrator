@@ -1,0 +1,28 @@
+  [http.routers]
+   # Define a connection between requests and services
+     [http.routers.prefect]
+        rule = "Host(`prefect.localhost`)"
+        entrypoints = ["websecure", "web"]
+        service = "prefect"
+     [http.routers.prefect.tls]
+        certResolver = "myresolver"
+     [http.routers.api]
+        rule = "Host(`api.localhost`)"
+        service = "api@internal"
+        entrypoints = ["websecure", "web"]
+     [http.routers.api.tls]
+        certResolver = "myresolver"
+
+  [http.middlewares.auth.basicAuth]
+    users = [
+      "wim:$$2y$$05$$NUqX6uG5ZoBgKLVtgbyPled/q/UNnOcTmdbcLmOGA5IhkSgYfxhH6",
+    ]
+
+ [http.services]
+        # Define how to reach an existing service on our infrastructure
+        [http.services.prefect.loadBalancer]
+           [[http.services.prefect.loadBalancer.servers]]
+             url = "http://0.0.0.0:4200"
+        [http.services.api.loadBalancer]
+           [[http.services.api.loadBalancer.servers]]
+             url = "http://localhost"

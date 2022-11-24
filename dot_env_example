@@ -1,0 +1,14 @@
+HOSTNAME="localhost"
+PROJECT_CONTAINER_NAME="prefect"
+DATAVERSE_URL="https://portal.staging.odissei.nl"
+DATAVERSE_ALIAS="cbs"
+DATAVERSE_API_TOKEN="12345678-ab12-12ab-abcd-a1b2c3d4e5g6"
+XML2JSON_API_TOKEN="Bearer @km1-secret-token"
+
+#CBS
+TEMPLATE_FILE_PATH="/scripts/templates/cbs_dataverse_template.json"
+MAPPING_FILE_PATH="/scripts/mappings/cbs-mapping.json"
+
+#EASY
+#TEMPLATE_FILE_PATH="/scripts/templates/easy_dataverse_template.json"
+#MAPPING_FILE_PATH="/scripts/mappings/easy-mapping.json"

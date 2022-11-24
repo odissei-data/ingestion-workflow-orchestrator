@@ -1,0 +1,16 @@
+{
+  "dsDescriptionValue": ["result/Dataontwerpversies/Versie/Dataontwerp/Beschrijving","/Dataontwerpversies/Versie/Dataontwerp/NederlandstaligePublicatietekst","result/Dataontwerpversies/Versie/Dataontwerp/EngelstaligePublicatietekst"],
+  "topicClassValue": ["result/Dataontwerpversies/Versie/Dataontwerp/Themas/Thema"],
+  "title": ["result/Dataontwerpversies/OorspronkelijkeNaam"],
+  "alternativeTitle": ["result/Dataontwerpversies/Versie/Dataontwerp/VerkorteSchrijfwijzeNaamDataontwerp"],
+  "otherIdValue": ["result/Dataontwerpversies/Versie/Dataontwerp/Id"],
+  "keywordValue": ["result/Dataontwerpversies/Versie/Dataontwerp/Trefwoorden/Trefwoord", "result/Dataontwerpversies/Versie/Dataontwerp/Dataontwerpgroeppad"],
+  "distributionDate": ["result/Dataontwerpversies/Versie/Dataontwerp/GeldigVanaf"],
+  "kindOfData": ["result/Dataontwerpversies/Versie/Dataontwerp/SoortData"],
+  "frequencyOfDataCollection": ["result/Dataontwerpversies/Versie/Dataontwerp/TypeVerslagperiode"],
+  "samplingProcedure": ["result/Dataontwerpversies/Versie/Dataontwerp/GebruikteMethodologie"],
+  "socialScienceNotesSubject": ["result/Dataontwerpversies/Versie/Dataontwerp/Procesverloop"],
+  "variableName": ["result/Dataontwerpversies/Versie/Dataontwerp/Contextvariabelen/Contextvariabele/VerkorteSchrijfwijzeNaamVariabele"],
+  "variableLabel": ["result/Dataontwerpversies/Versie/Dataontwerp/Contextvariabelen/Contextvariabele/LabelVanDeVariabele"],
+  "universe": ["result/Dataontwerpversies/Versie/Dataontwerp/BeschrijvingVanDePopulatie"]
+}
