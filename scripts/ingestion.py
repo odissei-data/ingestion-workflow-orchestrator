@@ -40,8 +40,7 @@ def cbs_metadata_ingestion(file_path):
     fields = mapped_metadata['datasetVersion']['metadataBlocks']['citation'][
         'fields']
     publication_date = next((field for field in fields if
-                             field.get('typeName') == 'distributionDate'),
-                            None)
+                            field.get('typeName') == 'distributionDate'), None)
     if publication_date:
         response = update_publication_date(publication_date["value"], pid)
         if not response.ok:
@@ -134,5 +133,4 @@ def update_publication_date(publication_date, pid):
     return response
 
 
-cbs_metadata_ingestion(
-    "/resources/test-data/oai_easy_dans_knaw_nl_easy_dataset_204565.xml")
+ingestion_pipeline()
