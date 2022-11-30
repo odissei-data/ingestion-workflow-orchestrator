@@ -1,7 +1,6 @@
 from prefect import flow
 from prefect.orion.schemas.states import Completed, Failed
-
-from ..tasks.base_tasks import xml2json, dataverse_mapper, \
+from tasks.base_tasks import xml2json, dataverse_mapper, \
     dataverse_import, update_publication_date
 
 
@@ -24,12 +23,10 @@ def cbs_metadata_ingestion(file_path):
         'fields']
     publication_date = next((field for field in fields if
                             field.get('typeName') == 'distributionDate'), None)
-    if publication_date:
-        response = update_publication_date(publication_date["value"], pid)
-        if not response.ok:
+    if publication_date["value"]:
+        pub_date_response = update_publication_date(publication_date["value"],
+                                                    pid)
+        if not pub_date_response:
             return Failed(message='Unable to update publication date')
     else:
         return Completed(message=file_path + " ingested successfully")
-
-
-
