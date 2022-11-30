@@ -2,7 +2,6 @@
   "distributorName": ["result/record/metadata/ddi:codeBook/ddi:docDscr/ddi:citation/ddi:prodStmt/ddi:producer/#text"],
   "distributorURL": ["result/record/metadata/ddi:codeBook/ddi:docDscr/ddi:citation/ddi:holdings/@URI"],
   "distributionDate": ["result/record/metadata/ddi:codeBook/ddi:stdyDscr/ddi:citation/ddi:distStmt/ddi:distDate/@date"],
-  "author": ["result/record/metadata/ddi:codeBook/ddi:stdyDscr/ddi:citation/ddi:rspStmt/ddi:AuthEnty"],
   "authorAffiliation": ["result/record/metadata/ddi:codeBook/ddi:stdyDscr/ddi:citation/ddi:rspStmt/ddi:AuthEnty/@affiliation"],
   "authorName": ["result/record/metadata/ddi:codeBook/ddi:stdyDscr/ddi:citation/ddi:rspStmt/ddi:AuthEnty/#text"],
   "title": ["result/record/metadata/ddi:codeBook/ddi:stdyDscr/ddi:citation/ddi:titlStmt/ddi:titl/#text"],

@@ -1,0 +1,107 @@
+{
+  "datasetVersion": {
+    "datasetPersistentId": "",
+    "metadataBlocks": {
+      "citation": {
+        "fields": [
+          {
+            "typeName": "title",
+            "typeClass": "primitive",
+            "multiple": false,
+            "value": ""
+          },
+          {
+            "typeName": "author",
+            "multiple": true,
+            "typeClass": "compound",
+            "value": [
+              {
+                "authorName": {
+                  "typeName": "authorName",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                }
+              }
+            ]
+          },
+          {
+            "typeName": "datasetContact",
+            "multiple": true,
+            "typeClass": "compound",
+            "value": [
+              {
+                "datasetContactEmail": {
+                  "typeName": "datasetContactEmail",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": "info@liss.nl"
+                }
+              }
+            ]
+          },
+          {
+            "typeName": "dsDescription",
+            "multiple": true,
+            "typeClass": "compound",
+            "value": [
+              {
+                "dsDescriptionValue": {
+                  "typeName": "dsDescriptionValue",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                }
+              }
+            ]
+          },
+          {
+            "typeName": "subject",
+            "typeClass": "controlledVocabulary",
+            "multiple": true,
+            "value": [
+              "Social Sciences"
+            ]
+          },
+          {
+            "typeName": "producer",
+            "multiple": true,
+            "typeClass": "compound",
+            "value": [
+              {
+                "producerName": {
+                  "typeName": "producerName",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                }
+              }
+            ]
+          },
+          {
+            "typeName": "distributor",
+            "multiple": true,
+            "typeClass": "compound",
+            "value": [
+              {
+                "distributorName": {
+                  "typeName": "distributorName",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                }
+              }
+            ]
+          },
+          {
+            "typeName": "distributionDate",
+            "multiple": false,
+            "typeClass": "primitive",
+            "value": ""
+          }
+        ]
+      }
+    },
+    "license": "DANS MA KI Licence"
+  }
+}
