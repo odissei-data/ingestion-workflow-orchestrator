@@ -28,5 +28,5 @@ def cbs_metadata_ingestion(file_path):
                                                     pid)
         if not pub_date_response:
             return Failed(message='Unable to update publication date')
-    else:
-        return Completed(message=file_path + " ingested successfully")
+
+    return Completed(message=file_path + " ingested successfully")
