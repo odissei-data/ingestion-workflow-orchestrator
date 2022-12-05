@@ -18,6 +18,14 @@ TEMPLATE_FILE_PATH = os.getenv('TEMPLATE_FILE_PATH')
 
 @task
 def xml2json(file_path):
+    """ Sends XML to the transformer server, receives JSON with same hierarchy.
+
+    Sends a request to the transformer endpoint for transformation
+    from xml to json. Needs an authorization token to use the transformer API.
+
+    :param file_path: The filepath of the xml file
+    :return: Plain JSON metadata | None on failure
+    """
     logger = get_run_logger()
     headers = {
         'Content-Type': 'application/xml',
@@ -36,6 +44,14 @@ def xml2json(file_path):
 
 @task
 def dataverse_mapper(json_metadata):
+    """ Sends plain JSON to the mapper service, receives JSON formatted for DV.
+
+    Uses the template and mapping file in the resources volume, and metadata
+    represented as JSON to send a request  to the mapper service.
+
+    :param json_metadata: Plain JSON metadata
+    :return: JSON metadata formatted for the Native API | None on failure
+    """
     logger = get_run_logger()
     headers = {
         'accept': 'application/json',
@@ -61,6 +77,16 @@ def dataverse_mapper(json_metadata):
 
 @task
 def dataverse_import(mapped_metadata):
+    """ Sends a request to the import service to import the given metadata.
+
+    The dataverse_information field in the data takes three fields:
+    base_url: The Dataverse instance URL.
+    dt_alias: The Dataverse or sub-dataverse you want to target for the import.
+    api_token: The token specific to this DV instance to allow use of the API.
+
+    :param mapped_metadata: JSON metadata formatted for the Native API
+    :return: Response body on success | None on failure
+    """
     logger = get_run_logger()
     headers = {
         'accept': 'application/json',
@@ -85,6 +111,16 @@ def dataverse_import(mapped_metadata):
 
 @task
 def update_publication_date(publication_date, pid):
+    """ Sends a request to the publication date updater to update the pub date.
+
+    The dataverse_information field in the data takes two fields:
+    base_url: The Dataverse instance URL.
+    api_token: The token specific to this DV instance to allow use of the API.
+
+    :param publication_date: The original date of publication
+    :param pid: The DOI of the dataset in question
+    :return: Response body on success | None on failure
+    """
     logger = get_run_logger()
     headers = {
         'accept': 'application/json',
@@ -111,13 +147,21 @@ def update_publication_date(publication_date, pid):
 
 @task
 def get_license(json_metadata):
+    """ Retrieves the license name from the given metadata.
+
+    Tries to access the key that contains the license of the dataset.
+    If successful it fetches the license name, else it uses a basic license.
+
+    :param json_metadata: Plain JSON metadata of a dataset
+    :return: license name of the dataset
+    """
     try:
         metadata_license = json_metadata["result"]["record"]["metadata"][
             "ddi:codeBook"]["ddi:stdyDscr"]["ddi:dataAccs"]["ddi:useStmt"][
             "ddi:conditions"]
         if not isinstance(metadata_license, str):
             metadata_license = metadata_license['#text']
-        lic = utils.retrieve_license(metadata_license)
+        lic = utils.retrieve_license_name(metadata_license)
         return lic
 
     except KeyError:
@@ -126,6 +170,12 @@ def get_license(json_metadata):
 
 @task
 def doi_minter(metadata):
+    """
+    TODO
+
+    :param metadata:
+    :return:
+    """
     dataverse_json = json.dumps(metadata)
     url = "http://0.0.0.0:8566/submit-to-datacite"
 

@@ -1,7 +1,7 @@
 import re
 
 
-def retrieve_license(license_string):
+def retrieve_license_name(license_string):
     dataset_lic = ''
     if re.search(r'creativecommons', license_string):
         if re.search(r'/by/4\.0', license_string):
