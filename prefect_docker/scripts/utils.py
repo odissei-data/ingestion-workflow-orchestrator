@@ -1,3 +1,4 @@
+import os
 import re
 
 
@@ -40,3 +41,12 @@ def is_lower_level_liss_study(metadata):
             return True, title
     if square_bracket_amount >= 2:
         return True, title
+
+
+def workflow_executor(metadata_directory, data_provider_workflow):
+    files = [f for f in os.listdir(metadata_directory) if
+             not f.startswith('.')]
+    for filename in files:
+        file_path = os.path.join(metadata_directory, filename)
+        if os.path.isfile(file_path):
+            data_provider_workflow(file_path, return_state=True)
