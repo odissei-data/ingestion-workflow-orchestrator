@@ -43,12 +43,13 @@ def xml2json(file_path):
 
 
 @task
-def dataverse_mapper(json_metadata):
+def dataverse_mapper(json_metadata, has_doi=True):
     """ Sends plain JSON to the mapper service, receives JSON formatted for DV.
 
     Uses the template and mapping file in the resources volume, and metadata
     represented as JSON to send a request  to the mapper service.
 
+    :param has_doi: Boolean that tells if the metadata contains a doi
     :param json_metadata: Plain JSON metadata
     :return: JSON metadata formatted for the Native API | None on failure
     """
@@ -65,7 +66,7 @@ def dataverse_mapper(json_metadata):
     with open(MAPPING_FILE_PATH) as f:
         mapping = json.load(f)
         data['mapping'] = mapping
-    data["has_existing_doi"] = True
+    data["has_existing_doi"] = has_doi
 
     response = requests.post('http://host.docker.internal:8080/mapper',
                              headers=headers, data=json.dumps(data))
