@@ -2,7 +2,8 @@ import copy
 from prefect import flow, get_run_logger
 from prefect.orion.schemas.states import Failed, Completed
 
-from tasks.base_tasks import xml2json, get_doi_from_header, dataverse_metadata_fetcher, \
+from tasks.base_tasks import xml2json, get_doi_from_header, \
+    dataverse_metadata_fetcher, \
     dataverse_import, add_contact_email
 
 
@@ -27,7 +28,9 @@ def dataverse_nl_metadata_ingestion(file_path):
         dataverse_json["datasetVersion"]['metadataBlocks'])
     dataverse_json['datasetVersion'] = {}
     dataverse_json['datasetVersion']['metadataBlocks'] = metadata_blocks
+
     logger.info(dataverse_json)
+
     import_response = dataverse_import(dataverse_json)
     if not import_response:
         return Failed(message='Unable to import dataset into Dataverse')
