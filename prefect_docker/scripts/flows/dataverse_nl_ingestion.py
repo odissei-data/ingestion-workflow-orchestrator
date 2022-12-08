@@ -2,7 +2,7 @@ import copy
 from prefect import flow, get_run_logger
 from prefect.orion.schemas.states import Failed, Completed
 
-from tasks.base_tasks import xml2json, get_doi, dataverse_metadata_fetcher, \
+from tasks.base_tasks import xml2json, get_doi_from_header, dataverse_metadata_fetcher, \
     dataverse_import, add_contact_email
 
 
@@ -14,7 +14,7 @@ def dataverse_nl_metadata_ingestion(file_path):
     if not json_metadata:
         return Failed(message='Unable to transform from xml to json.')
 
-    doi = get_doi(json_metadata)
+    doi = get_doi_from_header(json_metadata)
     if not doi:
         return Failed(message='Metadata file contains no DOI in the header.')
 

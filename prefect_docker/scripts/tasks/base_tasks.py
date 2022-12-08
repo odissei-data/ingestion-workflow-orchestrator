@@ -78,7 +78,7 @@ def dataverse_mapper(json_metadata, has_doi=True):
 
 
 @task
-def dataverse_import(mapped_metadata):
+def dataverse_import(mapped_metadata, doi=None):
     """ Sends a request to the import service to import the given metadata.
 
     The dataverse_information field in the data takes three fields:
@@ -86,6 +86,7 @@ def dataverse_import(mapped_metadata):
     dt_alias: The Dataverse or sub-dataverse you want to target for the import.
     api_token: The token specific to this DV instance to allow use of the API.
 
+    :param doi: The DOI of the dataset that is being imported
     :param mapped_metadata: JSON metadata formatted for the Native API
     :return: Response body on success | None on failure
     """
@@ -102,6 +103,9 @@ def dataverse_import(mapped_metadata):
             "dt_alias": DATAVERSE_ALIAS,
             "api_token": DATAVERSE_API_TOKEN
         }}
+
+    if doi:
+        data['doi'] = doi
 
     response = requests.post('http://host.docker.internal:8090/importer',
                              headers=headers, data=json.dumps(data))
@@ -180,7 +184,16 @@ def dataverse_metadata_fetcher(doi, metadata_format):
 
 
 @task
-def get_doi(json_metadata):
+def get_doi_from_dv_json(dataverse_json):
+    try:
+        doi = dataverse_json["datasetVersion"]["datasetPersistentId"]
+    except KeyError:
+        return None
+    return doi
+
+
+@task
+def get_doi_from_header(json_metadata):
     try:
         doi = json_metadata["result"]["record"]["header"]["identifier"]
     except KeyError:
