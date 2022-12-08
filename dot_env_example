@@ -1,8 +1,8 @@
 HOSTNAME="localhost"
 PROJECT_CONTAINER_NAME="prefect"
 DATAVERSE_URL="https://portal.staging.odissei.nl"
-DATAVERSE_API_TOKEN="example1-ab12-12ab-abcd-a1b2c3d4e5g6"
-XML2JSON_API_TOKEN="Bearer @km1-secret-token"
+DATAVERSE_API_TOKEN="95ece972-6e98-4239-806e-f225bb6585aa"
+XML2JSON_API_TOKEN="Bearer @km1-10122004-lamA"
 
 #CBS
 #DATAVERSE_ALIAS="cbs"
@@ -17,7 +17,12 @@ XML2JSON_API_TOKEN="Bearer @km1-secret-token"
 #DATA_PROVIDER="easy"
 
 #LISS
-DATAVERSE_ALIAS="liss_dc"
-TEMPLATE_FILE_PATH="/resources/templates/liss_dataverse_template.json"
-MAPPING_FILE_PATH="/resources/mappings/liss-mapping.json"
-DATA_PROVIDER="liss"
+#DATAVERSE_ALIAS="liss_dc"
+#TEMPLATE_FILE_PATH="/resources/templates/liss_dataverse_template.json"
+#MAPPING_FILE_PATH="/resources/mappings/liss-mapping.json"
+#DATA_PROVIDER="liss"
+
+#DataverseNL
+DATAVERSE_ALIAS="dataverse_nl"
+DATA_PROVIDER="dataverse_nl"
+SOURCE_DATAVERSE_URL="https://dataverse.nl"

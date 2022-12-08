@@ -8,6 +8,7 @@ import utils
 
 DATAVERSE_URL = os.getenv('DATAVERSE_URL')
 DATAVERSE_ALIAS = os.getenv('DATAVERSE_ALIAS')
+SOURCE_DATAVERSE_URL = os.getenv('SOURCE_DATAVERSE_URL')
 
 DATAVERSE_API_TOKEN = os.getenv('DATAVERSE_API_TOKEN')
 XML2JSON_API_TOKEN = os.getenv('XML2JSON_API_TOKEN')
@@ -147,6 +148,47 @@ def update_publication_date(publication_date, pid):
 
 
 @task
+def dataverse_metadata_fetcher(doi, metadata_format):
+    """
+
+    :param doi:
+    :param metadata_format:
+    :return:
+    """
+    logger = get_run_logger()
+    headers = {
+        'accept': 'application/json',
+        'Content-Type': 'application/json'
+    }
+
+    data = {
+        'pid': doi,
+        'metadata_format': metadata_format,
+        "dataverse_information": {
+            "base_url": SOURCE_DATAVERSE_URL,
+            "api_token": DATAVERSE_API_TOKEN
+        }
+    }
+
+    response = requests.post(
+        'http://host.docker.internal:8888/dataverse-metadata-fetcher',
+        headers=headers, data=json.dumps(data))
+    if not response.ok:
+        logger.info(response.json())
+        return None
+    return response.json()
+
+
+@task
+def get_doi(json_metadata):
+    try:
+        doi = json_metadata["result"]["record"]["header"]["identifier"]
+    except KeyError:
+        return None
+    return doi
+
+
+@task
 def get_license(json_metadata):
     """ Retrieves the license name from the given metadata.
 
@@ -166,7 +208,23 @@ def get_license(json_metadata):
         return lic
 
     except KeyError:
-        return 'DANS MA KI Licence'
+        return 'DANS Licence'
+
+
+@task
+def add_contact_email(dataverse_json):
+    fields = dataverse_json['datasetVersion']['metadataBlocks']['citation'][
+        'fields']
+    dataset_contact = next((field for field in fields if
+                            field.get('typeName') == 'datasetContact'), None)
+    if dataset_contact["value"]:
+        dataset_contact["value"][0]["datasetContactEmail"] = {
+            "typeName": "datasetContactEmail",
+            "multiple": False,
+            "typeClass": "primitive",
+            "value": "portal@odissei.com"
+        }
+    return dataverse_json
 
 
 @task
