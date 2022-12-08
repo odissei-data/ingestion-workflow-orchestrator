@@ -170,6 +170,8 @@ cython_debug/
 /cbs-metadata/
 /easy-metadata/
 /liss-metadata/
+/dataverse_nl-metadata/
+/cbs-output/
 
 /resources/test-data
 

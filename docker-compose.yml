@@ -13,6 +13,7 @@ services:
       - ./cbs-metadata:/cbs-metadata
       - ./easy-metadata:/easy-metadata
       - ./liss-metadata:/liss-metadata
+      - ./dataverse_nl-metadata:/dataverse_nl-metadata
       - ./resources:/resources/
     ports:
       # Local development only
