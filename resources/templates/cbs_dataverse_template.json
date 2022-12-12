@@ -63,7 +63,7 @@
                   "typeName": "datasetContactEmail",
                   "multiple": false,
                   "typeClass": "primitive",
-                  "value": "Microdata@cbs.nl"
+                  "value": "portal@odissei.nl"
                 }
               }
             ]

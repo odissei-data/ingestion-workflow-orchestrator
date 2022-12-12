@@ -266,7 +266,7 @@ def add_contact_email(dataverse_json):
                 "typeName": "datasetContactEmail",
                 "multiple": False,
                 "typeClass": "primitive",
-                "value": "portal@odissei.com"
+                "value": "portal@odissei.nl"
             }
     return dataverse_json
 
