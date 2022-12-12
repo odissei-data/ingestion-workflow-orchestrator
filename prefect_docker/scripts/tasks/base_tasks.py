@@ -170,7 +170,7 @@ def dataverse_metadata_fetcher(doi, metadata_format):
     }
 
     data = {
-        'pid': doi,
+        'doi': doi,
         'metadata_format': metadata_format,
         "dataverse_information": {
             "base_url": SOURCE_DATAVERSE_URL,
@@ -261,12 +261,13 @@ def add_contact_email(dataverse_json):
     dataset_contact = next((field for field in fields if
                             field.get('typeName') == 'datasetContact'), None)
     if dataset_contact["value"]:
-        dataset_contact["value"][0]["datasetContactEmail"] = {
-            "typeName": "datasetContactEmail",
-            "multiple": False,
-            "typeClass": "primitive",
-            "value": "portal@odissei.com"
-        }
+        for dataset_contact in dataset_contact["value"]:
+            dataset_contact["datasetContactEmail"] = {
+                "typeName": "datasetContactEmail",
+                "multiple": False,
+                "typeClass": "primitive",
+                "value": "portal@odissei.com"
+            }
     return dataverse_json
 
 
