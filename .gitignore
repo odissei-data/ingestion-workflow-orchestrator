@@ -176,3 +176,4 @@ cython_debug/
 /resources/test-data
 
 /letsencrypt
+/local-metadata/

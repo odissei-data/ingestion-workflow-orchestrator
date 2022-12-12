@@ -11,7 +11,7 @@ DATA_PROVIDER = os.getenv('DATA_PROVIDER')
 
 @flow
 def ingestion_pipeline():
-    metadata_directory = f"/{DATA_PROVIDER}-metadata"
+    metadata_directory = f"/local-metadata/{DATA_PROVIDER}-metadata"
     if DATA_PROVIDER == 'cbs':
         workflow_executor(metadata_directory, cbs_metadata_ingestion)
     elif DATA_PROVIDER == 'easy':
