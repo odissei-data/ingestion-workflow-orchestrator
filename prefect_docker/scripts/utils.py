@@ -1,3 +1,5 @@
+import copy
+import json
 import os
 import re
 
@@ -21,7 +23,8 @@ def retrieve_license_name(license_string):
 
 
 def is_lower_level_liss_study(metadata):
-    title = metadata['datasetVersion']['metadataBlocks']['citation']['fields'][0]['value']
+    title = metadata['datasetVersion']['metadataBlocks']['citation'][
+        'fields'][0]['value']
     print("Title is", title)
     square_bracket_amount = title.count('>')
     if square_bracket_amount == 0:
@@ -44,9 +47,21 @@ def is_lower_level_liss_study(metadata):
 
 
 def workflow_executor(metadata_directory, data_provider_workflow):
+    aggregate_dict = {}
     files = [f for f in os.listdir(metadata_directory) if
              not f.startswith('.')]
     for filename in files:
         file_path = os.path.join(metadata_directory, filename)
         if os.path.isfile(file_path):
-            data_provider_workflow(file_path, return_state=True)
+            mapped_metadata = data_provider_workflow(file_path)
+            fields = \
+                mapped_metadata['datasetVersion']['metadataBlocks'][
+                    'citation'][
+                    'fields']
+            other_id = next((field for field in fields if
+                             field.get('typeName') == 'otherId'), None)
+            doi = "doi:10.57934/" + other_id["value"][0]["otherIdValue"][
+                "value"]
+            aggregate_dict[doi] = copy.deepcopy(mapped_metadata)
+    with open("cbs_metadata_aggregate.json", "w+") as f:
+        json.dump(aggregate_dict, f, ensure_ascii=False, indent=4)
