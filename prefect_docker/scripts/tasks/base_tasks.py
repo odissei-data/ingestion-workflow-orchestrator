@@ -7,14 +7,10 @@ from requests.structures import CaseInsensitiveDict
 import utils
 
 DATAVERSE_URL = os.getenv('DATAVERSE_URL')
-DATAVERSE_ALIAS = os.getenv('DATAVERSE_ALIAS')
 SOURCE_DATAVERSE_URL = os.getenv('SOURCE_DATAVERSE_URL')
 
 DATAVERSE_API_TOKEN = os.getenv('DATAVERSE_API_TOKEN')
 XML2JSON_API_TOKEN = os.getenv('XML2JSON_API_TOKEN')
-
-MAPPING_FILE_PATH = os.getenv('MAPPING_FILE_PATH')
-TEMPLATE_FILE_PATH = os.getenv('TEMPLATE_FILE_PATH')
 
 
 @task
@@ -44,12 +40,15 @@ def xml2json(file_path):
 
 
 @task
-def dataverse_mapper(json_metadata, has_doi=True):
+def dataverse_mapper(json_metadata, mapping_file_path, template_file_path,
+                     has_doi=True):
     """ Sends plain JSON to the mapper service, receives JSON formatted for DV.
 
     Uses the template and mapping file in the resources volume, and metadata
     represented as JSON to send a request  to the mapper service.
 
+    :param mapping_file_path: The path to where the mapping lives.
+    :param template_file_path: The path to where the template lives.
     :param has_doi: Boolean that tells if the metadata contains a doi.
     :param json_metadata: Plain JSON metadata.
     :return: JSON metadata formatted for the Native API | None on failure.
@@ -61,10 +60,10 @@ def dataverse_mapper(json_metadata, has_doi=True):
     }
 
     data = {'metadata': json_metadata}
-    with open(TEMPLATE_FILE_PATH) as f:
+    with open(template_file_path) as f:
         template = json.load(f)
         data['template'] = template
-    with open(MAPPING_FILE_PATH) as f:
+    with open(mapping_file_path) as f:
         mapping = json.load(f)
         data['mapping'] = mapping
     data["has_existing_doi"] = has_doi
@@ -78,14 +77,15 @@ def dataverse_mapper(json_metadata, has_doi=True):
 
 
 @task
-def dataverse_import(mapped_metadata, doi=None):
+def dataverse_import(mapped_metadata, dataverse_alias, doi=None):
     """ Sends a request to the import service to import the given metadata.
 
     The dataverse_information field in the data takes three fields:
     base_url: The Dataverse instance URL.
-    dt_alias: The Dataverse or sub-dataverse you want to target for the import.
+    dt_alias: The Dataverse or sub-Dataverse you want to target for the import.
     api_token: The token specific to this DV instance to allow use of the API.
 
+    :param dataverse_alias: A Dataverse or sub-Dataverse.
     :param doi: The DOI of the dataset that is being imported.
     :param mapped_metadata: JSON metadata formatted for the Native API.
     :return: Response body on success | None on failure.
@@ -100,7 +100,7 @@ def dataverse_import(mapped_metadata, doi=None):
         "metadata": mapped_metadata,
         "dataverse_information": {
             "base_url": DATAVERSE_URL,
-            "dt_alias": DATAVERSE_ALIAS,
+            "dt_alias": dataverse_alias,
             "api_token": DATAVERSE_API_TOKEN
         }}
 
