@@ -26,9 +26,7 @@
                   "multiple": false,
                   "typeClass": "primitive",
                   "value": "CBS Dataontwerp ID"
-                }
-              },
-              {
+                },
                 "otherIdValue": {
                   "typeName": "otherIdValue",
                   "multiple": false,
