@@ -59,3 +59,19 @@ def workflow_executor(data_provider_workflow, metadata_directory):
         file_path = os.path.join(metadata_directory, filename)
         if os.path.isfile(file_path):
             data_provider_workflow(file_path, return_state=True)
+
+
+def get_field_from_dataverse_json(dataverse_json, metadata_block, field_name):
+    """
+
+    :param dataverse_json:
+    :param metadata_block:
+    :param field_name:
+    :return:
+    """
+    fields = dataverse_json['datasetVersion']['metadataBlocks'][
+        metadata_block]['fields']
+    metadata_field = next((field for field in fields if
+                           field.get('typeName') == field_name),
+                          {})
+    return metadata_field
