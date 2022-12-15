@@ -3,7 +3,8 @@ import os
 from prefect import flow
 from prefect.orion.schemas.states import Completed, Failed
 from tasks.base_tasks import xml2json, dataverse_mapper, \
-    dataverse_import, update_publication_date
+    dataverse_import, update_publication_date, doi_minter
+from utils import get_field_from_dataverse_json
 
 CBS_MAPPING_FILE_PATH = os.getenv('CBS_MAPPING_FILE_PATH')
 CBS_TEMPLATE_FILE_PATH = os.getenv('CBS_TEMPLATE_FILE_PATH')
@@ -20,20 +21,24 @@ def cbs_metadata_ingestion(file_path):
                                        CBS_TEMPLATE_FILE_PATH, False)
     if not mapped_metadata:
         return Failed(message='Unable to map metadata.')
+    doi = doi_minter(mapped_metadata)
+    if not doi:
+        return Failed(message='Failed to mint or update DOI with Datacite API')
 
-    import_response = dataverse_import(mapped_metadata, CBS_DATAVERSE_ALIAS)
+    import_response = dataverse_import(mapped_metadata, CBS_DATAVERSE_ALIAS,
+                                       doi)
     if not import_response:
         return Failed(message='Unable to import dataset into Dataverse.')
 
-    doi = import_response.json()['data']['persistentId']
-    fields = mapped_metadata['datasetVersion']['metadataBlocks']['citation'][
-        'fields']
-    publication_date = next((field for field in fields if
-                             field.get('typeName') == 'distributionDate'),
-                            {})
+    publication_date = get_field_from_dataverse_json(mapped_metadata,
+                                                     'citation',
+                                                     'distributionDate')
     if publication_date["value"]:
-        pub_date_response = update_publication_date(publication_date["value"],
-                                                    doi)
-        if not pub_date_response:
-            return Failed(message='Unable to update publication date.')
+        return Failed(message='No publication date in metadata')
+
+    pub_date_response = update_publication_date(publication_date["value"],
+                                                doi)
+    if not pub_date_response:
+        return Failed(message='Unable to update publication date.')
+
     return Completed(message=file_path + 'ingested successfully.')
