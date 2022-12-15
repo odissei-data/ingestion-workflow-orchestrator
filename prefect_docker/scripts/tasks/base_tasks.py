@@ -2,7 +2,6 @@ import json
 import os
 import requests
 from prefect import task, get_run_logger
-from requests.structures import CaseInsensitiveDict
 
 import utils
 
@@ -285,13 +284,11 @@ def doi_minter(metadata):
     :return:
     """
     dataverse_json = json.dumps(metadata)
-    url = "http://0.0.0.0:8566/submit-to-datacite"
+    url = "https://dataciteminter.labs.dans.knaw.nl/submit-to-datacite/draft"
 
-    headers = CaseInsensitiveDict()
     headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer @km1-10122004-lamA',
-        'Content-Type': 'application/x-www-form-urlencoded',
     }
     response = requests.post(url, headers=headers, data=dataverse_json)
     doi = response.text.replace('"', '').replace('{', '').replace('}', '')
