@@ -7,8 +7,6 @@ from requests.structures import CaseInsensitiveDict
 import utils
 
 DATAVERSE_URL = os.getenv('DATAVERSE_URL')
-SOURCE_DATAVERSE_URL = os.getenv('SOURCE_DATAVERSE_URL')
-
 DATAVERSE_API_TOKEN = os.getenv('DATAVERSE_API_TOKEN')
 XML2JSON_API_TOKEN = os.getenv('XML2JSON_API_TOKEN')
 
@@ -68,7 +66,7 @@ def dataverse_mapper(json_metadata, mapping_file_path, template_file_path,
         data['mapping'] = mapping
     data["has_existing_doi"] = has_doi
 
-    response = requests.post('http://host.docker.internal:8080/mapper',
+    response = requests.post('http://host.docker.internal:8082/mapper',
                              headers=headers, data=json.dumps(data))
     if not response.ok:
         logger.info(response.json())
@@ -152,13 +150,14 @@ def update_publication_date(publication_date, pid):
 
 
 @task
-def dataverse_metadata_fetcher(doi, metadata_format):
+def dataverse_metadata_fetcher(doi, source_dataverse_url, metadata_format):
     """ Fetches the metadata of a dataset with the given DOI.
 
      The dataverse_information field in the data takes two fields:
-    base_url: The Dataverse instance URL.
+    base_url: The source Dataverse from where the metadata is harvested.
     api_token: The token specific to this DV instance to allow use of the API.
 
+    :param source_dataverse_url: The source Dataverse.
     :param doi: The DOI of the dataset that gets fetched.
     :param metadata_format: The format of the metadata. e.g. 'dataverse_json'.
     :return:
@@ -173,13 +172,13 @@ def dataverse_metadata_fetcher(doi, metadata_format):
         'doi': doi,
         'metadata_format': metadata_format,
         "dataverse_information": {
-            "base_url": SOURCE_DATAVERSE_URL,
+            "base_url": source_dataverse_url,
             "api_token": DATAVERSE_API_TOKEN
         }
     }
 
     response = requests.post(
-        'http://host.docker.internal:8888/dataverse-metadata-fetcher',
+        'http://host.docker.internal:8083/dataverse-metadata-fetcher',
         headers=headers, data=json.dumps(data))
     if not response.ok:
         logger.info(response.json())
@@ -260,7 +259,7 @@ def add_contact_email(dataverse_json):
         'fields']
     dataset_contact = next((field for field in fields if
                             field.get('typeName') == 'datasetContact'), None)
-    if dataset_contact["value"]:
+    if dataset_contact:
         for dataset_contact in dataset_contact["value"]:
             dataset_contact["datasetContactEmail"] = {
                 "typeName": "datasetContactEmail",
@@ -268,6 +267,8 @@ def add_contact_email(dataverse_json):
                 "typeClass": "primitive",
                 "value": "portal@odissei.nl"
             }
+    else:
+        return None
     return dataverse_json
 
 
