@@ -1,28 +1,28 @@
 HOSTNAME="localhost"
 PROJECT_CONTAINER_NAME="prefect"
 DATAVERSE_URL="https://portal.staging.odissei.nl"
-DATAVERSE_API_TOKEN="95ece972-6e98-4239-806e-f225bb6585aa"
+DATAVERSE_API_TOKEN="example1-ab12-12ab-abcd-a1b2c3d4e5g6"
 XML2JSON_API_TOKEN="Bearer @km1-10122004-lamA"
 
 #CBS
-#DATAVERSE_ALIAS="cbs"
-#TEMPLATE_FILE_PATH="/resources/templates/cbs_dataverse_template.json"
-#MAPPING_FILE_PATH="/resources/mappings/cbs-mapping.json"
-#DATA_PROVIDER="cbs"
+CBS_DATAVERSE_ALIAS="cbs"
+CBS_TEMPLATE_FILE_PATH="/resources/templates/cbs_dataverse_template.json"
+CBS_MAPPING_FILE_PATH="/resources/mappings/cbs-mapping.json"
+CBS_METADATA_DIRECTORY="/local-metadata/cbs-metadata"
 
 #EASY
-#DATAVERSE_ALIAS="dans-easy"
-#TEMPLATE_FILE_PATH="/resources/templates/easy_dataverse_template.json"
-#MAPPING_FILE_PATH="/resources/mappings/easy-mapping.json"
-#DATA_PROVIDER="easy"
+EASY_DATAVERSE_ALIAS="dans-easy"
+EASY_TEMPLATE_FILE_PATH="/resources/templates/easy_dataverse_template.json"
+EASY_MAPPING_FILE_PATH="/resources/mappings/easy-mapping.json"
+EASY_METADATA_DIRECTORY="/local-metadata/easy-metadata"
 
 #LISS
-#DATAVERSE_ALIAS="liss_dc"
-#TEMPLATE_FILE_PATH="/resources/templates/liss_dataverse_template.json"
-#MAPPING_FILE_PATH="/resources/mappings/liss-mapping.json"
-#DATA_PROVIDER="liss"
+LISS_DATAVERSE_ALIAS="liss_dc"
+LISS_TEMPLATE_FILE_PATH="/resources/templates/liss_dataverse_template.json"
+LISS_MAPPING_FILE_PATH="/resources/mappings/liss-mapping.json"
+LISS_METADATA_DIRECTORY="/local-metadata/liss-metadata"
 
 #DataverseNL
-DATAVERSE_ALIAS="dataverse_nl"
-DATA_PROVIDER="dataverse_nl"
-SOURCE_DATAVERSE_URL="https://dataverse.nl"
+DATAVERSE_NL_DATAVERSE_ALIAS="dataverse_nl"
+DATAVERSE_NL_METADATA_DIRECTORY="/local-metadata/dataverse_nl-metadata"
+DATAVERSE_NL_SOURCE_DATAVERSE_URL="https://dataverse.nl"

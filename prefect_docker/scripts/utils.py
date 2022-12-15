@@ -21,7 +21,8 @@ def retrieve_license_name(license_string):
 
 
 def is_lower_level_liss_study(metadata):
-    title = metadata['datasetVersion']['metadataBlocks']['citation']['fields'][0]['value']
+    title = metadata['datasetVersion']['metadataBlocks']['citation'][
+        'fields'][0]['value']
     print("Title is", title)
     square_bracket_amount = title.count('>')
     if square_bracket_amount == 0:
@@ -43,7 +44,15 @@ def is_lower_level_liss_study(metadata):
         return True, title
 
 
-def workflow_executor(metadata_directory, data_provider_workflow):
+def workflow_executor(data_provider_workflow, metadata_directory):
+    """ Executes the workflow of a give data provider for each metadata file.
+
+    Takes workflow flow that ingests a single metadata file of a data provider
+    and executes that workflow for every metadata file in the given directory.
+
+    :param data_provider_workflow: The workflow to ingest the metadata file.
+    :param metadata_directory: The directory where provider's metadata lives.
+    """
     files = [f for f in os.listdir(metadata_directory) if
              not f.startswith('.')]
     for filename in files:

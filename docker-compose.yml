@@ -10,10 +10,7 @@ services:
     volumes:
       - "/tmp:/tmp"
       - ./prefect_docker/scripts:/scripts/
-      - ./cbs-metadata:/cbs-metadata
-      - ./easy-metadata:/easy-metadata
-      - ./liss-metadata:/liss-metadata
-      - ./dataverse_nl-metadata:/dataverse_nl-metadata
+      - ./local-metadata:/local-metadata/
       - ./resources:/resources/
     ports:
       # Local development only
