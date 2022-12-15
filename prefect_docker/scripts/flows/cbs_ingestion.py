@@ -30,7 +30,7 @@ def cbs_metadata_ingestion(file_path):
         'fields']
     publication_date = next((field for field in fields if
                              field.get('typeName') == 'distributionDate'),
-                            None)
+                            {})
     if publication_date["value"]:
         pub_date_response = update_publication_date(publication_date["value"],
                                                     doi)

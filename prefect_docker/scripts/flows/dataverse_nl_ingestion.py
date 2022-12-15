@@ -9,6 +9,8 @@ from tasks.base_tasks import xml2json, get_doi_from_header, \
     dataverse_import, add_contact_email, update_publication_date
 
 DATAVERSE_NL_DATAVERSE_ALIAS = os.getenv('DATAVERSE_NL_DATAVERSE_ALIAS')
+DATAVERSE_NL_SOURCE_DATAVERSE_URL = os.getenv(
+    'DATAVERSE_NL_SOURCE_DATAVERSE_URL')
 
 
 @flow
@@ -22,11 +24,19 @@ def dataverse_nl_metadata_ingestion(file_path):
     if not doi:
         return Failed(message='Metadata file contains no DOI in the header.')
 
-    dataverse_json = dataverse_metadata_fetcher(doi, metadata_format)
+    dataverse_json = dataverse_metadata_fetcher(
+        doi,
+        DATAVERSE_NL_SOURCE_DATAVERSE_URL,
+        metadata_format,
+    )
     if not dataverse_json:
         return Failed(message='Could not fetch dataverse metadata.')
 
     dataverse_json = add_contact_email(dataverse_json)
+    if not dataverse_json:
+        return Failed(message='Unable to add contact email')
+
+
     metadata_blocks = copy.deepcopy(
         dataverse_json["datasetVersion"]['metadataBlocks'])
     dataverse_json['datasetVersion'] = {}
