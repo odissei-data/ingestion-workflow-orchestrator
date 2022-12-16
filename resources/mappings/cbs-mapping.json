@@ -25,5 +25,5 @@
   "GeldigVanaf": ["result/Dataontwerpversies/Versie/Dataontwerp/GeldigVanaf"],
   "GeldigTot": ["result/Dataontwerpversies/Versie/Dataontwerp/GeldigTot"],
   "Versie": ["result/Dataontwerpversies/Versie/Dataontwerp/Versie"],
-  "relatedMaterial" ["result/Dataontwerpversies/Versie/Dataontwerp/Statlinetabellen/Statlinetabel"]
+  "relatedMaterial": ["result/Dataontwerpversies/Versie/Dataontwerp/Statlinetabellen/Statlinetabel"]
 }
