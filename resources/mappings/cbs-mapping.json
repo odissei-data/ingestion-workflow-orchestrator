@@ -13,4 +13,7 @@
   "variableName": ["result/Dataontwerpversies/Versie/Dataontwerp/Contextvariabelen/Contextvariabele/VerkorteSchrijfwijzeNaamVariabele"],
   "variableLabel": ["result/Dataontwerpversies/Versie/Dataontwerp/Contextvariabelen/Contextvariabele/LabelVanDeVariabele"],
   "universe": ["result/Dataontwerpversies/Versie/Dataontwerp/BeschrijvingVanDePopulatie"]
+  "NaamInDscCatalogus": ["result/Dataontwerpversies/Versie/Dataontwerp/NaamInDscCatalogus"]
+  "UniekeNaam": ["result/Dataontwerpversies/Versie/Dataontwerp/UniekeNaam"]
+  "GeldigVanaf": ["result/Dataontwerpversies/Versie/Dataontwerp/GeldigVanaf"]
 }
