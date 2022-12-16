@@ -1,4 +1,5 @@
 {
+  "datasetPersistentId": ["result/Dataontwerpversies/Versie/Dataontwerp/Doi"],
   "dsDescriptionValue": ["result/Dataontwerpversies/Versie/Dataontwerp/Beschrijving","/Dataontwerpversies/Versie/Dataontwerp/NederlandstaligePublicatietekst","result/Dataontwerpversies/Versie/Dataontwerp/EngelstaligePublicatietekst"],
   "topicClassValue": ["result/Dataontwerpversies/Versie/Dataontwerp/Themas/Thema"],
   "title": ["result/Dataontwerpversies/OorspronkelijkeNaam"],
@@ -25,5 +26,6 @@
   "GeldigVanaf": ["result/Dataontwerpversies/Versie/Dataontwerp/GeldigVanaf"],
   "GeldigTot": ["result/Dataontwerpversies/Versie/Dataontwerp/GeldigTot"],
   "Versie": ["result/Dataontwerpversies/Versie/Dataontwerp/Versie"],
+  "Eigenaar": ["result/Dataontwerpversies/Versie/Dataontwerp/Eigenaar"],
   "relatedMaterial": ["result/Dataontwerpversies/Versie/Dataontwerp/Statlinetabellen/Statlinetabel"]
 }
