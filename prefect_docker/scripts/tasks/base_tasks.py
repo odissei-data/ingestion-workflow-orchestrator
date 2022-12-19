@@ -66,8 +66,9 @@ def dataverse_mapper(json_metadata, mapping_file_path, template_file_path,
         data['mapping'] = mapping
     data["has_existing_doi"] = has_doi
 
-    response = requests.post('http://host.docker.internal:8082/mapper',
-                             headers=headers, data=json.dumps(data))
+    response = requests.post(
+        'https://dataverse-mapper.labs.dans.knaw.nl/mapper',
+        headers=headers, data=json.dumps(data))
     if not response.ok:
         logger.info(response.json())
         return None
@@ -105,8 +106,9 @@ def dataverse_import(mapped_metadata, dataverse_alias, doi=None):
     if doi:
         data['doi'] = doi
 
-    response = requests.post('http://host.docker.internal:8090/importer',
-                             headers=headers, data=json.dumps(data))
+    response = requests.post(
+        'https://dataverse-importer.labs.dans.knaw.nl/importer',
+        headers=headers, data=json.dumps(data))
     if not response.ok:
         logger.info(response.json())
         return None
@@ -141,7 +143,8 @@ def update_publication_date(publication_date, pid):
     }
 
     response = requests.post(
-        'http://host.docker.internal:8081/publication-date-updater',
+        'https://dataverse-date-updater.labs.dans.knaw.nl/'
+        'publication-date-updater',
         headers=headers, data=json.dumps(data))
     if not response.ok:
         logger.info(response.json())
@@ -178,7 +181,8 @@ def dataverse_metadata_fetcher(doi, source_dataverse_url, metadata_format):
     }
 
     response = requests.post(
-        'http://host.docker.internal:8083/dataverse-metadata-fetcher',
+        'https://dataverse-fetcher.labs.dans.knaw.nl/'
+        'dataverse-metadata-fetcher',
         headers=headers, data=json.dumps(data))
     if not response.ok:
         logger.info(response.json())
