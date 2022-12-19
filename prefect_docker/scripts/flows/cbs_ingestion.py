@@ -21,6 +21,7 @@ def cbs_metadata_ingestion(file_path):
                                        CBS_TEMPLATE_FILE_PATH, False)
     if not mapped_metadata:
         return Failed(message='Unable to map metadata.')
+
     doi = doi_minter(mapped_metadata)
     if not doi:
         return Failed(message='Failed to mint or update DOI with Datacite API')

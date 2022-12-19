@@ -283,6 +283,7 @@ def doi_minter(metadata):
     :param metadata:
     :return:
     """
+    logger = get_run_logger()
     dataverse_json = json.dumps(metadata)
     url = "https://dataciteminter.labs.dans.knaw.nl/submit-to-datacite/draft"
 
@@ -291,5 +292,7 @@ def doi_minter(metadata):
         'Authorization': 'Bearer @km1-10122004-lamA',
     }
     response = requests.post(url, headers=headers, data=dataverse_json)
+    logger.info(response.text)
     doi = response.text.replace('"', '').replace('{', '').replace('}', '')
+    logger.info("doi: " + doi)
     return doi
