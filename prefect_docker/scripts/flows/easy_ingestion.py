@@ -18,7 +18,7 @@ def easy_metadata_ingestion(file_path):
     if not json_metadata:
         return Failed(message='Unable to transform from xml to json')
 
-    mapped_metadata = dataverse_mapper(json_metadata, EASY_TEMPLATE_FILE_PATH,
+    mapped_metadata = dataverse_mapper(json_metadata, EASY_MAPPING_FILE_PATH,
                                        EASY_TEMPLATE_FILE_PATH)
     if not mapped_metadata:
         return Failed(message='Unable to map metadata')
