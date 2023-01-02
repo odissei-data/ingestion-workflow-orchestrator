@@ -35,13 +35,15 @@ def dataverse_nl_metadata_ingestion(file_path, version):
 
     dataverse_json = add_contact_email(dataverse_json)
     if not dataverse_json:
-        return Failed(message='Unable to add contact email')
-
+        return {'contact': doi}
 
     metadata_blocks = copy.deepcopy(
         dataverse_json["datasetVersion"]['metadataBlocks'])
-    dataverse_json['datasetVersion'] = {}
-    dataverse_json['datasetVersion']['metadataBlocks'] = metadata_blocks
+    ds_license = copy.deepcopy(dataverse_json['datasetVersion']['license'])
+    dataverse_json['datasetVersion'] = {
+        'license': ds_license,
+        'metadataBlocks': metadata_blocks
+    }
 
     dataverse_json = add_workflow_versioning_url(dataverse_json, version)
     if not dataverse_json:
@@ -50,7 +52,7 @@ def dataverse_nl_metadata_ingestion(file_path, version):
     import_response = dataverse_import(dataverse_json,
                                        DATAVERSE_NL_DATAVERSE_ALIAS, doi)
     if not import_response:
-        return Failed(message='Unable to import dataset into Dataverse')
+        return {'import': doi}
 
     try:
         publication_date = dataverse_json['publicationDate']
