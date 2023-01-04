@@ -1,6 +1,6 @@
 import os
 
-from prefect import flow
+from prefect import flow, get_run_logger
 from prefect.orion.schemas.states import Completed, Failed
 from tasks.base_tasks import xml2json, dataverse_mapper, \
     dataverse_import, update_publication_date, doi_minter
@@ -25,7 +25,6 @@ def cbs_metadata_ingestion(file_path):
     doi = doi_minter(mapped_metadata)
     if not doi:
         return Failed(message='Failed to mint or update DOI with Datacite API')
-
     import_response = dataverse_import(mapped_metadata, CBS_DATAVERSE_ALIAS,
                                        doi)
     if not import_response:
@@ -34,11 +33,10 @@ def cbs_metadata_ingestion(file_path):
     publication_date = get_field_from_dataverse_json(mapped_metadata,
                                                      'citation',
                                                      'distributionDate')
-    if publication_date["value"]:
+    if not publication_date:
         return Failed(message='No publication date in metadata')
 
-    pub_date_response = update_publication_date(publication_date["value"],
-                                                doi)
+    pub_date_response = update_publication_date(publication_date, doi)
     if not pub_date_response:
         return Failed(message='Unable to update publication date.')
 

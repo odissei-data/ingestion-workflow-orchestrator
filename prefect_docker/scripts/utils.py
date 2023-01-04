@@ -1,6 +1,8 @@
 import os
 import re
 
+from prefect import get_run_logger
+
 
 def retrieve_license_name(license_string):
     dataset_lic = ''
@@ -74,4 +76,4 @@ def get_field_from_dataverse_json(dataverse_json, metadata_block, field_name):
     metadata_field = next((field for field in fields if
                            field.get('typeName') == field_name),
                           {})
-    return metadata_field
+    return metadata_field['value']

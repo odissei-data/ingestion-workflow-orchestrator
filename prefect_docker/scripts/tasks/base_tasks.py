@@ -292,7 +292,5 @@ def doi_minter(metadata):
         'Authorization': 'Bearer @km1-10122004-lamA',
     }
     response = requests.post(url, headers=headers, data=dataverse_json)
-    logger.info(response.text)
     doi = response.text.replace('"', '').replace('{', '').replace('}', '')
-    logger.info("doi: " + doi)
     return doi
