@@ -249,6 +249,15 @@ def get_license(json_metadata):
 
 
 @task
+def format_license(ds_license):
+    if ds_license == 'CC0':
+        ds_license = 'CC0 1.0'
+    elif 'uri' in ds_license:
+        ds_license = utils.retrieve_license_name(ds_license['uri'])
+    return ds_license
+
+
+@task
 def add_contact_email(dataverse_json):
     """ Adds a contact email to dataverse JSON.
 
