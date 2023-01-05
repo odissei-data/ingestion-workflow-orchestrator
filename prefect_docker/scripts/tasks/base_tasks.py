@@ -296,3 +296,46 @@ def doi_minter(metadata):
     response = requests.post(url, headers=headers, data=dataverse_json)
     doi = response.text.replace('"', '').replace('{', '').replace('}', '')
     return doi
+
+
+@task
+def add_workflow_versioning_url(mapped_metadata, version):
+    logger = get_run_logger()
+    url = 'http://host.docker.internal:8086/store'
+    headers = {
+        'accept': 'application/json',
+        'Content-Type': 'application/json'
+    }
+
+    response = requests.post(url, headers=headers, data=json.dumps(version))
+    logger.info(response.json())
+    logger.info(response.text)
+
+    version_id = response.json()['id']
+    version_field = 'http://0.0.0.0:8086/retrieve/' + version_id
+
+    keys = ['datasetVersion', 'metadataBlocks', 'provenance']
+    d = mapped_metadata
+
+    for key in keys:
+        if key not in d:
+            d[key] = {}
+        d = d[key]
+
+    d['fields'] = [
+        {
+            "typeName": "workflow",
+            "multiple": False,
+            "typeClass": "compound",
+            "value": {
+                "workflowURI": {
+                    "typeName": "workflowURI",
+                    "multiple": False,
+                    "typeClass": "primitive",
+                    "value": version_field
+                },
+            }
+        }
+    ]
+    logger.info(mapped_metadata)
+    return mapped_metadata
