@@ -6,7 +6,8 @@ from prefect.orion.schemas.states import Failed, Completed
 
 from tasks.base_tasks import xml2json, get_doi_from_header, \
     dataverse_metadata_fetcher, \
-    dataverse_import, add_contact_email, update_publication_date
+    dataverse_import, add_contact_email, update_publication_date, \
+    add_workflow_versioning_url
 
 DATAVERSE_NL_DATAVERSE_ALIAS = os.getenv('DATAVERSE_NL_DATAVERSE_ALIAS')
 DATAVERSE_NL_SOURCE_DATAVERSE_URL = os.getenv(
@@ -14,7 +15,7 @@ DATAVERSE_NL_SOURCE_DATAVERSE_URL = os.getenv(
 
 
 @flow
-def dataverse_nl_metadata_ingestion(file_path):
+def dataverse_nl_metadata_ingestion(file_path, version):
     metadata_format = "dataverse_json"
     json_metadata = xml2json(file_path)
     if not json_metadata:
@@ -41,6 +42,8 @@ def dataverse_nl_metadata_ingestion(file_path):
         dataverse_json["datasetVersion"]['metadataBlocks'])
     dataverse_json['datasetVersion'] = {}
     dataverse_json['datasetVersion']['metadataBlocks'] = metadata_blocks
+
+    dataverse_json = add_workflow_versioning_url(dataverse_json, version)
 
     import_response = dataverse_import(dataverse_json,
                                        DATAVERSE_NL_DATAVERSE_ALIAS, doi)
