@@ -301,7 +301,7 @@ def doi_minter(metadata):
 @task
 def add_workflow_versioning_url(mapped_metadata, version):
     logger = get_run_logger()
-    url = 'http://host.docker.internal:8086/store'
+    url = 'https://version-tracker.labs.dans.knaw.nl/store'
     headers = {
         'accept': 'application/json',
         'Content-Type': 'application/json'
@@ -312,7 +312,8 @@ def add_workflow_versioning_url(mapped_metadata, version):
     logger.info(response.text)
 
     version_id = response.json()['id']
-    version_field = 'http://0.0.0.0:8086/retrieve/' + version_id
+    version_field = 'https://version-tracker.labs.dans.knaw.nl/retrieve/' \
+                    + version_id
 
     keys = ['datasetVersion', 'metadataBlocks', 'provenance']
     d = mapped_metadata
