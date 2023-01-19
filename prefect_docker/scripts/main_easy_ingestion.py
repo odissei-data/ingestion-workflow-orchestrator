@@ -2,13 +2,20 @@ import os
 import utils
 from prefect import flow
 from flows.easy_ingestion import easy_metadata_ingestion
+from flows.workflow_versioning.workflow_versioner import \
+    create_ingestion_workflow_versioning
 
 EASY_METADATA_DIRECTORY = os.getenv('EASY_METADATA_DIRECTORY')
 
 
 @flow
 def easy_ingestion_pipeline():
-    utils.workflow_executor(easy_metadata_ingestion, EASY_METADATA_DIRECTORY)
+    version = create_ingestion_workflow_versioning(transformer=True,
+                                                   mapper=True,
+                                                   importer=True,
+                                                   updater=True)
+    utils.workflow_executor(easy_metadata_ingestion, EASY_METADATA_DIRECTORY,
+                            version)
 
 
 if __name__ == "__main__":
