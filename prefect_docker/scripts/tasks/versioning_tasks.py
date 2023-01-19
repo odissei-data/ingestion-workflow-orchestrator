@@ -36,7 +36,7 @@ def get_latest_image_tag_version(docker_username, image_repo):
 
     latest_tag = max(tags['results'], key=lambda x: x['last_updated'])
     latest_tag_link = 'https://hub.docker.com/r/' \
-                      f'{DOCKERHUB_USERNAME}/{image_repo}/tags/' \
+                      f'{docker_username}/{image_repo}/tags/' \
                       f'{latest_tag["name"]}'
 
     return latest_tag_link
