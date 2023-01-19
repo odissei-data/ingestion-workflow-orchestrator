@@ -10,12 +10,10 @@ LISS_METADATA_DIRECTORY = os.getenv('LISS_METADATA_DIRECTORY')
 
 @flow
 def liss_ingestion_pipeline():
-    logger = get_run_logger()
     version = create_ingestion_workflow_versioning(transformer=True,
                                                    mapper=True,
                                                    importer=True,
                                                    updater=True)
-    logger.info(version)
     utils.workflow_executor(liss_metadata_ingestion, LISS_METADATA_DIRECTORY,
                             version)
 
