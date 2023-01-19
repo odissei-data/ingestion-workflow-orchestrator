@@ -302,11 +302,12 @@ def doi_minter(metadata):
 def add_workflow_versioning_url(mapped_metadata, version):
     """ Adds the workflow versioning URL to the metadata.
 
-    The workflow version that was created is saved
+    The workflow version URL that was created is added to the provenance
+    metadata block.
 
-    :param mapped_metadata:
-    :param version:
-    :return:
+    :param mapped_metadata: The Dataverse formatted metadata.
+    :param version: The version URL.
+    :return: The metadata containing the version URL in the provenance block.
     """
     keys = ['datasetVersion', 'metadataBlocks', 'provenance']
     d = mapped_metadata
