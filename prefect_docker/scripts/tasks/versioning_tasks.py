@@ -1,3 +1,4 @@
+import json
 import os
 import requests
 from prefect import task, get_run_logger
@@ -10,14 +11,14 @@ DOCKERHUB_USERNAME = os.getenv('DOCKERHUB_USERNAME')
 def get_service_version(service_url, service_name, github_username,
                         github_repo, docker_username, image_repo, endpoint):
     service_version = {
-            'name': service_name,
-            'version': get_deployed_service_version(service_url),
-            'github-release': get_latest_github_release_version(
-                github_username, github_repo),
-            'docker-image': get_latest_image_tag_version(docker_username,
-                                                         image_repo),
-            'endpoint': endpoint,
-        }
+        'name': service_name,
+        'version': get_deployed_service_version(service_url),
+        'github-release': get_latest_github_release_version(
+            github_username, github_repo),
+        'docker-image': get_latest_image_tag_version(docker_username,
+                                                     image_repo),
+        'endpoint': endpoint,
+    }
 
     return service_version
 
@@ -64,3 +65,21 @@ def get_deployed_service_version(service_url):
         return None
 
     return response.json()['version']
+
+
+def store_workflow_version(version_dict):
+    logger = get_run_logger()
+    url = 'https://version-tracker.labs.dans.knaw.nl/store'
+    headers = {
+        'accept': 'application/json',
+        'Content-Type': 'application/json'
+    }
+
+    response = requests.post(url, headers=headers,
+                             data=json.dumps(version_dict))
+    if not response.ok:
+        logger.info(response.json())
+        return None
+
+    version_id = response.json()['id']
+    return 'https://version-tracker.labs.dans.knaw.nl/retrieve/' + version_id

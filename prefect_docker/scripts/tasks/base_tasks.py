@@ -300,22 +300,14 @@ def doi_minter(metadata):
 
 @task
 def add_workflow_versioning_url(mapped_metadata, version):
-    logger = get_run_logger()
-    url = 'https://version-tracker.labs.dans.knaw.nl/store'
-    headers = {
-        'accept': 'application/json',
-        'Content-Type': 'application/json'
-    }
+    """ Adds the workflow versioning URL to the metadata.
 
-    response = requests.post(url, headers=headers, data=json.dumps(version))
-    if not response.ok:
-        logger.info(response.json())
-        return None
+    The workflow version that was created is saved
 
-    version_id = response.json()['id']
-    version_field = 'https://version-tracker.labs.dans.knaw.nl/retrieve/' \
-                    + version_id
-
+    :param mapped_metadata:
+    :param version:
+    :return:
+    """
     keys = ['datasetVersion', 'metadataBlocks', 'provenance']
     d = mapped_metadata
 
@@ -334,7 +326,7 @@ def add_workflow_versioning_url(mapped_metadata, version):
                     "typeName": "workflowURI",
                     "multiple": False,
                     "typeClass": "primitive",
-                    "value": version_field
+                    "value": version
                 },
             }
         }

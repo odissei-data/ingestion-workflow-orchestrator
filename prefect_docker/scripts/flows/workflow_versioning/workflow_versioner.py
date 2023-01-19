@@ -1,6 +1,6 @@
 import os
 from prefect import flow
-from tasks.versioning_tasks import get_service_version
+from tasks.versioning_tasks import get_service_version, store_workflow_version
 
 VERSION = os.getenv('VERSION')
 
@@ -81,4 +81,6 @@ def create_ingestion_workflow_versioning(transformer=None, mapper=None,
         )
         version_dict[updater_name] = updater
 
-    return version_dict
+    version = store_workflow_version(version_dict)
+
+    return version
