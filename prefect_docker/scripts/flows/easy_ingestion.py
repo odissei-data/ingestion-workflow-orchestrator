@@ -31,6 +31,8 @@ def easy_metadata_ingestion(file_path, version):
     mapped_metadata["datasetVersion"]["license"] = dataset_license
 
     mapped_metadata = add_workflow_versioning_url(mapped_metadata, version)
+    if not mapped_metadata:
+        return Failed(message='Unable to store workflow version.')
 
     import_response = dataverse_import(mapped_metadata, EASY_DATAVERSE_ALIAS,
                                        doi)

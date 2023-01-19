@@ -44,6 +44,8 @@ def dataverse_nl_metadata_ingestion(file_path, version):
     dataverse_json['datasetVersion']['metadataBlocks'] = metadata_blocks
 
     dataverse_json = add_workflow_versioning_url(dataverse_json, version)
+    if not dataverse_json:
+        return Failed(message='Unable to store workflow version.')
 
     import_response = dataverse_import(dataverse_json,
                                        DATAVERSE_NL_DATAVERSE_ALIAS, doi)

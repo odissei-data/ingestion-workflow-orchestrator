@@ -22,6 +22,8 @@ def cbs_metadata_ingestion(file_path, version):
         return Failed(message='Unable to map metadata.')
 
     mapped_metadata = add_workflow_versioning_url(mapped_metadata, version)
+    if not mapped_metadata:
+        return Failed(message='Unable to store workflow version.')
 
     import_response = dataverse_import(mapped_metadata, CBS_DATAVERSE_ALIAS)
     if not import_response:

@@ -32,6 +32,8 @@ def liss_metadata_ingestion(file_path, version):
         return Failed(message='Missing DOI in mapped metadata.')
 
     mapped_metadata = add_workflow_versioning_url(mapped_metadata, version)
+    if not mapped_metadata:
+        return Failed(message='Unable to store workflow version.')
 
     import_response = dataverse_import(mapped_metadata, LISS_DATAVERSE_ALIAS,
                                        doi)
