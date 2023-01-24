@@ -7,8 +7,8 @@ VERSION = os.getenv('VERSION')
 
 @flow
 def create_ingestion_workflow_versioning(transformer=None, mapper=None,
-                                         fetcher=None, importer=None,
-                                         updater=None
+                                         fetcher=None, minter=None,
+                                         importer=None, updater=None
                                          ):
     version_dict = {'workflow_orchestrator': VERSION}
 
@@ -52,6 +52,20 @@ def create_ingestion_workflow_versioning(transformer=None, mapper=None,
                      'dataverse-metadata-fetcher'
         )
         version_dict[fetcher_name] = fetcher
+
+    if minter:
+        minter_name = 'datacite-minter'
+        minter = get_service_version(
+            service_url='https://dataciteminter.labs.dans.knaw.nl/',
+            service_name=minter_name,
+            github_username='',
+            github_repo='',
+            docker_username='ekoindarto',
+            image_repo='submitmd2dc-service',
+            endpoint='https://dataciteminter.labs.dans.knaw.nl/'
+                     'submit-to-datacite/register'
+        )
+        version_dict[minter_name] = minter
 
     if importer:
         importer_name = 'dataverse-importer'
