@@ -44,12 +44,14 @@ def is_lower_level_liss_study(metadata):
         return True, title
 
 
-def workflow_executor(data_provider_workflow, metadata_directory):
+def workflow_executor(data_provider_workflow, metadata_directory,
+                      version):
     """ Executes the workflow of a give data provider for each metadata file.
 
     Takes workflow flow that ingests a single metadata file of a data provider
     and executes that workflow for every metadata file in the given directory.
 
+    :param version: A dictionary containing all version info of the workflow.
     :param data_provider_workflow: The workflow to ingest the metadata file.
     :param metadata_directory: The directory where provider's metadata lives.
     """
@@ -58,4 +60,4 @@ def workflow_executor(data_provider_workflow, metadata_directory):
     for filename in files:
         file_path = os.path.join(metadata_directory, filename)
         if os.path.isfile(file_path):
-            data_provider_workflow(file_path, return_state=True)
+            data_provider_workflow(file_path, version, return_state=True)
