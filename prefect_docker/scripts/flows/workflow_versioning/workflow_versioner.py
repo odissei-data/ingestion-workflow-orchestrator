@@ -10,6 +10,16 @@ def create_ingestion_workflow_versioning(transformer=None, mapper=None,
                                          fetcher=None, minter=None,
                                          importer=None, updater=None
                                          ):
+    """ Creates a version dictionary detailing a specific ingestion workflow.
+
+    The different workflows all use a set of services that have their own
+    versioning information. This flow creates a dictionary with up to date
+    information on the services passed as parameters. All parameters are bools
+    indicating if the service in question was used.
+
+    :return: A dictionary with all versioning information for a workflow.
+    """
+
     version_dict = {'workflow_orchestrator': VERSION}
 
     if transformer:
