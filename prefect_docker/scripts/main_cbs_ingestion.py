@@ -11,12 +11,11 @@ CBS_METADATA_DIRECTORY = os.getenv('CBS_METADATA_DIRECTORY')
 
 @flow
 def cbs_ingestion_pipeline():
-    logger = get_run_logger()
     version = create_ingestion_workflow_versioning(transformer=True,
                                                    mapper=True,
+                                                   minter=True,
                                                    importer=True,
                                                    updater=True)
-    logger.info(version)
     utils.workflow_executor(cbs_metadata_ingestion, CBS_METADATA_DIRECTORY,
                             version)
 
