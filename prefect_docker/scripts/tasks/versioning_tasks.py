@@ -18,15 +18,19 @@ def get_service_version(service_url, service_name, github_username,
 
     :return: A version dictionary detailing the version of the service.
     """
+
     service_version = {
         'name': service_name,
         'version': get_deployed_service_version(service_url),
-        'github-release': get_latest_github_release_version(
-            github_username, github_repo),
         'docker-image': get_latest_image_tag_version(docker_username,
                                                      image_repo),
         'endpoint': endpoint,
     }
+
+    github_release = get_latest_github_release_version(
+        github_username, github_repo)
+    if github_release:
+        service_version['github-release'] = github_release
 
     return service_version
 
