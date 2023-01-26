@@ -32,7 +32,7 @@ def xml2json(file_path):
             'transform-xml-to-json/true',
             headers=headers, data=data.read())
         if not response.ok:
-            logger.info(response.json())
+            logger.info(response.text)
             return None
     return response.json()
 
@@ -70,7 +70,7 @@ def dataverse_mapper(json_metadata, mapping_file_path, template_file_path,
         'https://dataverse-mapper.labs.dans.knaw.nl/mapper',
         headers=headers, data=json.dumps(data))
     if not response.ok:
-        logger.info(response.json())
+        logger.info(response.text)
         return None
     return response.json()
 
@@ -110,7 +110,7 @@ def dataverse_import(mapped_metadata, dataverse_alias, doi=None):
         'https://dataverse-importer.labs.dans.knaw.nl/importer',
         headers=headers, data=json.dumps(data))
     if not response.ok:
-        logger.info(response.json())
+        logger.info(response.text)
         return None
     return response
 
@@ -147,7 +147,7 @@ def update_publication_date(publication_date, pid):
         'publication-date-updater',
         headers=headers, data=json.dumps(data))
     if not response.ok:
-        logger.info(response.json())
+        logger.info(response.text)
         return None
     return response
 
@@ -185,7 +185,7 @@ def dataverse_metadata_fetcher(doi, source_dataverse_url, metadata_format):
         'dataverse-metadata-fetcher',
         headers=headers, data=json.dumps(data))
     if not response.ok:
-        logger.info(response.json())
+        logger.info(response.text)
         return None
     return response.json()
 
