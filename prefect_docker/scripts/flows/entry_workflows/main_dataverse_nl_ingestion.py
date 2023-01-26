@@ -1,11 +1,12 @@
 import os
 import utils
 from prefect import flow
-from flows.dataverse_nl_ingestion import dataverse_nl_metadata_ingestion
+from flows.dataset_workflows.dataverse_nl_ingestion import dataverse_nl_metadata_ingestion
 from flows.workflow_versioning.workflow_versioner import \
     create_ingestion_workflow_versioning
 
 DATAVERSE_NL_METADATA_DIRECTORY = os.getenv('DATAVERSE_NL_METADATA_DIRECTORY')
+DATAVERSE_NL_DATAVERSE_ALIAS = os.getenv('DATAVERSE_NL_DATAVERSE_ALIAS')
 
 
 @flow

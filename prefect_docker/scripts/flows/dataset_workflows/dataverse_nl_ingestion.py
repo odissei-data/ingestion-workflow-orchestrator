@@ -9,13 +9,12 @@ from tasks.base_tasks import xml2json, get_doi_from_header, \
     dataverse_import, add_contact_email, update_publication_date, \
     format_license, add_workflow_versioning_url
 
-DATAVERSE_NL_DATAVERSE_ALIAS = os.getenv('DATAVERSE_NL_DATAVERSE_ALIAS')
 DATAVERSE_NL_SOURCE_DATAVERSE_URL = os.getenv(
     'DATAVERSE_NL_SOURCE_DATAVERSE_URL')
 
 
 @flow
-def dataverse_nl_metadata_ingestion(file_path, version):
+def dataverse_nl_metadata_ingestion(file_path, alias, version):
     logger = get_run_logger()
     metadata_format = "dataverse_json"
     json_metadata = xml2json(file_path)
@@ -68,7 +67,7 @@ def dataverse_nl_metadata_ingestion(file_path, version):
         return Failed(message='Unable to store workflow version.')
 
     import_response = dataverse_import(dataverse_json,
-                                       DATAVERSE_NL_DATAVERSE_ALIAS, doi)
+                                       alias, doi)
     if not import_response:
         return Failed(message='Unable to import dataset into Dataverse')
 
