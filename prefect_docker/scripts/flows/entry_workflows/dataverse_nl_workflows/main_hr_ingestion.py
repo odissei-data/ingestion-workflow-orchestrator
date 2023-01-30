@@ -17,7 +17,7 @@ def dataverse_nl_ingestion_pipeline():
                                                    updater=True)
 
     utils.workflow_executor(dataverse_nl_metadata_ingestion,
-                            HR_METADATA_DIRECTORY, HR_DATAVERSE_ALIAS, version)
+                            HR_METADATA_DIRECTORY, version, HR_DATAVERSE_ALIAS)
 
 
 if __name__ == "__main__":
