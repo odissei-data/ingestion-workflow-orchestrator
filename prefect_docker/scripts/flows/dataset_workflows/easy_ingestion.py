@@ -9,11 +9,10 @@ from tasks.base_tasks import xml2json, dataverse_mapper, \
 
 EASY_MAPPING_FILE_PATH = os.getenv('EASY_MAPPING_FILE_PATH')
 EASY_TEMPLATE_FILE_PATH = os.getenv('EASY_TEMPLATE_FILE_PATH')
-EASY_DATAVERSE_ALIAS = os.getenv('EASY_DATAVERSE_ALIAS')
 
 
 @flow
-def easy_metadata_ingestion(file_path, version):
+def easy_metadata_ingestion(file_path, alias, version):
     json_metadata = xml2json(file_path)
     if not json_metadata:
         return Failed(message='Unable to transform from xml to json')
@@ -34,7 +33,7 @@ def easy_metadata_ingestion(file_path, version):
     if not mapped_metadata:
         return Failed(message='Unable to store workflow version.')
 
-    import_response = dataverse_import(mapped_metadata, EASY_DATAVERSE_ALIAS,
+    import_response = dataverse_import(mapped_metadata, alias,
                                        doi)
     if not import_response:
         return Failed(message='Unable to import dataset into Dataverse')

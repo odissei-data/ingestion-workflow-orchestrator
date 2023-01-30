@@ -32,7 +32,7 @@ def xml2json(file_path):
             'transform-xml-to-json/true',
             headers=headers, data=data.read())
         if not response.ok:
-            logger.info(response.json())
+            logger.info(response.text)
             return None
     return response.json()
 
@@ -70,7 +70,7 @@ def dataverse_mapper(json_metadata, mapping_file_path, template_file_path,
         'https://dataverse-mapper.labs.dans.knaw.nl/mapper',
         headers=headers, data=json.dumps(data))
     if not response.ok:
-        logger.info(response.json())
+        logger.info(response.text)
         return None
     return response.json()
 
@@ -110,7 +110,7 @@ def dataverse_import(mapped_metadata, dataverse_alias, doi=None):
         'https://dataverse-importer.labs.dans.knaw.nl/importer',
         headers=headers, data=json.dumps(data))
     if not response.ok:
-        logger.info(response.json())
+        logger.info(response.text)
         return None
     return response
 
@@ -147,7 +147,7 @@ def update_publication_date(publication_date, pid):
         'publication-date-updater',
         headers=headers, data=json.dumps(data))
     if not response.ok:
-        logger.info(response.json())
+        logger.info(response.text)
         return None
     return response
 
@@ -185,7 +185,7 @@ def dataverse_metadata_fetcher(doi, source_dataverse_url, metadata_format):
         'dataverse-metadata-fetcher',
         headers=headers, data=json.dumps(data))
     if not response.ok:
-        logger.info(response.json())
+        logger.info(response.text)
         return None
     return response.json()
 
@@ -249,6 +249,15 @@ def get_license(json_metadata):
 
 
 @task
+def format_license(ds_license):
+    if ds_license == 'CC0':
+        ds_license = 'CC0 1.0'
+    elif 'uri' in ds_license:
+        ds_license = utils.retrieve_license_name(ds_license['uri'])
+    return ds_license
+
+
+@task
 def add_contact_email(dataverse_json):
     """ Adds a contact email to dataverse JSON.
 
@@ -272,7 +281,22 @@ def add_contact_email(dataverse_json):
                 "value": "portal@odissei.nl"
             }
     else:
-        return None
+        fields.append({
+            "typeName": "datasetContact",
+            "multiple": True,
+            "typeClass": "compound",
+            "value": [
+                {
+                    "datasetContactEmail": {
+                        "typeName": "datasetContactEmail",
+                        "multiple": False,
+                        "typeClass": "primitive",
+                        "value": "portal@odissei.nl"
+                    }
+                }
+            ]
+        })
+        return dataverse_json
     return dataverse_json
 
 

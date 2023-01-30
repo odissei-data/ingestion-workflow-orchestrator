@@ -51,7 +51,7 @@ def get_latest_image_tag_version(docker_username, image_repo):
                             f'{docker_username}/{image_repo}/tags')
 
     if not response.ok:
-        logger.info(response.json())
+        logger.info(response.text)
         return None
 
     tags = response.json()
@@ -79,7 +79,7 @@ def get_latest_github_release_version(github_username, github_repo):
                             f'{github_username}/{github_repo}/releases/latest')
 
     if not response.ok:
-        logger.info(response.json())
+        logger.info(response.text)
         return None
 
     return response.json()['html_url']
@@ -97,7 +97,7 @@ def get_deployed_service_version(service_url):
     response = requests.get(service_url)
 
     if not response.ok:
-        logger.info(response.json())
+        logger.info(response.text)
         return None
 
     return response.json()['version']
@@ -124,7 +124,7 @@ def store_workflow_version(version_dict):
     response = requests.post(url, headers=headers,
                              data=json.dumps(version_dict))
     if not response.ok:
-        logger.info(response.json())
+        logger.info(response.text)
         return None
 
     version_id = response.json()['id']
