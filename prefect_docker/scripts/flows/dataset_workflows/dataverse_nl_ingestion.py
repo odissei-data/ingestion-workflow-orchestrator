@@ -15,7 +15,6 @@ DATAVERSE_NL_SOURCE_DATAVERSE_URL = os.getenv(
 
 @flow
 def dataverse_nl_metadata_ingestion(file_path, alias, version):
-    logger = get_run_logger()
     metadata_format = "dataverse_json"
     json_metadata = xml2json(file_path)
     if not json_metadata:
@@ -36,7 +35,6 @@ def dataverse_nl_metadata_ingestion(file_path, alias, version):
     dataverse_json = add_contact_email(dataverse_json)
     if not dataverse_json:
         return Failed(message='Unable to add contact email')
-    logger.info(dataverse_json)
 
     metadata_blocks = copy.deepcopy(
         dataverse_json["datasetVersion"]['metadataBlocks'])
@@ -57,7 +55,6 @@ def dataverse_nl_metadata_ingestion(file_path, alias, version):
     if terms_of_use:
         dataverse_json['datasetVersion']['termsOfUse'] = terms_of_use
 
-    logger.info(ds_license)
     if ds_license and ds_license != 'NONE':
         dataverse_json['datasetVersion']['license'] = format_license(
             ds_license)
