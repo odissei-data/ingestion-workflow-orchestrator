@@ -281,7 +281,22 @@ def add_contact_email(dataverse_json):
                 "value": "portal@odissei.nl"
             }
     else:
-        return None
+        fields.append({
+            "typeName": "datasetContact",
+            "multiple": True,
+            "typeClass": "compound",
+            "value": [
+                {
+                    "datasetContactEmail": {
+                        "typeName": "datasetContactEmail",
+                        "multiple": False,
+                        "typeClass": "primitive",
+                        "value": "portal@odissei.nl"
+                    }
+                }
+            ]
+        })
+        return dataverse_json
     return dataverse_json
 
 
