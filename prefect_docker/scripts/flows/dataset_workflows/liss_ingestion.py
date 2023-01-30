@@ -10,11 +10,10 @@ from utils import is_lower_level_liss_study
 
 LISS_MAPPING_FILE_PATH = os.getenv('LISS_MAPPING_FILE_PATH')
 LISS_TEMPLATE_FILE_PATH = os.getenv('LISS_TEMPLATE_FILE_PATH')
-LISS_DATAVERSE_ALIAS = os.getenv('LISS_DATAVERSE_ALIAS')
 
 
 @flow
-def liss_metadata_ingestion(file_path, version):
+def liss_metadata_ingestion(file_path, alias, version):
     json_metadata = xml2json(file_path)
     if not json_metadata:
         return Failed(message='Unable to transform from xml to json')
@@ -35,7 +34,7 @@ def liss_metadata_ingestion(file_path, version):
     if not mapped_metadata:
         return Failed(message='Unable to store workflow version.')
 
-    import_response = dataverse_import(mapped_metadata, LISS_DATAVERSE_ALIAS,
+    import_response = dataverse_import(mapped_metadata, alias,
                                        doi)
     if not import_response:
         return Failed(message='Unable to import dataset into Dataverse')
