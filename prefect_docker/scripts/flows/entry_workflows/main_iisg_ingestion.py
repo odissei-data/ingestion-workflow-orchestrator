@@ -5,7 +5,8 @@ from flows.dataset_workflows.iisg_ingestion import iisg_metadata_ingestion
 from flows.workflow_versioning.workflow_versioner import \
     create_ingestion_workflow_versioning
 
-IISG_METADATA_DIRECTORY = os.getenv('IISG_METADATA_DIRECTORY')
+IISG_DATAVERSE_ALIAS = os.getenv("IISG_DATAVERSE_ALIAS")
+IISG_METADATA_DIRECTORY = os.getenv("IISG_METADATA_DIRECTORY")
 
 
 @flow
@@ -19,9 +20,9 @@ def iisg_ingestion_pipeline():
 
     utils.workflow_executor(
         iisg_metadata_ingestion,
-        "/local-metadata/iisg-metadata",
+        IISG_METADATA_DIRECTORY,
         version,
-        "michielz"
+        IISG_DATAVERSE_ALIAS
     )
 
 
