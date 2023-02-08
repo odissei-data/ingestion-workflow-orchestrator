@@ -9,6 +9,8 @@ GITHUB_USERNAME="odissei-data"
 DOCKERHUB_USERNAME="fjodorvr"
 VERSION="v0.2.0-alpha"
 
+ENV_FOR_DYNACONF=development
+
 #CBS
 CBS_DATAVERSE_ALIAS="cbs"
 CBS_TEMPLATE_FILE_PATH="/resources/templates/cbs_dataverse_template.json"
@@ -87,4 +89,4 @@ VU_METADATA_DIRECTORY="/local-metadata/dataverse_nl/vu"
 #IISG
 IISG_DATAVERSE_ALIAS="alias_unknown"
 IISG_METADATA_DIRECTORY="/local-metadata/iisg-metadata"
-IISG_SOURCE_DATAVERSE_URL="https://datasets.iisg.amsterdam/"
+IISG_SOURCE_DATAVERSE_URL="https://datasets.iisg.amsterdam/oai"
