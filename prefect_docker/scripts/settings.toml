@@ -1,0 +1,10 @@
+[default]
+name = "I am default"
+foo = "this is foo"
+
+[development]
+debug = true
+name = "I am development"
+
+[production]
+debug = false
