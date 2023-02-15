@@ -1,14 +1,13 @@
 import copy
 import os
 
+from config import settings
 from prefect import flow, get_run_logger
 from prefect.orion.schemas.states import Failed, Completed
 
 from tasks.base_tasks import xml2json, get_doi_from_header, \
     dataverse_metadata_fetcher, \
     dataverse_import, add_contact_email, update_publication_date
-
-IISG_SOURCE_DATAVERSE_URL = os.getenv("IISG_SOURCE_DATAVERSE_URL")
 
 
 @flow
@@ -24,7 +23,7 @@ def iisg_metadata_ingestion(file_path, alias, version):
 
     dataverse_json = dataverse_metadata_fetcher(
         doi,
-        IISG_SOURCE_DATAVERSE_URL,
+        settings.IISG_SOURCE_DATAVERSE_URL,
         metadata_format,
     )
     if not dataverse_json:

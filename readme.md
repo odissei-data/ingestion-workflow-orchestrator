@@ -58,10 +58,19 @@ To allow the containers to communicate with each other you need to create a
 network. The commands below should do the trick.
 
 ```shell
-docker network create bridge ingestion-network
+docker network create -d bridge ingestion-network
 docker network connect ingestion-network dataverse
 docker network connect ingestion-network dataverse-importer
 docker network connect ingestion-network publication-date-updater
 docker network connect ingestion-network metadata-fetcher
 docker network connect ingestion-network prefect
 ```
+
+### Ports
+The containers are assumed to be running on the following ports. If needed,
+adjust the port numbers in the `.env` file.
+
+- dataverse: 8080
+- dataverse-importer: 8091
+- metadata-fetcher: 8092
+- publication-date-update: 8093

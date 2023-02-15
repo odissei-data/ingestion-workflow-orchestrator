@@ -1,10 +1,24 @@
+# Settings file for Dynaconf
+
 [default]
-name = "I am default"
-foo = "this is foo"
+IISG_DATAVERSE_ALIAS="iisg2"
+IISG_SOURCE_DATAVERSE_URL="https://datasets.iisg.amsterdam"
+
 
 [development]
 debug = true
-name = "I am development"
+
+DATAVERSE_URL="http://dataverse:8080"
+DATAVERSE_API_TOKEN="7322d16a-beb1-48c7-92ec-a278015cbd52"
+DATAVERSE_IMPORTER_URL="http://dataverse-importer:8091"
+PUBLICATION_DATA_UPDATER_URL="http://publication-date-updater:8093"
+METADATA_FETCHER_URL="http://metadata-fetcher:8092"
+
+IISG_METADATA_DIRECTORY="/local-metadata/iisg-metadata"
 
 [production]
 debug = false
+
+DATAVERSE_IMPORTER_URL="https://dataverse-importer.labs.dans.knaw.nl"
+
+IISG_METADATA_DIRECTORY="iisg-metadata-directory"

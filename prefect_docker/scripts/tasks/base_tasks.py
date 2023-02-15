@@ -1,7 +1,9 @@
 import json
 import os
-import requests
+
+from config import settings
 from prefect import task, get_run_logger
+import requests
 from requests.structures import CaseInsensitiveDict
 
 import utils
@@ -98,17 +100,20 @@ def dataverse_import(mapped_metadata, dataverse_alias, doi=None):
     data = {
         "metadata": mapped_metadata,
         "dataverse_information": {
-            "base_url": DATAVERSE_URL,
+            "base_url": settings.DATAVERSE_URL,
             "dt_alias": dataverse_alias,
-            "api_token": DATAVERSE_API_TOKEN
+            "api_token": settings.DATAVERSE_API_TOKEN
         }}
 
     if doi:
         data['doi'] = doi
 
+    url = f"{settings.DATAVERSE_IMPORTER_URL}/importer"
     response = requests.post(
-        'https://dataverse-importer.labs.dans.knaw.nl/importer',
-        headers=headers, data=json.dumps(data))
+        url,
+        headers=headers,
+        data=json.dumps(data)
+    )
     if not response.ok:
         logger.info(response.text)
         return None
@@ -137,15 +142,17 @@ def update_publication_date(publication_date, pid):
         'pid': pid,
         'publication_date': publication_date,
         "dataverse_information": {
-            "base_url": DATAVERSE_URL,
-            "api_token": DATAVERSE_API_TOKEN
+            "base_url": settings.DATAVERSE_URL,
+            "api_token": settings.DATAVERSE_API_TOKEN
         }
     }
 
+    url = f"{settings.PUBLICATION_DATA_UPDATER_URL}/publication-date-updater"
     response = requests.post(
-        'https://dataverse-date-updater.labs.dans.knaw.nl/'
-        'publication-date-updater',
-        headers=headers, data=json.dumps(data))
+        url,
+        headers=headers,
+        data=json.dumps(data)
+    )
     if not response.ok:
         logger.info(response.text)
         return None
@@ -176,14 +183,17 @@ def dataverse_metadata_fetcher(doi, source_dataverse_url, metadata_format):
         'metadata_format': metadata_format,
         "dataverse_information": {
             "base_url": source_dataverse_url,
-            "api_token": DATAVERSE_API_TOKEN
+            "api_token": settings.DATAVERSE_API_TOKEN
         }
     }
 
+    url = f"{settings.METADATA_FETCHER_URL}/dataverse-metadata-fetcher"
     response = requests.post(
-        'https://dataverse-fetcher.labs.dans.knaw.nl/'
-        'dataverse-metadata-fetcher',
-        headers=headers, data=json.dumps(data))
+        url,
+        headers=headers,
+        data=json.dumps(data)
+    )
+
     if not response.ok:
         logger.info(response.text)
         return None
