@@ -28,6 +28,7 @@ def xml2json(file_path):
         'Content-Type': 'application/xml',
         'Authorization': XML2JSON_API_TOKEN,
     }
+
     with open(file_path, 'rb') as data:
         response = requests.post(
             'https://transformer.labs.dans.knaw.nl/'
@@ -68,9 +69,11 @@ def dataverse_mapper(json_metadata, mapping_file_path, template_file_path,
         data['mapping'] = mapping
     data["has_existing_doi"] = has_doi
 
+    url = f"{settings.DATAVERSE_MAPPER_URL}/mapper"
     response = requests.post(
-        'https://dataverse-mapper.labs.dans.knaw.nl/mapper',
-        headers=headers, data=json.dumps(data))
+        url,
+        headers=headers, data=json.dumps(data)
+    )
     if not response.ok:
         logger.info(response.text)
         return None

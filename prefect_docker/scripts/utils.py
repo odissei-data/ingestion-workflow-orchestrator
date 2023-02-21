@@ -63,3 +63,4 @@ def workflow_executor(data_provider_workflow, metadata_directory, version,
         if os.path.isfile(file_path):
             data_provider_workflow(file_path, alias, version,
                                    return_state=True)
+        break
