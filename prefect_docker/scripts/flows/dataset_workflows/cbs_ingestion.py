@@ -1,12 +1,10 @@
 import os
 
+from config import settings
 from prefect import flow, get_run_logger
 from prefect.orion.schemas.states import Completed, Failed
 from tasks.base_tasks import xml2json, dataverse_mapper, \
     dataverse_import, update_publication_date, add_workflow_versioning_url
-
-CBS_MAPPING_FILE_PATH = os.getenv('CBS_MAPPING_FILE_PATH')
-CBS_TEMPLATE_FILE_PATH = os.getenv('CBS_TEMPLATE_FILE_PATH')
 
 
 @flow
@@ -15,8 +13,13 @@ def cbs_metadata_ingestion(file_path, alias, version):
     if not json_metadata:
         return Failed(message='Unable to transform from xml to json.')
 
-    mapped_metadata = dataverse_mapper(json_metadata, CBS_MAPPING_FILE_PATH,
-                                       CBS_TEMPLATE_FILE_PATH, False)
+    mapped_metadata = dataverse_mapper(
+        json_metadata,
+        settings.CBS_MAPPING_FILE_PATH,
+        settings.CBS_TEMPLATE_FILE_PATH,
+        False
+    )
+
     if not mapped_metadata:
         return Failed(message='Unable to map metadata.')
 

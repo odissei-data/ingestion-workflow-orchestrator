@@ -4,6 +4,10 @@
 IISG_DATAVERSE_ALIAS="iisg2"
 IISG_SOURCE_DATAVERSE_URL="https://datasets.iisg.amsterdam"
 
+CBS_DATAVERSE_ALIAS="cbs"
+CBS_TEMPLATE_FILE_PATH="/resources/templates/cbs_dataverse_template.json"
+CBS_MAPPING_FILE_PATH="/resources/mappings/cbs-mapping.json"
+
 [development]
 debug = true
 
@@ -16,6 +20,7 @@ DATAVERSE_MAPPER_URL="http://dataverse-mapper-v2:8094"
 DANS_TRANSFORMER_SERVICE="http://dans-transformer-service:1745"
 
 IISG_METADATA_DIRECTORY="/local-metadata/iisg-metadata"
+CBS_METADATA_DIRECTORY="/local-metadata/all"
 
 [production]
 debug = false
