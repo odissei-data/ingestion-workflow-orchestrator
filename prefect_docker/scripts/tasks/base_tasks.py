@@ -29,11 +29,12 @@ def xml2json(file_path):
         'Authorization': XML2JSON_API_TOKEN,
     }
 
+    url = f"{settings.DANS_TRANSFORMER_SERVICE}/transform-xml-to-json/true"
     with open(file_path, 'rb') as data:
         response = requests.post(
-            'https://transformer.labs.dans.knaw.nl/'
-            'transform-xml-to-json/true',
-            headers=headers, data=data.read())
+            url,
+            headers=headers, data=data.read()
+        )
         if not response.ok:
             logger.info(response.text)
             return None
