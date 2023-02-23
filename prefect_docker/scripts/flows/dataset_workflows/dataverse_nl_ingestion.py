@@ -1,5 +1,4 @@
 import copy
-import os
 
 from prefect import flow, get_run_logger
 from prefect.orion.schemas.states import Failed, Completed
@@ -9,12 +8,21 @@ from tasks.base_tasks import xml2json, get_doi_from_header, \
     dataverse_import, add_contact_email, update_publication_date, \
     format_license, add_workflow_versioning_url
 
-DATAVERSE_NL_SOURCE_DATAVERSE_URL = os.getenv(
-    'DATAVERSE_NL_SOURCE_DATAVERSE_URL')
-
 
 @flow
-def dataverse_nl_metadata_ingestion(file_path, alias, version):
+def dataverse_nl_metadata_ingestion(
+        file_path, alias, version, source_dataverse_url
+):
+    """
+    Ingestion flow for Dataverse.
+
+    :param file_path: string, path to files
+    :param alias: string, Dataverse alias
+    :param version: dict, contains all version info of the workflow
+    :param source_dataverse_url: string, url to source dataverse
+
+    :return: prefect.orion.schemas.states Failed or Completed
+    """
     metadata_format = "dataverse_json"
     json_metadata = xml2json(file_path)
     if not json_metadata:
@@ -26,7 +34,7 @@ def dataverse_nl_metadata_ingestion(file_path, alias, version):
 
     dataverse_json = dataverse_metadata_fetcher(
         doi,
-        DATAVERSE_NL_SOURCE_DATAVERSE_URL,
+        source_dataverse_url,
         metadata_format,
     )
     if not dataverse_json:
