@@ -12,6 +12,10 @@ EASY_DATAVERSE_ALIAS="easy"
 EASY_TEMPLATE_FILE_PATH="/resources/templates/easy_dataverse_template.json"
 EASY_MAPPING_FILE_PATH="/resources/mappings/easy-mapping.json"
 
+LISS_DATAVERSE_ALIAS="liss_dc"
+LISS_TEMPLATE_FILE_PATH="/resources/templates/liss_dataverse_template.json"
+LISS_MAPPING_FILE_PATH="/resources/mappings/liss-mapping.json"
+
 [development]
 debug = true
 
@@ -26,6 +30,7 @@ DANS_TRANSFORMER_SERVICE="http://dans-transformer-service:1745"
 IISG_METADATA_DIRECTORY="/local-metadata/iisg-metadata"
 CBS_METADATA_DIRECTORY="/local-metadata/all"
 EASY_METADATA_DIRECTORY="/local-metadata/easy-metadata"
+LISS_METADATA_DIRECTORY="/local-metadata/liss-metadata"
 
 [production]
 debug = false

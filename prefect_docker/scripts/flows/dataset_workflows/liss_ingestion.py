@@ -1,5 +1,4 @@
-import os
-
+from config import settings
 from prefect import flow
 from prefect.orion.schemas.states import Completed, Failed
 
@@ -8,9 +7,6 @@ from tasks.base_tasks import xml2json, dataverse_mapper, \
     add_workflow_versioning_url
 from utils import is_lower_level_liss_study
 
-LISS_MAPPING_FILE_PATH = os.getenv('LISS_MAPPING_FILE_PATH')
-LISS_TEMPLATE_FILE_PATH = os.getenv('LISS_TEMPLATE_FILE_PATH')
-
 
 @flow
 def liss_metadata_ingestion(file_path, alias, version):
@@ -18,8 +14,12 @@ def liss_metadata_ingestion(file_path, alias, version):
     if not json_metadata:
         return Failed(message='Unable to transform from xml to json')
 
-    mapped_metadata = dataverse_mapper(json_metadata, LISS_MAPPING_FILE_PATH,
-                                       LISS_TEMPLATE_FILE_PATH)
+    mapped_metadata = dataverse_mapper(
+        json_metadata,
+        settings.LISS_MAPPING_FILE_PATH,
+        settings.LISS_TEMPLATE_FILE_PATH
+    )
+
     if not mapped_metadata:
         return Failed(message='Unable to map metadata')
 
