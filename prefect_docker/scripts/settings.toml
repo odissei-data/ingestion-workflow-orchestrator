@@ -8,6 +8,10 @@ CBS_DATAVERSE_ALIAS="cbs"
 CBS_TEMPLATE_FILE_PATH="/resources/templates/cbs_dataverse_template.json"
 CBS_MAPPING_FILE_PATH="/resources/mappings/cbs-mapping.json"
 
+EASY_DATAVERSE_ALIAS="easy"
+EASY_TEMPLATE_FILE_PATH="/resources/templates/easy_dataverse_template.json"
+EASY_MAPPING_FILE_PATH="/resources/mappings/easy-mapping.json"
+
 [development]
 debug = true
 
@@ -21,6 +25,7 @@ DANS_TRANSFORMER_SERVICE="http://dans-transformer-service:1745"
 
 IISG_METADATA_DIRECTORY="/local-metadata/iisg-metadata"
 CBS_METADATA_DIRECTORY="/local-metadata/all"
+EASY_METADATA_DIRECTORY="/local-metadata/easy-metadata"
 
 [production]
 debug = false

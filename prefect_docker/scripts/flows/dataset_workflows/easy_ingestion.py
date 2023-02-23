@@ -1,14 +1,12 @@
 import os
 
+from config import settings
 from prefect import flow
 from prefect.orion.schemas.states import Completed, Failed
 
 from tasks.base_tasks import xml2json, dataverse_mapper, \
     dataverse_import, update_publication_date, get_license, \
     get_doi_from_dv_json, add_workflow_versioning_url
-
-EASY_MAPPING_FILE_PATH = os.getenv('EASY_MAPPING_FILE_PATH')
-EASY_TEMPLATE_FILE_PATH = os.getenv('EASY_TEMPLATE_FILE_PATH')
 
 
 @flow
@@ -17,8 +15,12 @@ def easy_metadata_ingestion(file_path, alias, version):
     if not json_metadata:
         return Failed(message='Unable to transform from xml to json')
 
-    mapped_metadata = dataverse_mapper(json_metadata, EASY_MAPPING_FILE_PATH,
-                                       EASY_TEMPLATE_FILE_PATH)
+    mapped_metadata = dataverse_mapper(
+        json_metadata,
+        settings.EASY_MAPPING_FILE_PATH,
+        settings.EASY_TEMPLATE_FILE_PATH
+    )
+    
     if not mapped_metadata:
         return Failed(message='Unable to map metadata')
 
