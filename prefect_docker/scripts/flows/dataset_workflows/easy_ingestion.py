@@ -20,7 +20,7 @@ def easy_metadata_ingestion(file_path, alias, version):
         settings.EASY_MAPPING_FILE_PATH,
         settings.EASY_TEMPLATE_FILE_PATH
     )
-    
+
     if not mapped_metadata:
         return Failed(message='Unable to map metadata')
 
