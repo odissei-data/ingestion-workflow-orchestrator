@@ -23,6 +23,8 @@ def xml2json(file_path):
     :param file_path: The filepath of the xml file.
     :return: Plain JSON metadata | None on failure.
     """
+    print(f"xml file path {file_path}")
+
     logger = get_run_logger()
     headers = {
         'Content-Type': 'application/xml',
@@ -35,6 +37,7 @@ def xml2json(file_path):
             url,
             headers=headers, data=data.read()
         )
+        print(f"xml2json response. Code:{response.status_code} Text: {response.text} ")
         if not response.ok:
             logger.info(response.text)
             return None
@@ -164,17 +167,22 @@ def update_publication_date(publication_date, pid):
 
 
 @task
-def dataverse_metadata_fetcher(doi, source_dataverse_url, metadata_format):
-    """ Fetches the metadata of a dataset with the given DOI.
+def dataverse_metadata_fetcher(
+        doi, source_dataverse_url, source_dataverse_api_key, metadata_format
+):
+    """
+    Fetches the metadata of a dataset with the given DOI.
 
-     The dataverse_information field in the data takes two fields:
+    The dataverse_information field in the data takes two fields:
     base_url: The source Dataverse from where the metadata is harvested.
     api_token: The token specific to this DV instance to allow use of the API.
 
-    :param source_dataverse_url: The source Dataverse.
-    :param doi: The DOI of the dataset that gets fetched.
-    :param metadata_format: The format of the metadata. e.g. 'dataverse_json'.
-    :return:
+    :param source_dataverse_url: string, The source Dataverse url.
+    :param source_dataverse_api_key: string, source Dataverse api key.
+    :param doi: string, The DOI of the dataset that gets fetched.
+    :param metadata_format: string, metadata format e.g. 'dataverse_json'.
+
+    :return: JSON or None
     """
     logger = get_run_logger()
     headers = {
@@ -187,7 +195,7 @@ def dataverse_metadata_fetcher(doi, source_dataverse_url, metadata_format):
         'metadata_format': metadata_format,
         "dataverse_information": {
             "base_url": source_dataverse_url,
-            "api_token": settings.DATAVERSE_API_TOKEN
+            "api_token": source_dataverse_api_key
         }
     }
 

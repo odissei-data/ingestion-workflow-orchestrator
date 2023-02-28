@@ -16,21 +16,28 @@ LISS_DATAVERSE_ALIAS="liss_dc"
 LISS_TEMPLATE_FILE_PATH="/resources/templates/liss_dataverse_template.json"
 LISS_MAPPING_FILE_PATH="/resources/mappings/liss-mapping.json"
 
+DATAVERSE_NL_SOURCE_DATAVERSE_URL="https://dataverse.nl"
+
+RESEARCH_DATA_DATAVERSE_ALIAS="4tu"
+
+
+
 [development]
 debug = true
 
 DATAVERSE_URL="http://dataverse:8080"
-DATAVERSE_API_TOKEN="7322d16a-beb1-48c7-92ec-a278015cbd52"
 DATAVERSE_IMPORTER_URL="http://dataverse-importer:8091"
 PUBLICATION_DATA_UPDATER_URL="http://publication-date-updater:8093"
 METADATA_FETCHER_URL="http://metadata-fetcher:8092"
 DATAVERSE_MAPPER_URL="http://dataverse-mapper-v2:8094"
 DANS_TRANSFORMER_SERVICE="http://dans-transformer-service:1745"
-
+#DANS_TRANSFORMER_SERVICE="https://transformer.labs.dans.knaw.nl"
 IISG_METADATA_DIRECTORY="/local-metadata/iisg-metadata"
 CBS_METADATA_DIRECTORY="/local-metadata/all"
 EASY_METADATA_DIRECTORY="/local-metadata/easy-metadata"
 LISS_METADATA_DIRECTORY="/local-metadata/liss-metadata"
+RESEARCH_DATA_METADATA_DIRECTORY="/local-metadata/dataverse_nl/4tu"
+
 
 [production]
 debug = false

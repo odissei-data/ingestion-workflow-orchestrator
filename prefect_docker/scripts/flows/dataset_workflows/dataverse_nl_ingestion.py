@@ -11,15 +11,17 @@ from tasks.base_tasks import xml2json, get_doi_from_header, \
 
 @flow
 def dataverse_nl_metadata_ingestion(
-        file_path, alias, version, source_dataverse_url
+        file_path, alias, version, source_dataverse_url,
+        source_dataverse_api_key
 ):
     """
-    Ingestion flow for Dataverse.
+    Ingestion flow for Dataverse-NL.
 
     :param file_path: string, path to files
     :param alias: string, Dataverse alias
     :param version: dict, contains all version info of the workflow
     :param source_dataverse_url: string, url to source dataverse
+    :param source_dataverse_api_key: string, api key for source dataverse
 
     :return: prefect.orion.schemas.states Failed or Completed
     """
@@ -35,6 +37,7 @@ def dataverse_nl_metadata_ingestion(
     dataverse_json = dataverse_metadata_fetcher(
         doi,
         source_dataverse_url,
+        source_dataverse_api_key,
         metadata_format,
     )
     if not dataverse_json:

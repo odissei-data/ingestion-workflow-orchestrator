@@ -49,7 +49,8 @@ def workflow_executor(
         metadata_directory,
         version,
         alias,
-        source_dataverse_url=None
+        source_dataverse_url=None,
+        source_dataverse_api_key=None
 ):
     """
     Executes the workflow of a give data provider for each metadata file.
@@ -57,22 +58,34 @@ def workflow_executor(
     Takes workflow flow that ingests a single metadata file of a data provider
     and executes that workflow for every metadata file in the given directory.
 
-    :param alias: The target dataverse slug.
-    :param version: A dictionary containing all version info of the workflow.
+    For Dataverse to Dataverse ingestion, the url and api key of the source
+    Dataverse are required.
+
     :param data_provider_workflow: The workflow to ingest the metadata file.
     :param metadata_directory: The directory where provider's metadata lives.
+    :param version: A dictionary containing all version info of the workflow.
+    :param alias: The target dataverse slug.
     :param source_dataverse_url: string, url to source dataverse
+    :param source_dataverse_api_key: string, api key for source dataverse
+
+    :return: None
     """
     files = [f for f in os.listdir(metadata_directory) if
              not f.startswith('.')]
     for filename in files:
         file_path = os.path.join(metadata_directory, filename)
         if os.path.isfile(file_path):
+
+            # Extend positional arguments when needed
             args_list = [file_path, alias, version]
             if source_dataverse_url:
-                args_list.append(source_dataverse_url)
+                args_list.extend(
+                    [source_dataverse_url, source_dataverse_api_key]
+                )
 
             data_provider_workflow(
                 *args_list,
                 return_state=True
             )
+
+        break
