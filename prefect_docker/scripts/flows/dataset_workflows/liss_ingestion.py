@@ -1,4 +1,4 @@
-from config import settings
+from configuration.config import settings
 from prefect import flow
 from prefect.orion.schemas.states import Completed, Failed
 

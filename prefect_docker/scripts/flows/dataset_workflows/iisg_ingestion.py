@@ -1,8 +1,7 @@
 import copy
-import os
 
-from config import settings
-from prefect import flow, get_run_logger
+from configuration.config import settings
+from prefect import flow
 from prefect.orion.schemas.states import Failed, Completed
 
 from tasks.base_tasks import xml2json, get_doi_from_header, \

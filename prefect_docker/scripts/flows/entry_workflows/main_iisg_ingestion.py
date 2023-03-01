@@ -1,5 +1,5 @@
 import utils
-from config import settings
+from configuration.config import settings
 from prefect import flow
 
 from flows.dataset_workflows.iisg_ingestion import iisg_metadata_ingestion

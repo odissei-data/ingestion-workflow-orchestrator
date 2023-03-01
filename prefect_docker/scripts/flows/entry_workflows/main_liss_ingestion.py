@@ -1,5 +1,5 @@
 import utils
-from config import settings
+from configuration.config import settings
 from prefect import flow
 from flows.dataset_workflows.liss_ingestion import liss_metadata_ingestion
 from flows.workflow_versioning.workflow_versioner import \

@@ -8,21 +8,11 @@ import utils
 
 
 @flow
-def dataverse_nl_ingestion_pipeline(
-        source_dataverse_url,
-        source_dataverse_api_key,
-        metadata_directory,
-        destination_dataverse_alias,
-):
+def dataverse_nl_ingestion_pipeline(settings_dict_name):
     """
     Ingestion pipeline dedicated to dataverse.nl workflow.
 
-    :param source_dataverse_url: string, url to source dataverse
-    :param source_dataverse_api_key: string, api key for source dataverse
-    :param metadata_directory: string, name of metadata directory
-    :param destination_dataverse_alias: string, alias used by destination
-    dataverse
-
+    :param settings_dict_name: string, name of the settings you wish to use
     :return: None
     """
     version = create_ingestion_workflow_versioning(
@@ -34,22 +24,13 @@ def dataverse_nl_ingestion_pipeline(
 
     utils.workflow_executor(
         data_provider_workflow=dataverse_nl_metadata_ingestion,
-        metadata_directory=metadata_directory,
         version=version,
-        alias=destination_dataverse_alias,
-        source_dataverse_url=source_dataverse_url,
-        source_dataverse_api_key=source_dataverse_api_key
+        settings_dict_name=settings_dict_name,
     )
 
 
 def test_ingestion():
-    from config import settings
-
-    dataverse_nl_ingestion_pipeline(
-        settings.DATAVERSE_NL_SOURCE_DATAVERSE_URL,
-        settings.RESEARCH_DATA_METADATA_DIRECTORY,
-        settings.RESEARCH_DATA_DATAVERSE_ALIAS
-    )
+    dataverse_nl_ingestion_pipeline("RESEARCH_DATA")
 
 
 if __name__ == "__main__":

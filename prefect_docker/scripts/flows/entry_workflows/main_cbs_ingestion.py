@@ -1,4 +1,4 @@
-from config import settings
+from configuration.config import settings
 from prefect import flow
 import utils
 from flows.dataset_workflows.cbs_ingestion import cbs_metadata_ingestion

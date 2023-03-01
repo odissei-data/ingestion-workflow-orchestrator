@@ -1,7 +1,5 @@
-import os
-
-from config import settings
-from prefect import flow, get_run_logger
+from configuration.config import settings
+from prefect import flow
 from prefect.orion.schemas.states import Completed, Failed
 from tasks.base_tasks import xml2json, dataverse_mapper, \
     dataverse_import, update_publication_date, add_workflow_versioning_url
