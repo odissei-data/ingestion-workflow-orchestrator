@@ -1,7 +1,7 @@
 # Settings file for Dynaconf
 
 [default]
-IISG_DATAVERSE_ALIAS="iisg2"
+IISG_DATAVERSE_ALIAS="iisg"
 IISG_SOURCE_DATAVERSE_URL="https://datasets.iisg.amsterdam"
 
 CBS_DATAVERSE_ALIAS="cbs"
@@ -16,21 +16,10 @@ LISS_DATAVERSE_ALIAS="liss_dc"
 LISS_TEMPLATE_FILE_PATH="/resources/templates/liss_dataverse_template.json"
 LISS_MAPPING_FILE_PATH="/resources/mappings/liss-mapping.json"
 
-###############
-# DataverseNL #
-###############
-
-DATAVERSE_NL_URL="https://dataverse.nl"
-
-RESEARCH_DATA={"ALIAS"="4tu", "METADATA_DIRECTORY"="@format {this.RESEARCH_DATA_METADATA_DIRECTORY}", "SOURCE_DATAVERSE_URL"="@format {this.DATAVERSE_NL_URL}", "SOURCE_DATAVERSE_API_KEY"="@format {this.DATAVERSE_NL_API_KEY}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}"}
-
-TEST_SETTINGS="Default test value"
-
 [development]
 debug = true
 
 DATAVERSE_URL="http://dataverse:8080"
-ODISSEI_URL="@format {this.DATAVERSE_URL}"
 SICADA_URL="@format {this.DATAVERSE_URL}"
 
 DATAVERSE_IMPORTER_URL="http://dataverse-importer:8091"
@@ -43,7 +32,6 @@ IISG_METADATA_DIRECTORY="/local-metadata/iisg-metadata"
 CBS_METADATA_DIRECTORY="/local-metadata/all"
 EASY_METADATA_DIRECTORY="/local-metadata/easy-metadata"
 LISS_METADATA_DIRECTORY="/local-metadata/liss-metadata"
-RESEARCH_DATA_METADATA_DIRECTORY="/local-metadata/dataverse_nl/4tu"
 
 
 [production]
