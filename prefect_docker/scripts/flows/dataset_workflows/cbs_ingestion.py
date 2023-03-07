@@ -1,4 +1,3 @@
-from configuration.config import settings
 from prefect import flow
 from prefect.orion.schemas.states import Completed, Failed
 from tasks.base_tasks import xml2json, dataverse_mapper, \
@@ -6,15 +5,23 @@ from tasks.base_tasks import xml2json, dataverse_mapper, \
 
 
 @flow
-def cbs_metadata_ingestion(file_path, alias, version):
+def cbs_metadata_ingestion(file_path, version, settings_dict):
+    """
+    Ingestion flow for metadata from CBS.
+
+    :param file_path: string, path to xml file
+    :param version: dict, contains all version info of the workflow
+    :param settings_dict: dict, contains settings for the current workflow
+    :return: prefect.orion.schemas.states Failed or Completed
+    """
     json_metadata = xml2json(file_path)
     if not json_metadata:
         return Failed(message='Unable to transform from xml to json.')
 
     mapped_metadata = dataverse_mapper(
         json_metadata,
-        settings.CBS_MAPPING_FILE_PATH,
-        settings.CBS_TEMPLATE_FILE_PATH,
+        settings_dict.CBS_MAPPING_FILE_PATH,
+        settings_dict.CBS_TEMPLATE_FILE_PATH,
         False
     )
 
@@ -29,8 +36,9 @@ def cbs_metadata_ingestion(file_path, alias, version):
         'fields']
     split_path = file_path.split('/')[3]
     doi = 'doi:10.57934/' + split_path.split('_')[0]
-    import_response = dataverse_import(mapped_metadata, alias,
-                                       doi)
+    import_response = dataverse_import(
+        mapped_metadata, settings_dict.ALIAS, doi
+    )
     if not import_response:
         return Failed(message='Unable to import dataset into Dataverse.')
 

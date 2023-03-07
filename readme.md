@@ -31,8 +31,10 @@ A local Dataverse instance makes it easy to deposit via the API.
 
 https://github.com/IQSS/dataverse-docker
 
-> You need assign your account the Super User status in order to import via
-> the Dataverse API.
+> Only a Super User can deposit via the API.
+
+Set the `superuser` boolean to true in the `authenticateduser` table. You are
+now a Super User. 
 
 ### Dataverse Importer
 
@@ -92,6 +94,38 @@ adjust the port numbers in the `.env` file.
 - publication-date-update: 8093
 - dataverse-mapper-v2: 8094
 - dans-transformer-service: 1745
+
+# Dynaconf
+
+The Ingestion Workflow Orchestrator uses Dynaconf to manage its settings. This
+chapter will give a very short introduction on Dynaconf. For more information
+read the docs.
+
+To load the correct settings you set the environment like so:
+
+> ENV_FOR_DYNACONF=development
+
+
+## Settings files
+
+The settings are split into multiple toml files. This makes it easier to manage
+a large amount of settings. You can specify which files are loaded in
+`config.py`.
+
+- settings.toml, contains the base settings
+- .secrets.toml, contains all secrets
+- <foo>_settings.toml, datastation specific settings
+
+Each file is split into multiple sections: default, development, production.
+Default settings are always loaded and usually contain one or more dynamic
+parts using `@format`. Development and production contain the values that
+depend on the current environment.
+
+For example, the metadata directory is different per environment. Dynaconf sets
+the correct location based on the current environment.
+
+> "METADATA_DIRECTORY"="@format {this.METADATA_DIRECTORY}"
+
 
 # Dans Transformer Service
 

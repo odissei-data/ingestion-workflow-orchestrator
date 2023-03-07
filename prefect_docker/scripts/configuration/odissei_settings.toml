@@ -16,6 +16,11 @@ UMCU={"ALIAS"="UMCU", "METADATA_DIRECTORY"="@format {this.UMCU_METADATA_DIRECTOR
 UTRECHT={"ALIAS"="UU", "METADATA_DIRECTORY"="@format {this.UTRECHT_METADATA_DIRECTORY}", "SOURCE_DATAVERSE_URL"="@format {this.DATAVERSE_NL_URL}", "SOURCE_DATAVERSE_API_KEY"="@format {this.DATAVERSE_NL_API_KEY}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}"}
 VU={"ALIAS"="vuamsterdam", "METADATA_DIRECTORY"="@format {this.VU_METADATA_DIRECTORY}", "SOURCE_DATAVERSE_URL"="@format {this.DATAVERSE_NL_URL}", "SOURCE_DATAVERSE_API_KEY"="@format {this.DATAVERSE_NL_API_KEY}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}"}
 
+CBS={"ALIAS"="cbs", "METADATA_DIRECTORY"="@format {this.CBS_METADATA_DIRECTORY}", "TEMPLATE_FILE_PATH"="@format {this.CBS_TEMPLATE_FILE_PATH}", "MAPPING_FILE_PATH"="@format {this.CBS_MAPPING_FILE_PATH}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}"}
+EASY={"ALIAS"="easy", "METADATA_DIRECTORY"="@format {this.EASY_METADATA_DIRECTORY}", "TEMPLATE_FILE_PATH"="@format {this.EASY_TEMPLATE_FILE_PATH}", "MAPPING_FILE_PATH"="@format {this.EASY_MAPPING_FILE_PATH}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}"}
+LISS={"ALIAS"="liss", "METADATA_DIRECTORY"="@format {this.LISS_METADATA_DIRECTORY}", "TEMPLATE_FILE_PATH"="@format {this.LISS_TEMPLATE_FILE_PATH}", "MAPPING_FILE_PATH"="@format {this.LISS_MAPPING_FILE_PATH}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}"}
+
+
 [development]
 ODISSEI_URL="http://dataverse:8080"
 
@@ -33,6 +38,18 @@ TRIMBOS_METADATA_DIRECTORY="/local-metadata/dataverse_nl/trimbos"
 UMCU_METADATA_DIRECTORY="/local-metadata/dataverse_nl/umc"
 UTRECHT_METADATA_DIRECTORY="/local-metadata/dataverse_nl/utrecht"
 VU_METADATA_DIRECTORY="/local-metadata/dataverse_nl/vu"
+
+CBS_METADATA_DIRECTORY="/local-metadata/dataverse_nl/all"
+CBS_TEMPLATE_FILE_PATH="/resources/templates/cbs_dataverse_template.json"
+CBS_MAPPING_FILE_PATH="/resources/mappings/cbs-mapping.json"
+
+EASY_METADATA_DIRECTORY="/local-metadata/easy-metadata"
+EASY_TEMPLATE_FILE_PATH="/resources/templates/easy_dataverse_template.json"
+EASY_MAPPING_FILE_PATH="/resources/mappings/easy-mapping.json"
+
+LISS_METADATA_DIRECTORY="/local-metadata/liss-metadata"
+LISS_TEMPLATE_FILE_PATH="/resources/templates/liss_dataverse_template.json"
+LISS_MAPPING_FILE_PATH="/resources/mappings/liss-mapping.json"
 
 [production]
 ODISSEI_URL="https://portal.odissei.nl"

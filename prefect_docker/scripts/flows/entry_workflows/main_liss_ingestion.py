@@ -15,11 +15,11 @@ def liss_ingestion_pipeline():
         updater=True
     )
 
+    settings_dict = settings.LISS
     utils.workflow_executor(
         liss_metadata_ingestion,
-        settings.LISS_METADATA_DIRECTORY,
         version,
-        settings.LISS_DATAVERSE_ALIAS
+        settings_dict
     )
 
 

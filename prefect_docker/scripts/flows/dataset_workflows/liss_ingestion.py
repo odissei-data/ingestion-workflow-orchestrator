@@ -1,4 +1,3 @@
-from configuration.config import settings
 from prefect import flow
 from prefect.orion.schemas.states import Completed, Failed
 
@@ -9,15 +8,23 @@ from utils import is_lower_level_liss_study
 
 
 @flow
-def liss_metadata_ingestion(file_path, alias, version):
+def liss_metadata_ingestion(file_path, version, settings_dict):
+    """
+    Ingestion flow for metadata from LISS.
+
+    :param file_path: string, path to xml file
+    :param version: dict, contains all version info of the workflow
+    :param settings_dict: dict, contains settings for the current workflow
+    :return: prefect.orion.schemas.states Failed or Completed
+    """
     json_metadata = xml2json(file_path)
     if not json_metadata:
         return Failed(message='Unable to transform from xml to json')
 
     mapped_metadata = dataverse_mapper(
         json_metadata,
-        settings.LISS_MAPPING_FILE_PATH,
-        settings.LISS_TEMPLATE_FILE_PATH
+        settings_dict.LISS_MAPPING_FILE_PATH,
+        settings_dict.LISS_TEMPLATE_FILE_PATH
     )
 
     if not mapped_metadata:
@@ -34,8 +41,9 @@ def liss_metadata_ingestion(file_path, alias, version):
     if not mapped_metadata:
         return Failed(message='Unable to store workflow version.')
 
-    import_response = dataverse_import(mapped_metadata, alias,
-                                       doi)
+    import_response = dataverse_import(
+        mapped_metadata, settings_dict.ALIAS, doi
+    )
     if not import_response:
         return Failed(message='Unable to import dataset into Dataverse')
 

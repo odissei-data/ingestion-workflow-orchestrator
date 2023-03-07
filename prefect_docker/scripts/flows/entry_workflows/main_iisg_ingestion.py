@@ -16,11 +16,11 @@ def iisg_ingestion_pipeline():
         updater=True
     )
 
+    settings_dict = settings.IISG
     utils.workflow_executor(
         iisg_metadata_ingestion,
-        settings.IISG_METADATA_DIRECTORY,
         version,
-        settings.IISG_DATAVERSE_ALIAS
+        settings_dict
     )
 
 

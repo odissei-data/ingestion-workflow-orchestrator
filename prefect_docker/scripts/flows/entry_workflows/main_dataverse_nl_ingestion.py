@@ -1,5 +1,6 @@
 from prefect import flow
 
+from configuration.config import settings
 from flows.dataset_workflows.dataverse_nl_ingestion import \
     dataverse_nl_metadata_ingestion
 from flows.workflow_versioning.workflow_versioner import \
@@ -22,15 +23,17 @@ def dataverse_nl_ingestion_pipeline(settings_dict_name):
         updater=True
     )
 
+    settings_dict = getattr(settings, settings_dict_name)
     utils.workflow_executor(
-        data_provider_workflow=dataverse_nl_metadata_ingestion,
-        version=version,
-        settings_dict_name=settings_dict_name,
+        dataverse_nl_metadata_ingestion,
+        version,
+        settings_dict,
     )
 
 
 def test_ingestion():
     dataverse_nl_ingestion_pipeline("RESEARCH_DATA")
+    # dataverse_nl_ingestion_pipeline("AVANS")
 
 
 if __name__ == "__main__":

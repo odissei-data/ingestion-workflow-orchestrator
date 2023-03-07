@@ -1,8 +1,6 @@
 import os
 import re
 
-from configuration.config import settings
-
 
 def retrieve_license_name(license_string):
     dataset_lic = ''
@@ -49,7 +47,7 @@ def is_lower_level_liss_study(metadata):
 def workflow_executor(
         data_provider_workflow,
         version,
-        settings_dict_name
+        settings_dict
 ):
     """
     Executes the workflow of a give data provider for each metadata file.
@@ -61,11 +59,10 @@ def workflow_executor(
     Dataverse are required.
 
     :param data_provider_workflow: The workflow to ingest the metadata file.
-    :param version: A dictionary containing all version info of the workflow.
-    :param settings_dict_name: string, name of the settings you wish to use
+    :param version: dict containing all version info of the workflow.
+    :param settings_dict: dict, containing all settings for the workflow.
     :return: None
     """
-    settings_dict = getattr(settings, settings_dict_name)
     metadata_directory = settings_dict.METADATA_DIRECTORY
 
     files = [f for f in os.listdir(metadata_directory) if

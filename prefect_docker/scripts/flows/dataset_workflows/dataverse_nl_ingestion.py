@@ -8,8 +8,6 @@ from tasks.base_tasks import xml2json, get_doi_from_header, \
     dataverse_import, add_contact_email, update_publication_date, \
     format_license, add_workflow_versioning_url
 
-from configuration.config import settings
-
 
 @flow
 def dataverse_nl_metadata_ingestion(file_path, version, settings_dict):

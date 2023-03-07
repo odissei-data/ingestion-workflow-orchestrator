@@ -16,11 +16,11 @@ def cbs_ingestion_pipeline():
         updater=True
     )
 
+    settings_dict = settings.CBS
     utils.workflow_executor(
         cbs_metadata_ingestion,
-        settings.CBS_METADATA_DIRECTORY,
         version,
-        settings.CBS_DATAVERSE_ALIAS
+        settings_dict
     )
 
 

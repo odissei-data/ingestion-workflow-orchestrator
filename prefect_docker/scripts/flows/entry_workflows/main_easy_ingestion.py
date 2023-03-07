@@ -15,11 +15,11 @@ def easy_ingestion_pipeline():
         updater=True
     )
 
+    settings_dict = settings.EASY
     utils.workflow_executor(
         easy_metadata_ingestion,
-        settings.EASY_METADATA_DIRECTORY,
         version,
-        settings.EASY_DATAVERSE_ALIAS
+        settings_dict
     )
 
 
