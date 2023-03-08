@@ -20,8 +20,8 @@ def cbs_metadata_ingestion(file_path, version, settings_dict):
 
     mapped_metadata = dataverse_mapper(
         json_metadata,
-        settings_dict.CBS_MAPPING_FILE_PATH,
-        settings_dict.CBS_TEMPLATE_FILE_PATH,
+        settings_dict.MAPPING_FILE_PATH,
+        settings_dict.TEMPLATE_FILE_PATH,
         False
     )
 
@@ -36,9 +36,7 @@ def cbs_metadata_ingestion(file_path, version, settings_dict):
         'fields']
     split_path = file_path.split('/')[3]
     doi = 'doi:10.57934/' + split_path.split('_')[0]
-    import_response = dataverse_import(
-        mapped_metadata, settings_dict.ALIAS, doi
-    )
+    import_response = dataverse_import(mapped_metadata, settings_dict, doi)
     if not import_response:
         return Failed(message='Unable to import dataset into Dataverse.')
 

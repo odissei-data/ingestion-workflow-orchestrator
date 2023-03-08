@@ -22,8 +22,8 @@ def easy_metadata_ingestion(file_path, version, settings_dict):
 
     mapped_metadata = dataverse_mapper(
         json_metadata,
-        settings_dict.EASY_MAPPING_FILE_PATH,
-        settings_dict.EASY_TEMPLATE_FILE_PATH
+        settings_dict.MAPPING_FILE_PATH,
+        settings_dict.TEMPLATE_FILE_PATH
     )
 
     if not mapped_metadata:
@@ -40,9 +40,7 @@ def easy_metadata_ingestion(file_path, version, settings_dict):
     if not mapped_metadata:
         return Failed(message='Unable to store workflow version.')
 
-    import_response = dataverse_import(
-        mapped_metadata, settings_dict.ALIAS, doi
-    )
+    import_response = dataverse_import(mapped_metadata, settings_dict, doi)
     if not import_response:
         return Failed(message='Unable to import dataset into Dataverse')
 

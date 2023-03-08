@@ -19,7 +19,6 @@ def iisg_metadata_ingestion(file_path, version, settings_dict):
     :param settings_dict: dict, contains settings for the current workflow
     :return: prefect.orion.schemas.states Failed or Completed
     """
-    metadata_format = "dataverse_json"
     json_metadata = xml2json(file_path)
     if not json_metadata:
         return Failed(message="Unable to transform from xml to json.")
@@ -29,9 +28,7 @@ def iisg_metadata_ingestion(file_path, version, settings_dict):
         return Failed(message="Metadata file contains no DOI in the header.")
 
     dataverse_json = dataverse_metadata_fetcher(
-        doi,
-        settings_dict.IISG_SOURCE_DATAVERSE_URL,
-        metadata_format,
+        "dataverse_json", doi, settings_dict
     )
     if not dataverse_json:
         return Failed(message="Could not fetch dataverse metadata.")
@@ -52,7 +49,7 @@ def iisg_metadata_ingestion(file_path, version, settings_dict):
 
     import_response = dataverse_import(
         dataverse_json,
-        settings_dict.ALIAS,
+        settings_dict,
         doi
     )
 
@@ -65,7 +62,9 @@ def iisg_metadata_ingestion(file_path, version, settings_dict):
         return Failed(message="No date in metadata")
 
     if publication_date:
-        pub_date_response = update_publication_date(publication_date, doi)
+        pub_date_response = update_publication_date(
+            publication_date, doi, settings_dict
+        )
 
         if not pub_date_response:
             return Failed(message="Unable to update publication date.")

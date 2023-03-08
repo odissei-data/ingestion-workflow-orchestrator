@@ -101,7 +101,7 @@ The Ingestion Workflow Orchestrator uses Dynaconf to manage its settings. This
 chapter will give a very short introduction on Dynaconf. For more information
 read the docs.
 
-To load the correct settings you set the environment like so:
+Use the `.env` file to set the environment to either development or production.
 
 > ENV_FOR_DYNACONF=development
 
@@ -110,7 +110,8 @@ To load the correct settings you set the environment like so:
 
 The settings are split into multiple toml files. This makes it easier to manage
 a large amount of settings. You can specify which files are loaded in
-`config.py`.
+`config.py`. The files are loaded in order and overwrite each other if they
+share settings with the same name.
 
 - settings.toml, contains the base settings
 - .secrets.toml, contains all secrets
@@ -121,10 +122,20 @@ Default settings are always loaded and usually contain one or more dynamic
 parts using `@format`. Development and production contain the values that
 depend on the current environment.
 
-For example, the metadata directory is different per environment. Dynaconf sets
-the correct location based on the current environment.
+The example below shows how dynamic settings work. The metadata directory
+changes based on the current environment.
 
-> "METADATA_DIRECTORY"="@format {this.METADATA_DIRECTORY}"
+```toml
+[default]
+"METADATA_DIRECTORY"="@format {this.METADATA_DIRECTORY}"
+
+[development]
+"METADATA_DIRECTORY"="path/to/local/dir"
+
+[production]
+"METADATA_DIRECTORY"="path/to/s3/bucket"
+```
+
 
 
 # Dans Transformer Service

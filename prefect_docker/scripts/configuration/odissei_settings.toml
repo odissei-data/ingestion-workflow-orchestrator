@@ -39,7 +39,7 @@ UMCU_METADATA_DIRECTORY="/local-metadata/dataverse_nl/umc"
 UTRECHT_METADATA_DIRECTORY="/local-metadata/dataverse_nl/utrecht"
 VU_METADATA_DIRECTORY="/local-metadata/dataverse_nl/vu"
 
-CBS_METADATA_DIRECTORY="/local-metadata/dataverse_nl/all"
+CBS_METADATA_DIRECTORY="/local-metadata/all"
 CBS_TEMPLATE_FILE_PATH="/resources/templates/cbs_dataverse_template.json"
 CBS_MAPPING_FILE_PATH="/resources/mappings/cbs-mapping.json"
 
