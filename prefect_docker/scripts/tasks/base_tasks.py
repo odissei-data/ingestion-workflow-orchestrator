@@ -18,13 +18,13 @@ def xml2json(file_path):
     :param file_path: The filepath of the xml file.
     :return: Plain JSON metadata | None on failure.
     """
-    print(f"xml file path {file_path}")
-
     logger = get_run_logger()
     headers = {
         'Content-Type': 'application/xml',
         'Authorization': settings.XML2JSON_API_TOKEN,
     }
+
+    logger.info(f"xml file path {file_path}")
 
     url = f"{settings.DANS_TRANSFORMER_SERVICE}/transform-xml-to-json/true"
     with open(file_path, 'rb') as data:
@@ -32,7 +32,7 @@ def xml2json(file_path):
             url,
             headers=headers, data=data.read()
         )
-        print(f"xml2json response. Code:{response.status_code} Text: {response.text} ")
+
         if not response.ok:
             logger.info(response.text)
             return None
@@ -146,7 +146,7 @@ def update_publication_date(publication_date, pid, settings_dict):
         'publication_date': publication_date,
         "dataverse_information": {
             "base_url": settings_dict.DESTINATION_DATAVERSE_URL,
-            "api_token": settings.DESTINATION_DATAVERSE_API_KEY
+            "api_token": settings_dict.DESTINATION_DATAVERSE_API_KEY
         }
     }
 

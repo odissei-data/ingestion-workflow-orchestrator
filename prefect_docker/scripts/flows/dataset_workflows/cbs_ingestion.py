@@ -44,8 +44,9 @@ def cbs_metadata_ingestion(file_path, version, settings_dict):
                              field.get('typeName') == 'distributionDate'),
                             {})
     if publication_date["value"]:
-        pub_date_response = update_publication_date(publication_date["value"],
-                                                    doi)
+        pub_date_response = update_publication_date(
+            publication_date["value"], doi, settings_dict
+        )
         if not pub_date_response:
             return Failed(message='Unable to update publication date.')
     return Completed(message=file_path + 'ingested successfully.')
