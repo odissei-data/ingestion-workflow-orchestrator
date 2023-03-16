@@ -8,6 +8,7 @@ authors = ["Fjodor van Rijsselberg"]
 python = "^3.9"
 prefect = "^2.0.3"
 python-dotenv = "^0.21.0"
+dynaconf = "^3.1.11"
 
 [tool.poetry.dev-dependencies]
 

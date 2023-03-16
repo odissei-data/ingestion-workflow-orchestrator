@@ -1,0 +1,41 @@
+# Settings file for Dynaconf
+
+[default]
+IISG_DATAVERSE_ALIAS="iisg"
+IISG_SOURCE_DATAVERSE_URL="https://datasets.iisg.amsterdam"
+
+CBS_DATAVERSE_ALIAS="cbs"
+CBS_TEMPLATE_FILE_PATH="/resources/templates/cbs_dataverse_template.json"
+CBS_MAPPING_FILE_PATH="/resources/mappings/cbs-mapping.json"
+
+EASY_DATAVERSE_ALIAS="easy"
+EASY_TEMPLATE_FILE_PATH="/resources/templates/easy_dataverse_template.json"
+EASY_MAPPING_FILE_PATH="/resources/mappings/easy-mapping.json"
+
+LISS_DATAVERSE_ALIAS="liss_dc"
+LISS_TEMPLATE_FILE_PATH="/resources/templates/liss_dataverse_template.json"
+LISS_MAPPING_FILE_PATH="/resources/mappings/liss-mapping.json"
+
+[development]
+debug = true
+
+DATAVERSE_URL="http://dataverse:8080"
+SICADA_URL="@format {this.DATAVERSE_URL}"
+
+DATAVERSE_IMPORTER_URL="http://dataverse-importer:8091"
+PUBLICATION_DATA_UPDATER_URL="http://publication-date-updater:8093"
+METADATA_FETCHER_URL="http://metadata-fetcher:8092"
+DATAVERSE_MAPPER_URL="http://dataverse-mapper-v2:8094"
+#DANS_TRANSFORMER_SERVICE="http://dans-transformer-service:1745"
+DANS_TRANSFORMER_SERVICE="https://transformer.labs.dans.knaw.nl"
+
+[production]
+debug = false
+
+DATAVERSE_URL="https://portal.staging.odissei.nl"
+DATAVERSE_IMPORTER_URL="https://dataverse-importer.labs.dans.knaw.nl"
+PUBLICATION_DATA_UPDATER_URL="https://dataverse-date-updater.labs.dans.knaw.nl"
+METADATA_FETCHER_URL="https://dataverse-fetcher.labs.dans.knaw.nl"
+DATAVERSE_MAPPER_URL="https://dataverse-mapper.labs.dans.knaw.nl"
+DANS_TRANSFORMER_SERVICE="https://transformer.labs.dans.knaw.nl"
+

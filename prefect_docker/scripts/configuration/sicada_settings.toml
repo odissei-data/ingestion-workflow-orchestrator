@@ -1,0 +1,12 @@
+[default]
+IISG_URL="https://datasets.iisg.amsterdam"
+IISG={"ALIAS"="iisg", "METADATA_DIRECTORY"="@format {this.IISG_METADATA_DIRECTORY}", "SOURCE_DATAVERSE_URL"="@format {this.IISG_URL}", "SOURCE_DATAVERSE_API_KEY"="@format {this.IISG_API_KEY}", "DESTINATION_DATAVERSE_URL"="@format {this.SICADA_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.SICADA_API_KEY}"}
+
+
+[development]
+SICADA_URL="http://dataverse:8080"
+IISG_METADATA_DIRECTORY="/local-metadata/iisg-metadata"
+
+[production]
+SICADA_URL="https://google.nl"
+IISG_METADATA_DIRECTORY="/local-metadata/iisg-metadata"

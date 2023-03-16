@@ -1,12 +1,10 @@
-import os
 import utils
+from configuration.config import settings
 from prefect import flow
+
 from flows.dataset_workflows.iisg_ingestion import iisg_metadata_ingestion
 from flows.workflow_versioning.workflow_versioner import \
     create_ingestion_workflow_versioning
-
-IISG_DATAVERSE_ALIAS = os.getenv("IISG_DATAVERSE_ALIAS")
-IISG_METADATA_DIRECTORY = os.getenv("IISG_METADATA_DIRECTORY")
 
 
 @flow
@@ -18,11 +16,11 @@ def iisg_ingestion_pipeline():
         updater=True
     )
 
+    settings_dict = settings.IISG
     utils.workflow_executor(
         iisg_metadata_ingestion,
-        IISG_METADATA_DIRECTORY,
         version,
-        IISG_DATAVERSE_ALIAS
+        settings_dict
     )
 
 
