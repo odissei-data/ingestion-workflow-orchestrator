@@ -33,12 +33,10 @@ DANS_TRANSFORMER_SERVICE="https://transformer.labs.dans.knaw.nl"
 debug = false
 
 # TODO set to actual production url
-DATAVERSE_URL="http://dataverse:8080"
-DATAVERSE_API_TOKEN="7322d16a-beb1-48c7-92ec-a278015cbd52"
-DATAVERSE_IMPORTER_URL="http://dataverse-importer:8091"
-PUBLICATION_DATA_UPDATER_URL="http://publication-date-updater:8093"
-METADATA_FETCHER_URL="http://metadata-fetcher:8092"
-DATAVERSE_MAPPER_URL="http://dataverse-mapper-v2:8094"
+DATAVERSE_URL="https://portal.staging.odissei.nl"
+DATAVERSE_IMPORTER_URL="https://dataverse-importer.labs.dans.knaw.nl"
+PUBLICATION_DATA_UPDATER_URL="https://dataverse-date-updater.labs.dans.knaw.nl"
+METADATA_FETCHER_URL="https://dataverse-fetcher.labs.dans.knaw.nl"
+DATAVERSE_MAPPER_URL="https://dataverse-mapper.labs.dans.knaw.nl"
 DANS_TRANSFORMER_SERVICE="https://transformer.labs.dans.knaw.nl"
 
-IISG_METADATA_DIRECTORY="iisg-metadata-directory"
