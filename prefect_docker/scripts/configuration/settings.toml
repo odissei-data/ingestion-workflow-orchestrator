@@ -32,7 +32,6 @@ DANS_TRANSFORMER_SERVICE="https://transformer.labs.dans.knaw.nl"
 [production]
 debug = false
 
-# TODO set to actual production url
 DATAVERSE_URL="https://portal.staging.odissei.nl"
 DATAVERSE_IMPORTER_URL="https://dataverse-importer.labs.dans.knaw.nl"
 PUBLICATION_DATA_UPDATER_URL="https://dataverse-date-updater.labs.dans.knaw.nl"
