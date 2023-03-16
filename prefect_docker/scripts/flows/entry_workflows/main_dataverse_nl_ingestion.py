@@ -1,3 +1,5 @@
+import argparse
+
 from prefect import flow
 
 from configuration.config import settings
@@ -31,11 +33,11 @@ def dataverse_nl_ingestion_pipeline(settings_dict_name):
     )
 
 
-def test_ingestion():
-    dataverse_nl_ingestion_pipeline("RESEARCH_DATA")
-    # dataverse_nl_ingestion_pipeline("AVANS")
-
-
 if __name__ == "__main__":
-    # dataverse_nl_ingestion_pipeline()
-    test_ingestion()
+    parser = argparse.ArgumentParser(
+        description="Ingestion pipeline for DataverseNL workflow.")
+    parser.add_argument("settings_dict_name",
+                        help="Name of the target subverse.")
+    args = parser.parse_args()
+
+    dataverse_nl_ingestion_pipeline(args.settings_dict_name)

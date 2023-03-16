@@ -76,5 +76,3 @@ def workflow_executor(
                 settings_dict,
                 return_state=True
             )
-
-        break
