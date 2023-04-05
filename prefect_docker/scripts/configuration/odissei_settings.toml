@@ -47,7 +47,7 @@ EASY_METADATA_DIRECTORY="/local-metadata/easy-metadata"
 EASY_TEMPLATE_FILE_PATH="/resources/templates/easy_dataverse_template.json"
 EASY_MAPPING_FILE_PATH="/resources/mappings/easy-mapping.json"
 
-LISS_METADATA_DIRECTORY="/local-metadata/liss-metadata"
+LISS_METADATA_DIRECTORY="liss-metadata"
 LISS_TEMPLATE_FILE_PATH="/resources/templates/liss_dataverse_template.json"
 LISS_MAPPING_FILE_PATH="/resources/mappings/liss-mapping.json"
 
@@ -77,6 +77,6 @@ EASY_METADATA_DIRECTORY="/local-metadata/easy-metadata"
 EASY_TEMPLATE_FILE_PATH="/resources/templates/easy_dataverse_template.json"
 EASY_MAPPING_FILE_PATH="/resources/mappings/easy-mapping.json"
 
-LISS_METADATA_DIRECTORY="/local-metadata/liss-metadata"
+LISS_METADATA_DIRECTORY="liss-metadata"
 LISS_TEMPLATE_FILE_PATH="/resources/templates/liss_dataverse_template.json"
 LISS_MAPPING_FILE_PATH="/resources/mappings/liss-mapping.json"
