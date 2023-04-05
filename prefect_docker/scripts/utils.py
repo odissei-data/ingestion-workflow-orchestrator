@@ -1,5 +1,7 @@
 import re
 
+from configuration.config import settings
+
 
 def retrieve_license_name(license_string):
     dataset_lic = ''
@@ -51,6 +53,7 @@ def workflow_executor(
 ):
     """
     Executes the workflow of a give data provider for each metadata file.
+    The files are retrieved from minio storage using a boto client.
 
     Takes workflow flow that ingests a single metadata file of a data provider
     and executes that workflow for every metadata file in the given directory.
@@ -64,7 +67,7 @@ def workflow_executor(
     :param settings_dict: dict, containing all settings for the workflow.
     :return: None
     """
-    bucket_name = 'harvested-metadata'
+    bucket_name = settings.BUCKET_NAME
     object_prefix = settings_dict.METADATA_DIRECTORY
     response = minio_client.list_objects(Bucket=bucket_name,
                                          Prefix=object_prefix)
