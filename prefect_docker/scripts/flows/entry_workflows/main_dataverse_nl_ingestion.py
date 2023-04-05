@@ -1,5 +1,6 @@
 import argparse
 
+import boto3
 from prefect import flow
 
 from configuration.config import settings
@@ -25,11 +26,19 @@ def dataverse_nl_ingestion_pipeline(settings_dict_name):
         updater=True
     )
 
+    minio_client = boto3.client(
+        's3',
+        endpoint_url=settings.MINIO_SERVER_URL,
+        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
+    )
+
     settings_dict = getattr(settings, settings_dict_name)
     utils.workflow_executor(
         dataverse_nl_metadata_ingestion,
         version,
         settings_dict,
+        minio_client
     )
 
 

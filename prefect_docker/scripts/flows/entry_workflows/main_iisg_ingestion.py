@@ -1,3 +1,5 @@
+import boto3
+
 import utils
 from configuration.config import settings
 from prefect import flow
@@ -16,11 +18,19 @@ def iisg_ingestion_pipeline():
         updater=True
     )
 
+    minio_client = boto3.client(
+        's3',
+        endpoint_url=settings.MINIO_SERVER_URL,
+        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
+    )
+
     settings_dict = settings.IISG
     utils.workflow_executor(
         iisg_metadata_ingestion,
         version,
-        settings_dict
+        settings_dict,
+        minio_client
     )
 
 

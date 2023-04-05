@@ -1,3 +1,5 @@
+import boto3
+
 from configuration.config import settings
 from prefect import flow
 import utils
@@ -16,11 +18,19 @@ def cbs_ingestion_pipeline():
         updater=True
     )
 
+    minio_client = boto3.client(
+        's3',
+        endpoint_url=settings.MINIO_SERVER_URL,
+        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
+    )
+
     settings_dict = settings.CBS
     utils.workflow_executor(
         cbs_metadata_ingestion,
         version,
-        settings_dict
+        settings_dict,
+        minio_client
     )
 
 

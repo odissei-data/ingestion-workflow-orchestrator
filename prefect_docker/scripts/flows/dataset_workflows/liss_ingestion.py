@@ -8,16 +8,16 @@ from utils import is_lower_level_liss_study
 
 
 @flow
-def liss_metadata_ingestion(file_path, version, settings_dict):
+def liss_metadata_ingestion(xml_metadata, version, settings_dict):
     """
     Ingestion flow for metadata from LISS.
 
-    :param file_path: string, path to xml file
-    :param version: dict, contains all version info of the workflow
-    :param settings_dict: dict, contains settings for the current workflow
-    :return: prefect.orion.schemas.states Failed or Completed
+    :param xml_metadata: xml_metadata of the data provider.
+    :param version: dict, contains all version info of the workflow.
+    :param settings_dict: dict, contains settings for the current workflow.
+    :return: prefect.orion.schemas.states Failed or Completed.
     """
-    json_metadata = xml2json(file_path)
+    json_metadata = xml2json(xml_metadata)
     if not json_metadata:
         return Failed(message='Unable to transform from xml to json')
 

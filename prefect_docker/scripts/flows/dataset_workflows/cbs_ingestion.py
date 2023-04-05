@@ -5,16 +5,16 @@ from tasks.base_tasks import xml2json, dataverse_mapper, \
 
 
 @flow
-def cbs_metadata_ingestion(file_path, version, settings_dict):
+def cbs_metadata_ingestion(xml_metadata, version, settings_dict):
     """
     Ingestion flow for metadata from CBS.
 
-    :param file_path: string, path to xml file
+    :param xml_metadata: xml_metadata of the data provider.
     :param version: dict, contains all version info of the workflow
     :param settings_dict: dict, contains settings for the current workflow
     :return: prefect.orion.schemas.states Failed or Completed
     """
-    json_metadata = xml2json(file_path)
+    json_metadata = xml2json(xml_metadata)
     if not json_metadata:
         return Failed(message='Unable to transform from xml to json.')
 
@@ -34,9 +34,11 @@ def cbs_metadata_ingestion(file_path, version, settings_dict):
 
     fields = mapped_metadata['datasetVersion']['metadataBlocks']['citation'][
         'fields']
-    split_path = file_path.split('/')[3]
-    doi = 'doi:10.57934/' + split_path.split('_')[0]
-    import_response = dataverse_import(mapped_metadata, settings_dict, doi)
+
+    # TODO: Add DOI minter step.
+    doi = 'DOI minter not implemented'
+
+    import_response = dataverse_import(mapped_metadata, settings_dict)
     if not import_response:
         return Failed(message='Unable to import dataset into Dataverse.')
 
@@ -49,4 +51,4 @@ def cbs_metadata_ingestion(file_path, version, settings_dict):
         )
         if not pub_date_response:
             return Failed(message='Unable to update publication date.')
-    return Completed(message=file_path + 'ingested successfully.')
+    return Completed(message=doi + 'ingested successfully.')
