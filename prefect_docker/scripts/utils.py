@@ -1,4 +1,3 @@
-import os
 import re
 
 
@@ -59,18 +58,16 @@ def workflow_executor(
     For Dataverse to Dataverse ingestion, the url and api key of the source
     Dataverse are required.
 
+    :param minio_client: The client connected to minio storage.
     :param data_provider_workflow: The workflow to ingest the metadata file.
     :param version: dict containing all version info of the workflow.
     :param settings_dict: dict, containing all settings for the workflow.
     :return: None
     """
-
     bucket_name = 'harvested-metadata'
     object_prefix = settings_dict.METADATA_DIRECTORY
-
     response = minio_client.list_objects(Bucket=bucket_name,
                                          Prefix=object_prefix)
-
     for obj in response.get('Contents', []):
         object_data = minio_client.get_object(Bucket=bucket_name,
                                               Key=obj['Key'])
