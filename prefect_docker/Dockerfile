@@ -12,7 +12,7 @@ RUN poetry update
 
 EXPOSE 4200
 
-COPY ./scripts/start-prefect.sh .
+COPY ./scripts .
 
 RUN apt-get update && apt-get install git -y
 
