@@ -9,13 +9,13 @@ import utils
 
 
 @task
-def xml2json(file_path):
+def xml2json(xml_metadata):
     """ Sends XML to the transformer server, receives JSON with same hierarchy.
 
     Sends a request to the transformer endpoint for transformation
     from xml to json. Needs an authorization token to use the transformer API.
 
-    :param file_path: The filepath of the xml file.
+    :param xml_metadata: The XML contents
     :return: Plain JSON metadata | None on failure.
     """
     logger = get_run_logger()
@@ -24,18 +24,18 @@ def xml2json(file_path):
         'Authorization': settings.XML2JSON_API_TOKEN,
     }
 
-    logger.info(f"xml file path {file_path}")
+    logger.info(f"xml file contents {xml_metadata}")
 
     url = f"{settings.DANS_TRANSFORMER_SERVICE}/transform-xml-to-json/true"
-    with open(file_path, 'rb') as data:
-        response = requests.post(
-            url,
-            headers=headers, data=data.read()
-        )
+    response = requests.post(
+        url,
+        headers=headers, data=xml_metadata
+    )
 
-        if not response.ok:
-            logger.info(response.text)
-            return None
+    if not response.ok:
+        logger.info(response.text)
+        return None
+
     return response.json()
 
 

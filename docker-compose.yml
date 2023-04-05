@@ -17,6 +17,7 @@ services:
       - "4200:4200"
     networks:
       - traefik-prefect
+      - prefect-harvester-network
     env_file: .env
 
   reverse-proxy:
@@ -66,3 +67,6 @@ services:
 networks:
   traefik-prefect:
     external: true
+  prefect-harvester-network:
+    external:
+      name: prefect-harvester-network

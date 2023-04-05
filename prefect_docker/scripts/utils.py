@@ -47,7 +47,8 @@ def is_lower_level_liss_study(metadata):
 def workflow_executor(
         data_provider_workflow,
         version,
-        settings_dict
+        settings_dict,
+        minio_client
 ):
     """
     Executes the workflow of a give data provider for each metadata file.
@@ -63,16 +64,16 @@ def workflow_executor(
     :param settings_dict: dict, containing all settings for the workflow.
     :return: None
     """
-    metadata_directory = settings_dict.METADATA_DIRECTORY
 
-    files = [f for f in os.listdir(metadata_directory) if
-             not f.startswith('.')]
-    for filename in files:
-        file_path = os.path.join(metadata_directory, filename)
-        if os.path.isfile(file_path):
-            data_provider_workflow(
-                file_path,
-                version,
-                settings_dict,
-                return_state=True
-            )
+    bucket_name = 'harvested-metadata'
+    object_prefix = settings_dict.METADATA_DIRECTORY
+
+    response = minio_client.list_objects(Bucket=bucket_name,
+                                         Prefix=object_prefix)
+
+    for obj in response.get('Contents', []):
+        object_data = minio_client.get_object(Bucket=bucket_name,
+                                              Key=obj['Key'])
+        xml_metadata = object_data['Body'].read()
+        data_provider_workflow(xml_metadata, version, settings_dict,
+                               return_state=True)
