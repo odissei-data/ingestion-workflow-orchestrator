@@ -28,6 +28,7 @@ METADATA_FETCHER_URL="http://metadata-fetcher:8092"
 DATAVERSE_MAPPER_URL="http://dataverse-mapper-v2:8094"
 #DANS_TRANSFORMER_SERVICE="http://dans-transformer-service:1745"
 DANS_TRANSFORMER_SERVICE="https://transformer.labs.dans.knaw.nl"
+BUCKET_NAME = "harvested-metadata"
 
 [production]
 debug = false
@@ -38,4 +39,4 @@ PUBLICATION_DATA_UPDATER_URL="https://dataverse-date-updater.labs.dans.knaw.nl"
 METADATA_FETCHER_URL="https://dataverse-fetcher.labs.dans.knaw.nl"
 DATAVERSE_MAPPER_URL="https://dataverse-mapper.labs.dans.knaw.nl"
 DANS_TRANSFORMER_SERVICE="https://transformer.labs.dans.knaw.nl"
-
+BUCKET_NAME = "harvested-metadata"

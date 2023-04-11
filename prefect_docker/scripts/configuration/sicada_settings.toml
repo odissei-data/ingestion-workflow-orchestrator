@@ -5,8 +5,8 @@ IISG={"ALIAS"="iisg", "METADATA_DIRECTORY"="@format {this.IISG_METADATA_DIRECTOR
 
 [development]
 SICADA_URL="http://dataverse:8080"
-IISG_METADATA_DIRECTORY="/local-metadata/iisg-metadata"
+IISG_METADATA_DIRECTORY="iisg-metadata"
 
 [production]
 SICADA_URL="https://google.nl"
-IISG_METADATA_DIRECTORY="/local-metadata/iisg-metadata"
+IISG_METADATA_DIRECTORY="iisg-metadata"

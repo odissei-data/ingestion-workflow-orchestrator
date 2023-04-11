@@ -1,5 +1,6 @@
-import os
 import re
+
+from configuration.config import settings
 
 
 def retrieve_license_name(license_string):
@@ -47,10 +48,12 @@ def is_lower_level_liss_study(metadata):
 def workflow_executor(
         data_provider_workflow,
         version,
-        settings_dict
+        settings_dict,
+        minio_client
 ):
     """
     Executes the workflow of a give data provider for each metadata file.
+    The files are retrieved from minio storage using a boto client.
 
     Takes workflow flow that ingests a single metadata file of a data provider
     and executes that workflow for every metadata file in the given directory.
@@ -58,21 +61,18 @@ def workflow_executor(
     For Dataverse to Dataverse ingestion, the url and api key of the source
     Dataverse are required.
 
+    :param minio_client: The client connected to minio storage.
     :param data_provider_workflow: The workflow to ingest the metadata file.
     :param version: dict containing all version info of the workflow.
     :param settings_dict: dict, containing all settings for the workflow.
-    :return: None
     """
-    metadata_directory = settings_dict.METADATA_DIRECTORY
-
-    files = [f for f in os.listdir(metadata_directory) if
-             not f.startswith('.')]
-    for filename in files:
-        file_path = os.path.join(metadata_directory, filename)
-        if os.path.isfile(file_path):
-            data_provider_workflow(
-                file_path,
-                version,
-                settings_dict,
-                return_state=True
-            )
+    bucket_name = settings.BUCKET_NAME
+    object_prefix = settings_dict.METADATA_DIRECTORY
+    response = minio_client.list_objects(Bucket=bucket_name,
+                                         Prefix=object_prefix)
+    for obj in response.get('Contents', []):
+        object_data = minio_client.get_object(Bucket=bucket_name,
+                                              Key=obj['Key'])
+        xml_metadata = object_data['Body'].read()
+        data_provider_workflow(xml_metadata, version, settings_dict,
+                               return_state=True)
