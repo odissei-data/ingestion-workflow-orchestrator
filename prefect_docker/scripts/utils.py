@@ -65,7 +65,6 @@ def workflow_executor(
     :param data_provider_workflow: The workflow to ingest the metadata file.
     :param version: dict containing all version info of the workflow.
     :param settings_dict: dict, containing all settings for the workflow.
-    :return: None
     """
     bucket_name = settings.BUCKET_NAME
     object_prefix = settings_dict.METADATA_DIRECTORY
