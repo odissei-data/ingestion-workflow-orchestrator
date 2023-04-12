@@ -24,8 +24,6 @@ def xml2json(xml_metadata):
         'Authorization': settings.XML2JSON_API_TOKEN,
     }
 
-    logger.info(f"xml file contents {xml_metadata}")
-
     url = f"{settings.DANS_TRANSFORMER_SERVICE}/transform-xml-to-json/true"
     response = requests.post(
         url,
@@ -371,3 +369,29 @@ def add_workflow_versioning_url(mapped_metadata, version):
         }
     ]
     return mapped_metadata
+
+
+@task
+def sanitize_emails(xml_metadata, replacement_email: str = None):
+    logger = get_run_logger()
+    if replacement_email is None:
+        replacement_email = ""
+
+    headers = {
+        'accept': 'application/json',
+        'Content-Type': 'application/json'
+    }
+
+    data = {
+        'data': xml_metadata.decode('utf-8'),
+        'replacement_email': replacement_email
+    }
+    response = requests.post(
+        'https://emailsanitizer.labs.dans.knaw.nl/sanitize', headers=headers,
+        data=json.dumps(data))
+
+    if not response.ok:
+        logger.info(response.text)
+        return None
+    data = response.json()
+    return data['data'].encode('utf-8')

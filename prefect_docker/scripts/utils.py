@@ -1,5 +1,7 @@
 import re
 
+from prefect import get_run_logger
+
 from configuration.config import settings
 
 
@@ -66,6 +68,7 @@ def workflow_executor(
     :param version: dict containing all version info of the workflow.
     :param settings_dict: dict, containing all settings for the workflow.
     """
+    logger = get_run_logger()
     bucket_name = settings.BUCKET_NAME
     object_prefix = settings_dict.METADATA_DIRECTORY
     response = minio_client.list_objects(Bucket=bucket_name,
@@ -74,5 +77,6 @@ def workflow_executor(
         object_data = minio_client.get_object(Bucket=bucket_name,
                                               Key=obj['Key'])
         xml_metadata = object_data['Body'].read()
+        logger.info(f"Retrieved file: {obj['Key']}, Size: {len(xml_metadata)}")
         data_provider_workflow(xml_metadata, version, settings_dict,
                                return_state=True)

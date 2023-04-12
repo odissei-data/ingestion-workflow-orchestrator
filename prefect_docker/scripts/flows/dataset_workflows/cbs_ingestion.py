@@ -18,7 +18,12 @@ def cbs_metadata_ingestion(xml_metadata, version, settings_dict):
     :param settings_dict: dict, contains settings for the current workflow
     :return: prefect.orion.schemas.states Failed or Completed
     """
-    json_metadata = xml2json(xml_metadata)
+    logger = get_run_logger()
+    xml_metadata_sanitized = sanitize_emails(xml_metadata)
+    if not xml_metadata_sanitized:
+        return Failed(message='Unable to sanitize emails from XML metadata.')
+
+    json_metadata = xml2json(xml_metadata_sanitized)
     if not json_metadata:
         return Failed(message='Unable to transform from xml to json.')
 
