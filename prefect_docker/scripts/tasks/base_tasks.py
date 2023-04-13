@@ -387,7 +387,7 @@ def sanitize_emails(xml_metadata, replacement_email: str = None):
         'replacement_email': replacement_email
     }
     response = requests.post(
-        'https://emailsanitizer.labs.dans.knaw.nl/sanitize', headers=headers,
+        settings.EMAIL_SANITIZER_URL, headers=headers,
         data=json.dumps(data))
 
     if not response.ok:
