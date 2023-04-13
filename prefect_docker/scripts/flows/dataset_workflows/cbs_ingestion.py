@@ -1,5 +1,5 @@
 import jmespath
-from prefect import flow, get_run_logger
+from prefect import flow
 from prefect.orion.schemas.states import Completed, Failed
 
 from queries import CBS_ID_QUERY, DIST_DATE_QUERY
@@ -18,7 +18,6 @@ def cbs_metadata_ingestion(xml_metadata, version, settings_dict):
     :param settings_dict: dict, contains settings for the current workflow
     :return: prefect.orion.schemas.states Failed or Completed
     """
-    logger = get_run_logger()
     xml_metadata_sanitized = sanitize_emails(xml_metadata)
     if not xml_metadata_sanitized:
         return Failed(message='Unable to sanitize emails from XML metadata.')
@@ -41,12 +40,9 @@ def cbs_metadata_ingestion(xml_metadata, version, settings_dict):
     if not mapped_metadata:
         return Failed(message='Unable to store workflow version.')
 
-    logger.info(mapped_metadata)
-
     # TODO: Add DOI minter step.
     cbs_id = jmespath.search(CBS_ID_QUERY, mapped_metadata)
     doi = 'doi:10.57934/' + cbs_id
-    logger.info(doi)
 
     import_response = dataverse_import(mapped_metadata, settings_dict, doi)
     if not import_response:
