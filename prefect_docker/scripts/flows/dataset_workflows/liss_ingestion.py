@@ -1,6 +1,8 @@
+import jmespath
 from prefect import flow
 from prefect.orion.schemas.states import Completed, Failed
 
+from queries import DIST_DATE_QUERY
 from tasks.base_tasks import xml2json, dataverse_mapper, \
     dataverse_import, update_publication_date, get_doi_from_dv_json, \
     add_workflow_versioning_url
@@ -45,14 +47,10 @@ def liss_metadata_ingestion(xml_metadata, version, settings_dict):
     if not import_response:
         return Failed(message='Unable to import dataset into Dataverse')
 
-    fields = mapped_metadata['datasetVersion']['metadataBlocks']['citation'][
-        'fields']
-    publication_date = next((field for field in fields if
-                             field.get('typeName') == 'distributionDate'),
-                            None)
-    if publication_date["value"]:
+    publication_date = jmespath.search(DIST_DATE_QUERY, mapped_metadata)
+    if publication_date:
         pub_date_response = update_publication_date(
-            publication_date["value"], doi, settings_dict
+            publication_date, doi, settings_dict
         )
         if not pub_date_response:
             return Failed(message='Unable to update publication date')
