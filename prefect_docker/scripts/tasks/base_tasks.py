@@ -261,21 +261,22 @@ def get_license(json_metadata):
 @task
 def doi_minter(metadata):
     """
-    TODO
+    Mints a DOI for the given dataset using the Datacite API.
 
-    :param metadata:
-    :return:
+    :param metadata: Metadata of the dataset that needs minting.
+    :return: Minted DOI
     """
-    dataverse_json = json.dumps(metadata)
-    url = "http://0.0.0.0:8566/submit-to-datacite"
+    logger = get_run_logger()
+    url = "https://dataciteminter.labs.dans.knaw.nl/submit-to-datacite/draft"
 
-    headers = CaseInsensitiveDict()
     headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer @km1-10122004-lamA',
-        'Content-Type': 'application/x-www-form-urlencoded',
     }
-    response = requests.post(url, headers=headers, data=dataverse_json)
+    response = requests.post(url, headers=headers, data=json.dumps(metadata))
+    if not response.ok:
+        logger.info(response.text)
+        return None
     doi = response.text.replace('"', '').replace('{', '').replace('}', '')
     return doi
 
