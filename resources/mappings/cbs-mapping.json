@@ -1,4 +1,6 @@
 {
+
+  "datasetPersistentId": ["result.Dataontwerpversies.Versie.Dataontwerp.Doi"],
   "dsDescriptionValue": ["result.Dataontwerpversies.Versie.Dataontwerp.Beschrijving","result.Dataontwerpversies.Versie.Dataontwerp.NederlandstaligePublicatietekst","result.Dataontwerpversies.Versie.Dataontwerp.EngelstaligePublicatietekst"],
   "topicClassValue": ["result.Dataontwerpversies.Versie.Dataontwerp.Themas.Thema"],
   "title": ["result.Dataontwerpversies.OorspronkelijkeNaam"],
@@ -10,7 +12,34 @@
   "frequencyOfDataCollection": ["result.Dataontwerpversies.Versie.Dataontwerp.TypeVerslagperiode"],
   "samplingProcedure": ["result.Dataontwerpversies.Versie.Dataontwerp.GebruikteMethodologie"],
   "socialScienceNotesSubject": ["result.Dataontwerpversies.Versie.Dataontwerp.Procesverloop"],
-  "variableName": ["result.Dataontwerpversies.Versie.Dataontwerp.Contextvariabelen.Contextvariabele[*].VerkorteSchrijfwijzeNaamVariabele"],
-  "variableLabel": ["result.Dataontwerpversies.Versie.Dataontwerp.Contextvariabelen.Contextvariabele[*].LabelVanDeVariabele"],
-  "universe": ["result.Dataontwerpversies.Versie.Dataontwerp.BeschrijvingVanDePopulatie"]
+  "variable": {
+    "mapping": "result.Dataontwerpversies.Versie.Dataontwerp.Contextvariabelen.Contextvariabele[*]",
+    "children": {
+      "variableName": ["VerkorteSchrijfwijzeNaamVariabele"],
+      "variableLabel": ["LabelVanDeVariabele"],
+      "conceptVariableDefinition": ["Variabele.Definitie"],
+      "conceptVariableObjecttype": ["VariabeleObjecttypenaam"],
+      "conceptVariableValidFrom": ["Variabele.GeldigVanaf"],
+      "conceptVariableName": ["Variabele.UniekeNaam"],
+      "conceptVariableID": ["Variabele.Id"],
+      "conceptVariableVersion": ["Variabele.Versie"],
+      "conceptVariableVersionResponsibility": ["Variabele.Eigenaar"],
+      "variableProcessingInstruction": ["ToelichtingBijHetGebruik"],
+      "variableDataType": ["Datatype"],
+      "variableDefinition": ["ToelichtingBijDeDefinitie"],
+      "conceptVariableGroeppad": ["Variabele.Variabelengroeppad"],
+      "conceptVariableWaardestelselnaam": ["Variabele.Waardestelselnaam"],
+      "conceptVariableThema": ["Variabele.Themas.Thema"],
+      "variableVolgnummer": ["Volgnummer"],
+      "variableTrefwoord": ["Trefwoorden.Trefwoord"]
+    }
+  },
+  "universe": ["result.Dataontwerpversies.Versie.Dataontwerp.BeschrijvingVanDePopulatie"],
+  "NaamInDscCatalogus": ["result.Dataontwerpversies.Versie.Dataontwerp.NaamInDscCatalogus"],
+  "UniekeNaam": ["result.Dataontwerpversies.Versie.Dataontwerp.UniekeNaam"],
+  "GeldigVanaf": ["result.Dataontwerpversies.Versie.Dataontwerp.GeldigVanaf"],
+  "GeldigTot": ["result.Dataontwerpversies.Versie.Dataontwerp.GeldigTot"],
+  "Versie": ["result.Dataontwerpversies.Versie.Dataontwerp.Versie"],
+  "Eigenaar": ["result.Dataontwerpversies.Versie.Dataontwerp.Eigenaar"],
+  "relatedMaterial": ["result.Dataontwerpversies.Versie.Dataontwerp.Statlinetabellen.Statlinetabel"]
 }
