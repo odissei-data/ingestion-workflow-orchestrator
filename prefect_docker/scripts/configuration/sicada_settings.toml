@@ -1,12 +1,30 @@
 [default]
 IISG_URL="https://datasets.iisg.amsterdam"
 IISG={"ALIAS"="iisg", "METADATA_DIRECTORY"="@format {this.IISG_METADATA_DIRECTORY}", "SOURCE_DATAVERSE_URL"="@format {this.IISG_URL}", "SOURCE_DATAVERSE_API_KEY"="@format {this.IISG_API_KEY}", "DESTINATION_DATAVERSE_URL"="@format {this.SICADA_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.SICADA_API_KEY}"}
+SSH={"ALIAS"="ssh", "METADATA_DIRECTORY"="@format {this.SSH_METADATA_DIRECTORY}", "SOURCE_DATAVERSE_URL"="@format {this.SSH_URL}", "SOURCE_DATAVERSE_API_KEY"="@format {this.SSH_API_KEY}", "DESTINATION_DATAVERSE_URL"="@format {this.SICADA_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.SICADA_API_KEY}"}
+DVNL={"ALIAS"="dvnl", "METADATA_DIRECTORY"="@format {this.DVNL_METADATA_DIRECTORY}", "SOURCE_DATAVERSE_URL"="@format {this.DVNL_URL}", "SOURCE_DATAVERSE_API_KEY"="@format {this.DVNL_API_KEY}", "DESTINATION_DATAVERSE_URL"="@format {this.SICADA_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.SICADA_API_KEY}"}
+
 
 
 [development]
-SICADA_URL="http://dataverse:8080"
-IISG_METADATA_DIRECTORY="iisg-metadata"
+#SICADA_URL="http://dataverse:8080"
+SICADA_URL="https://dataverse.sicada.charminghat.nl" # sicada test bak
+
+IISG_URL="https://datasets.iisg.amsterdam"
+IISG_METADATA_DIRECTORY="/local-metadata/iisg-metadata"
+
+SSH_URL="https://test.ssh.datastations.nl"
+SSH_METADATA_DIRECTORY="/local-metadata/ssh-metadata"
+
+
+DVNL_URL="https://dataverse.nl/"
+DVNL_METADATA_DIRECTORY="/local-metadata/dataverse_nl-metadata"
 
 [production]
 SICADA_URL="https://google.nl"
+
+IISG_URL="https://datasets.iisg.amsterdam"
 IISG_METADATA_DIRECTORY="iisg-metadata"
+
+SSH_URL="https://test.ssh.datastations.nl"
+SSH_METADATA_DIRECTORY="ssh-metadata"

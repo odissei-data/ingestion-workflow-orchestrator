@@ -185,7 +185,7 @@ def dataverse_metadata_fetcher(metadata_format, doi, settings_dict):
         'metadata_format': metadata_format,
         "dataverse_information": {
             "base_url": settings_dict.SOURCE_DATAVERSE_URL,
-            "api_token": settings_dict.SOURCE_DATAVERSE_API_KEY
+            "api_key": "hello"
         }
     }
 

@@ -10,16 +10,16 @@ from tasks.base_tasks import xml2json, get_doi_from_header, \
 
 
 @flow
-def iisg_metadata_ingestion(xml_metadata, version, settings_dict):
+def sicada_metadata_ingestion(file_path, version, settings_dict):
     """
-    Ingestion flow for metadata from IISG.
+    Ingestion flow for metadata from Sicada.
 
-    :param xml_metadata: xml_metadata of the data provider.
+    :param file_path: string, path to xml file
     :param version: dict, contains all version info of the workflow
     :param settings_dict: dict, contains settings for the current workflow
     :return: prefect.orion.schemas.states Failed or Completed
     """
-    json_metadata = xml2json(xml_metadata)
+    json_metadata = xml2json(file_path)
     if not json_metadata:
         return Failed(message="Unable to transform from xml to json.")
 
@@ -47,6 +47,11 @@ def iisg_metadata_ingestion(xml_metadata, version, settings_dict):
     dataverse_json["datasetVersion"] = {}
     dataverse_json["datasetVersion"]["metadataBlocks"] = metadata_blocks
 
+    try:
+        del dataverse_json["metadataLanguage"]
+    except Exception:
+        pass
+
     import_response = dataverse_import(
         dataverse_json,
         settings_dict,
@@ -69,4 +74,4 @@ def iisg_metadata_ingestion(xml_metadata, version, settings_dict):
         if not pub_date_response:
             return Failed(message="Unable to update publication date.")
 
-    return Completed(message=doi + "ingested successfully.")
+    return Completed(message=file_path + "ingested successfully.")
