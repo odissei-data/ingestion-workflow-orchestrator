@@ -1,18 +1,16 @@
-import copy
-
 from prefect import flow
 from prefect.orion.schemas.states import Failed, Completed
 
 from tasks.base_tasks import xml2json, get_doi_from_header, \
     dataverse_metadata_fetcher, \
-    dataverse_import, add_contact_email, update_publication_date, \
-    format_license, add_workflow_versioning_url
+    dataverse_import, update_publication_date, add_workflow_versioning_url, \
+    refine_metadata
 
 
 @flow
-def dataverse_nl_metadata_ingestion(xml_metadata, version, settings_dict):
+def dataverse_metadata_ingestion(xml_metadata, version, settings_dict):
     """
-    Ingestion flow for Dataverse-NL.
+    Ingestion flow for Dataverse to dataverse ingestion.
 
     :param xml_metadata: xml_metadata of the data provider.
     :param version: dict, contains all version info of the workflow
@@ -33,32 +31,9 @@ def dataverse_nl_metadata_ingestion(xml_metadata, version, settings_dict):
     if not dataverse_json:
         return Failed(message='Could not fetch dataverse metadata.')
 
-    dataverse_json = add_contact_email(dataverse_json)
+    dataverse_json = refine_metadata(dataverse_json, settings_dict)
     if not dataverse_json:
-        return Failed(message='Unable to add contact email')
-
-    metadata_blocks = copy.deepcopy(
-        dataverse_json["datasetVersion"]['metadataBlocks'])
-
-    terms_of_use = None
-    if 'termsOfUse' in dataverse_json['datasetVersion']:
-        terms_of_use = copy.deepcopy(
-            dataverse_json['datasetVersion']['termsOfUse'])
-
-    ds_license = None
-    if 'license' in dataverse_json['datasetVersion']:
-        ds_license = copy.deepcopy(dataverse_json['datasetVersion']['license'])
-
-    dataverse_json['datasetVersion'] = {
-        'metadataBlocks': metadata_blocks
-    }
-
-    if terms_of_use:
-        dataverse_json['datasetVersion']['termsOfUse'] = terms_of_use
-
-    if ds_license and ds_license != 'NONE':
-        dataverse_json['datasetVersion']['license'] = format_license(
-            ds_license)
+        return Failed(message='Unable to refine metadata.')
 
     dataverse_json = add_workflow_versioning_url(dataverse_json, version)
     if not dataverse_json:

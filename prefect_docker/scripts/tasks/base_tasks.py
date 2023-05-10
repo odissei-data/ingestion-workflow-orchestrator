@@ -108,6 +108,8 @@ def dataverse_import(mapped_metadata, settings_dict, doi=None):
     if doi:
         data['doi'] = doi
 
+    logger.info(data)
+
     url = f"{settings.DATAVERSE_IMPORTER_URL}/importer"
     response = requests.post(
         url,
@@ -165,9 +167,8 @@ def dataverse_metadata_fetcher(metadata_format, doi, settings_dict):
     """
     Fetches the metadata of a dataset with the given DOI.
 
-    The dataverse_information field in the data takes two fields:
+    The dataverse_information field in the data takes one field:
     base_url: The source Dataverse from where the metadata is harvested.
-    api_token: The token specific to this DV instance to allow use of the API.
 
     :param metadata_format: string, metadata format e.g. 'dataverse_json'.
     :param doi: string, The DOI of the dataset that gets fetched.
@@ -183,10 +184,7 @@ def dataverse_metadata_fetcher(metadata_format, doi, settings_dict):
     data = {
         'doi': doi,
         'metadata_format': metadata_format,
-        "dataverse_information": {
-            "base_url": settings_dict.SOURCE_DATAVERSE_URL,
-            "api_token": settings_dict.SOURCE_DATAVERSE_API_KEY
-        }
+        "base_url": settings_dict.SOURCE_DATAVERSE_URL,
     }
 
     url = f"{settings.METADATA_FETCHER_URL}/dataverse-metadata-fetcher"
@@ -258,58 +256,6 @@ def get_license(json_metadata):
 
     except KeyError:
         return 'DANS Licence'
-
-
-@task
-def format_license(ds_license):
-    if ds_license == 'CC0':
-        ds_license = 'CC0 1.0'
-    elif 'uri' in ds_license:
-        ds_license = utils.retrieve_license_name(ds_license['uri'])
-    return ds_license
-
-
-@task
-def add_contact_email(dataverse_json):
-    """ Adds a contact email to dataverse JSON.
-
-    If metadata exported from a Dataverse is missing the contact email,
-    add_contact_email can be used to add a contact email.
-    TODO: make the email value an env variable.
-
-    :param dataverse_json: Dataverse JSON that is missing the contact email.
-    :return: dataverse JSON with the contact email added.
-    """
-    fields = dataverse_json['datasetVersion']['metadataBlocks']['citation'][
-        'fields']
-    dataset_contact = next((field for field in fields if
-                            field.get('typeName') == 'datasetContact'), None)
-    if dataset_contact:
-        for dataset_contact in dataset_contact["value"]:
-            dataset_contact["datasetContactEmail"] = {
-                "typeName": "datasetContactEmail",
-                "multiple": False,
-                "typeClass": "primitive",
-                "value": "portal@odissei.nl"
-            }
-    else:
-        fields.append({
-            "typeName": "datasetContact",
-            "multiple": True,
-            "typeClass": "compound",
-            "value": [
-                {
-                    "datasetContactEmail": {
-                        "typeName": "datasetContactEmail",
-                        "multiple": False,
-                        "typeClass": "primitive",
-                        "value": "portal@odissei.nl"
-                    }
-                }
-            ]
-        })
-        return dataverse_json
-    return dataverse_json
 
 
 @task
@@ -395,3 +341,26 @@ def sanitize_emails(xml_metadata, replacement_email: str = None):
         return None
     data = response.json()
     return data['data'].encode('utf-8')
+
+
+@task
+def refine_metadata(metadata: dict, settings_dict):
+    logger = get_run_logger()
+    headers = {
+        'accept': 'application/json',
+        'Content-Type': 'application/json'
+    }
+
+    data = {
+        'metadata': metadata,
+    }
+
+    response = requests.post(
+        settings.METADATA_REFINER_URL + settings_dict.REFINER_ENDPOINT,
+        headers=headers, data=json.dumps(data)
+    )
+
+    if not response.ok:
+        logger.info(response.text)
+        return None
+    return response.json()
