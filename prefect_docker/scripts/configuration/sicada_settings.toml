@@ -9,6 +9,6 @@ IISG_METADATA_DIRECTORY="iisg-metadata"
 SICADA_REFINER_ENDPOINT="/metadata-refinement/sicada"
 
 [production]
-SICADA_URL="https://portal.staging.odissei.nl"
+SICADA_URL="https://google.nl"
 IISG_METADATA_DIRECTORY="iisg-metadata"
 SICADA_REFINER_ENDPOINT="/metadata-refinement/sicada"
