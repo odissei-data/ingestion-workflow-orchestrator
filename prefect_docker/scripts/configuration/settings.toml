@@ -1,26 +1,9 @@
-# Settings file for Dynaconf
-
 [default]
-IISG_DATAVERSE_ALIAS="iisg"
-IISG_SOURCE_DATAVERSE_URL="https://datasets.iisg.amsterdam"
-
-CBS_DATAVERSE_ALIAS="cbs"
-CBS_TEMPLATE_FILE_PATH="/resources/templates/cbs_dataverse_template.json"
-CBS_MAPPING_FILE_PATH="/resources/mappings/cbs-mapping.json"
-
-EASY_DATAVERSE_ALIAS="easy"
-EASY_TEMPLATE_FILE_PATH="/resources/templates/easy_dataverse_template.json"
-EASY_MAPPING_FILE_PATH="/resources/mappings/easy-mapping.json"
-
-LISS_DATAVERSE_ALIAS="liss_dc"
-LISS_TEMPLATE_FILE_PATH="/resources/templates/liss_dataverse_template.json"
-LISS_MAPPING_FILE_PATH="/resources/mappings/liss-mapping.json"
 
 [development]
 debug = true
 
 DATAVERSE_URL="http://dataverse:8080"
-SICADA_URL="@format {this.DATAVERSE_URL}"
 
 DATAVERSE_IMPORTER_URL="http://dataverse-importer:8091"
 PUBLICATION_DATA_UPDATER_URL="http://publication-date-updater:8093"
@@ -43,4 +26,5 @@ DATAVERSE_MAPPER_URL="https://dataverse-mapper.labs.dans.knaw.nl"
 DANS_TRANSFORMER_SERVICE="https://transformer.labs.dans.knaw.nl"
 EMAIL_SANITIZER_URL="https://emailsanitizer.labs.dans.knaw.nl/sanitize"
 METADATA_REFINER_URL="https://metadata-refiner.labs.dans.knaw.nl"
+
 BUCKET_NAME = "harvested-metadata"
