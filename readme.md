@@ -68,6 +68,12 @@ https://github.com/ekoi/dans-transformer-service
 
 > More info below on how to start this container.
 
+### Metadata Refiner
+
+Refines JSON metadata.
+
+https://github.com/odissei-data/metadata-refiner
+
 ## Docker Network
 
 To allow the containers to communicate with each other you need to create a
@@ -82,6 +88,7 @@ docker network connect ingestion-network metadata-fetcher
 docker network connect ingestion-network prefect
 docker network connect ingestion-network dataverse-mapper-v2
 docker network connect ingestion-network dans-transformer-service
+docker network connect ingestion-network metadata-refiner
 ```
 
 ### Ports
@@ -94,6 +101,7 @@ adjust the port numbers in the `.env` file.
 - publication-date-update: 8093
 - dataverse-mapper-v2: 8094
 - dans-transformer-service: 1745
+- metadata-refiner: 7878
 
 # Dynaconf
 
