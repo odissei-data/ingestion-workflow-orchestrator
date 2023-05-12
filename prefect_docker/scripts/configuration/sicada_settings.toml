@@ -6,7 +6,6 @@ DVNL={"ALIAS"="dvnl", "METADATA_DIRECTORY"="@format {this.DVNL_METADATA_DIRECTOR
 [development]
 SICADA_URL="http://dataverse:8080"
 #SICADA_URL="https://dataverse.sicada.charminghat.nl" # sicada test bak
-IISG_METADATA_DIRECTORY="iisg-metadata"
 SICADA_REFINER_ENDPOINT="/metadata-refinement/sicada"
 
 IISG_URL="https://datasets.iisg.amsterdam"
