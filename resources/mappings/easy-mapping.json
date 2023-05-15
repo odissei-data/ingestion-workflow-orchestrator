@@ -9,8 +9,8 @@
   "alternativeTitle": ["result.record.metadata.ddi:codeBook.ddi:stdyDscr.ddi:citation.ddi:titlStmt.ddi:parTitl.#text"],
   "contributorName": ["result.record.metadata.ddi:codeBook.ddi:stdyDscr.ddi:citation.ddi:rspStmt.ddi:othId[*].#text"],
   "keywordValue": ["result.record.metadata.ddi:codeBook.ddi:stdyDscr.ddi:stdyInfo.ddi:subject.ddi:keyword[*].#text"],
-  "topicClassValue": ["result.record.metadata.ddi:codeBook.ddi:stdyDscr.ddi:stdyInfo.ddi:subject.ddi:topcClas[*].#text"],
-  "topicClassVocab": ["result.record.metadata.ddi:codeBook.ddi:stdyDscr.ddi:stdyInfo.ddi:subject.ddi:topcClas[*].@vocab"],
+  "topicClassValue": ["result.record.metadata.ddi:codeBook.ddi:stdyDscr.ddi:stdyInfo.ddi:subject.ddi:topcClas.#text"],
+  "topicClassVocab": ["result.record.metadata.ddi:codeBook.ddi:stdyDscr.ddi:stdyInfo.ddi:subject.ddi:topcClas.@vocab"],
   "dsDescriptionValue": ["result.record.metadata.ddi:codeBook.ddi:stdyDscr.ddi:stdyInfo.ddi:abstract.#text"],
   "timePeriodCoveredStart": ["result.record.metadata.ddi:codeBook.ddi:stdyDscr.ddi:stdyInfo.ddi:sumDscr.ddi:timePrd.#text"],
   "datasetPersistentId": ["result.record.metadata.ddi:codeBook.ddi:stdyDscr.ddi:citation.ddi:titlStmt.ddi:IDNo[*].#text"]
