@@ -1,9 +1,9 @@
 {
-    "authorName": ["result/record/metadata/oai_dc:dc/dc:creator"],
-    "title": ["result/record/metadata/oai_dc:dc/dc:title"],
-    "dsDescriptionValue": ["result/record/metadata/oai_dc:dc/dc:description"],
-    "producerName": ["result/record/metadata/oai_dc:dc/dc:publisher"],
-    "distributorName": ["result/record/metadata/oai_dc:dc/dc:publisher"],
-    "distributionDate": ["result/record/metadata/oai_dc:dc/dc:date"],
-    "datasetPersistentId": ["result/record/metadata/oai_dc:dc/dc:identifier"]
+    "authorName": ["result.record.metadata.oai_dc:dc.dc:creator"],
+    "title": ["result.record.metadata.oai_dc:dc.dc:title"],
+    "dsDescriptionValue": ["result.record.metadata.oai_dc:dc.dc:description"],
+    "producerName": ["result.record.metadata.oai_dc:dc.dc:publisher"],
+    "distributorName": ["result.record.metadata.oai_dc:dc.dc:publisher"],
+    "distributionDate": ["result.record.metadata.oai_dc:dc.dc:date"],
+    "datasetPersistentId": ["result.record.metadata.oai_dc:dc.dc:identifier"]
 }

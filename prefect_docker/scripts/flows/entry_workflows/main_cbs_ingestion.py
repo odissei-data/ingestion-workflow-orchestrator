@@ -1,22 +1,37 @@
-import os
+import boto3
+
+from configuration.config import settings
 from prefect import flow
 import utils
 from flows.dataset_workflows.cbs_ingestion import cbs_metadata_ingestion
 from flows.workflow_versioning.workflow_versioner import \
     create_ingestion_workflow_versioning
 
-CBS_METADATA_DIRECTORY = os.getenv('CBS_METADATA_DIRECTORY')
-CBS_DATAVERSE_ALIAS = os.getenv('CBS_DATAVERSE_ALIAS')
 
 @flow
 def cbs_ingestion_pipeline():
-    version = create_ingestion_workflow_versioning(transformer=True,
-                                                   mapper=True,
-                                                   minter=True,
-                                                   importer=True,
-                                                   updater=True)
-    utils.workflow_executor(cbs_metadata_ingestion, CBS_METADATA_DIRECTORY,
-                            version, CBS_DATAVERSE_ALIAS)
+    version = create_ingestion_workflow_versioning(
+        transformer=True,
+        mapper=True,
+        minter=True,
+        importer=True,
+        updater=True
+    )
+
+    minio_client = boto3.client(
+        's3',
+        endpoint_url=settings.MINIO_SERVER_URL,
+        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
+    )
+
+    settings_dict = settings.CBS
+    utils.workflow_executor(
+        cbs_metadata_ingestion,
+        version,
+        settings_dict,
+        minio_client
+    )
 
 
 if __name__ == "__main__":

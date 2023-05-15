@@ -1,5 +1,8 @@
-import os
 import re
+
+from prefect import get_run_logger
+
+from configuration.config import settings
 
 
 def retrieve_license_name(license_string):
@@ -44,22 +47,36 @@ def is_lower_level_liss_study(metadata):
         return True, title
 
 
-def workflow_executor(data_provider_workflow, metadata_directory, version,
-                      alias):
-    """ Executes the workflow of a give data provider for each metadata file.
+def workflow_executor(
+        data_provider_workflow,
+        version,
+        settings_dict,
+        minio_client
+):
+    """
+    Executes the workflow of a give data provider for each metadata file.
+    The files are retrieved from minio storage using a boto client.
 
     Takes workflow flow that ingests a single metadata file of a data provider
     and executes that workflow for every metadata file in the given directory.
 
-    :param alias: The target dataverse slug.
-    :param version: A dictionary containing all version info of the workflow.
+    For Dataverse to Dataverse ingestion, the url and api key of the source
+    Dataverse are required.
+
+    :param minio_client: The client connected to minio storage.
     :param data_provider_workflow: The workflow to ingest the metadata file.
-    :param metadata_directory: The directory where provider's metadata lives.
+    :param version: dict containing all version info of the workflow.
+    :param settings_dict: dict, containing all settings for the workflow.
     """
-    files = [f for f in os.listdir(metadata_directory) if
-             not f.startswith('.')]
-    for filename in files:
-        file_path = os.path.join(metadata_directory, filename)
-        if os.path.isfile(file_path):
-            data_provider_workflow(file_path, alias, version,
-                                   return_state=True)
+    logger = get_run_logger()
+    bucket_name = settings.BUCKET_NAME
+    object_prefix = settings_dict.METADATA_DIRECTORY
+    response = minio_client.list_objects(Bucket=bucket_name,
+                                         Prefix=object_prefix)
+    for obj in response.get('Contents', []):
+        object_data = minio_client.get_object(Bucket=bucket_name,
+                                              Key=obj['Key'])
+        xml_metadata = object_data['Body'].read()
+        logger.info(f"Retrieved file: {obj['Key']}, Size: {len(xml_metadata)}")
+        data_provider_workflow(xml_metadata, version, settings_dict,
+                               return_state=True)

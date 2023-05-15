@@ -1,39 +1,39 @@
 import json
-import os
-import requests
+
+from configuration.config import settings
 from prefect import task, get_run_logger
+import requests
 from requests.structures import CaseInsensitiveDict
 
 import utils
 
-DATAVERSE_URL = os.getenv('DATAVERSE_URL')
-DATAVERSE_API_TOKEN = os.getenv('DATAVERSE_API_TOKEN')
-XML2JSON_API_TOKEN = os.getenv('XML2JSON_API_TOKEN')
-
 
 @task
-def xml2json(file_path):
+def xml2json(xml_metadata):
     """ Sends XML to the transformer server, receives JSON with same hierarchy.
 
     Sends a request to the transformer endpoint for transformation
     from xml to json. Needs an authorization token to use the transformer API.
 
-    :param file_path: The filepath of the xml file.
+    :param xml_metadata: The XML contents
     :return: Plain JSON metadata | None on failure.
     """
     logger = get_run_logger()
     headers = {
         'Content-Type': 'application/xml',
-        'Authorization': XML2JSON_API_TOKEN,
+        'Authorization': settings.XML2JSON_API_TOKEN,
     }
-    with open(file_path, 'rb') as data:
-        response = requests.post(
-            'https://transformer.labs.dans.knaw.nl/'
-            'transform-xml-to-json/true',
-            headers=headers, data=data.read())
-        if not response.ok:
-            logger.info(response.text)
-            return None
+
+    url = f"{settings.DANS_TRANSFORMER_SERVICE}/transform-xml-to-json/true"
+    response = requests.post(
+        url,
+        headers=headers, data=xml_metadata
+    )
+
+    if not response.ok:
+        logger.info(response.text)
+        return None
+
     return response.json()
 
 
@@ -66,9 +66,11 @@ def dataverse_mapper(json_metadata, mapping_file_path, template_file_path,
         data['mapping'] = mapping
     data["has_existing_doi"] = has_doi
 
+    url = f"{settings.DATAVERSE_MAPPER_URL}/mapper"
     response = requests.post(
-        'https://dataverse-mapper.labs.dans.knaw.nl/mapper',
-        headers=headers, data=json.dumps(data))
+        url,
+        headers=headers, data=json.dumps(data)
+    )
     if not response.ok:
         logger.info(response.text)
         return None
@@ -76,7 +78,7 @@ def dataverse_mapper(json_metadata, mapping_file_path, template_file_path,
 
 
 @task
-def dataverse_import(mapped_metadata, dataverse_alias, doi=None):
+def dataverse_import(mapped_metadata, settings_dict, doi=None):
     """ Sends a request to the import service to import the given metadata.
 
     The dataverse_information field in the data takes three fields:
@@ -84,9 +86,9 @@ def dataverse_import(mapped_metadata, dataverse_alias, doi=None):
     dt_alias: The Dataverse or sub-Dataverse you want to target for the import.
     api_token: The token specific to this DV instance to allow use of the API.
 
-    :param dataverse_alias: A Dataverse or sub-Dataverse.
-    :param doi: The DOI of the dataset that is being imported.
     :param mapped_metadata: JSON metadata formatted for the Native API.
+    :param settings_dict: dict, contains settings for the current task
+    :param doi: The DOI of the dataset that is being imported.
     :return: Response body on success | None on failure.
     """
     logger = get_run_logger()
@@ -98,17 +100,22 @@ def dataverse_import(mapped_metadata, dataverse_alias, doi=None):
     data = {
         "metadata": mapped_metadata,
         "dataverse_information": {
-            "base_url": DATAVERSE_URL,
-            "dt_alias": dataverse_alias,
-            "api_token": DATAVERSE_API_TOKEN
+            "base_url": settings_dict.DESTINATION_DATAVERSE_URL,
+            "dt_alias": settings_dict.ALIAS,
+            "api_token": settings_dict.DESTINATION_DATAVERSE_API_KEY
         }}
 
     if doi:
         data['doi'] = doi
 
+    logger.info(data)
+
+    url = f"{settings.DATAVERSE_IMPORTER_URL}/importer"
     response = requests.post(
-        'https://dataverse-importer.labs.dans.knaw.nl/importer',
-        headers=headers, data=json.dumps(data))
+        url,
+        headers=headers,
+        data=json.dumps(data)
+    )
     if not response.ok:
         logger.info(response.text)
         return None
@@ -116,7 +123,7 @@ def dataverse_import(mapped_metadata, dataverse_alias, doi=None):
 
 
 @task
-def update_publication_date(publication_date, pid):
+def update_publication_date(publication_date, pid, settings_dict):
     """ Sends a request to the publication date updater to update the pub date.
 
     The dataverse_information field in the data takes two fields:
@@ -125,6 +132,7 @@ def update_publication_date(publication_date, pid):
 
     :param publication_date: The original date of publication.
     :param pid: The DOI of the dataset in question.
+    :param settings_dict: dict, contains settings for the current task
     :return: Response body on success | None on failure.
     """
     logger = get_run_logger()
@@ -137,15 +145,17 @@ def update_publication_date(publication_date, pid):
         'pid': pid,
         'publication_date': publication_date,
         "dataverse_information": {
-            "base_url": DATAVERSE_URL,
-            "api_token": DATAVERSE_API_TOKEN
+            "base_url": settings_dict.DESTINATION_DATAVERSE_URL,
+            "api_token": settings_dict.DESTINATION_DATAVERSE_API_KEY
         }
     }
 
+    url = f"{settings.PUBLICATION_DATA_UPDATER_URL}/publication-date-updater"
     response = requests.post(
-        'https://dataverse-date-updater.labs.dans.knaw.nl/'
-        'publication-date-updater',
-        headers=headers, data=json.dumps(data))
+        url,
+        headers=headers,
+        data=json.dumps(data)
+    )
     if not response.ok:
         logger.info(response.text)
         return None
@@ -153,17 +163,17 @@ def update_publication_date(publication_date, pid):
 
 
 @task
-def dataverse_metadata_fetcher(doi, source_dataverse_url, metadata_format):
-    """ Fetches the metadata of a dataset with the given DOI.
+def dataverse_metadata_fetcher(metadata_format, doi, settings_dict):
+    """
+    Fetches the metadata of a dataset with the given DOI.
 
-     The dataverse_information field in the data takes two fields:
+    The dataverse_information field in the data takes one field:
     base_url: The source Dataverse from where the metadata is harvested.
-    api_token: The token specific to this DV instance to allow use of the API.
 
-    :param source_dataverse_url: The source Dataverse.
-    :param doi: The DOI of the dataset that gets fetched.
-    :param metadata_format: The format of the metadata. e.g. 'dataverse_json'.
-    :return:
+    :param metadata_format: string, metadata format e.g. 'dataverse_json'.
+    :param doi: string, The DOI of the dataset that gets fetched.
+    :param settings_dict: dict, contains settings for the current task
+    :return: JSON or None
     """
     logger = get_run_logger()
     headers = {
@@ -174,16 +184,16 @@ def dataverse_metadata_fetcher(doi, source_dataverse_url, metadata_format):
     data = {
         'doi': doi,
         'metadata_format': metadata_format,
-        "dataverse_information": {
-            "base_url": source_dataverse_url,
-            "api_token": DATAVERSE_API_TOKEN
-        }
+        "base_url": settings_dict.SOURCE_DATAVERSE_URL,
     }
 
+    url = f"{settings.METADATA_FETCHER_URL}/dataverse-metadata-fetcher"
     response = requests.post(
-        'https://dataverse-fetcher.labs.dans.knaw.nl/'
-        'dataverse-metadata-fetcher',
-        headers=headers, data=json.dumps(data))
+        url,
+        headers=headers,
+        data=json.dumps(data)
+    )
+
     if not response.ok:
         logger.info(response.text)
         return None
@@ -249,58 +259,6 @@ def get_license(json_metadata):
 
 
 @task
-def format_license(ds_license):
-    if ds_license == 'CC0':
-        ds_license = 'CC0 1.0'
-    elif 'uri' in ds_license:
-        ds_license = utils.retrieve_license_name(ds_license['uri'])
-    return ds_license
-
-
-@task
-def add_contact_email(dataverse_json):
-    """ Adds a contact email to dataverse JSON.
-
-    If metadata exported from a Dataverse is missing the contact email,
-    add_contact_email can be used to add a contact email.
-    TODO: make the email value an env variable.
-
-    :param dataverse_json: Dataverse JSON that is missing the contact email.
-    :return: dataverse JSON with the contact email added.
-    """
-    fields = dataverse_json['datasetVersion']['metadataBlocks']['citation'][
-        'fields']
-    dataset_contact = next((field for field in fields if
-                            field.get('typeName') == 'datasetContact'), None)
-    if dataset_contact:
-        for dataset_contact in dataset_contact["value"]:
-            dataset_contact["datasetContactEmail"] = {
-                "typeName": "datasetContactEmail",
-                "multiple": False,
-                "typeClass": "primitive",
-                "value": "portal@odissei.nl"
-            }
-    else:
-        fields.append({
-            "typeName": "datasetContact",
-            "multiple": True,
-            "typeClass": "compound",
-            "value": [
-                {
-                    "datasetContactEmail": {
-                        "typeName": "datasetContactEmail",
-                        "multiple": False,
-                        "typeClass": "primitive",
-                        "value": "portal@odissei.nl"
-                    }
-                }
-            ]
-        })
-        return dataverse_json
-    return dataverse_json
-
-
-@task
 def doi_minter(metadata):
     """
     TODO
@@ -357,3 +315,52 @@ def add_workflow_versioning_url(mapped_metadata, version):
         }
     ]
     return mapped_metadata
+
+
+@task
+def sanitize_emails(xml_metadata, replacement_email: str = None):
+    logger = get_run_logger()
+    if replacement_email is None:
+        replacement_email = ""
+
+    headers = {
+        'accept': 'application/json',
+        'Content-Type': 'application/json'
+    }
+
+    data = {
+        'data': xml_metadata.decode('utf-8'),
+        'replacement_email': replacement_email
+    }
+    response = requests.post(
+        settings.EMAIL_SANITIZER_URL, headers=headers,
+        data=json.dumps(data))
+
+    if not response.ok:
+        logger.info(response.text)
+        return None
+    data = response.json()
+    return data['data'].encode('utf-8')
+
+
+@task
+def refine_metadata(metadata: dict, settings_dict):
+    logger = get_run_logger()
+    headers = {
+        'accept': 'application/json',
+        'Content-Type': 'application/json'
+    }
+
+    data = {
+        'metadata': metadata,
+    }
+
+    response = requests.post(
+        settings.METADATA_REFINER_URL + settings_dict.REFINER_ENDPOINT,
+        headers=headers, data=json.dumps(data)
+    )
+
+    if not response.ok:
+        logger.info(response.text)
+        return None
+    return response.json()
