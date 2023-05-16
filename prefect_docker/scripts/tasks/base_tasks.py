@@ -3,7 +3,6 @@ import json
 from configuration.config import settings
 from prefect import task, get_run_logger
 import requests
-from requests.structures import CaseInsensitiveDict
 
 import utils
 
@@ -271,7 +270,7 @@ def doi_minter(metadata):
 
     headers = {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer @km1-10122004-lamA',
+        'Authorization': settings.MINTER_API_TOKEN,
     }
     response = requests.post(url, headers=headers, data=json.dumps(metadata))
     if not response.ok:
