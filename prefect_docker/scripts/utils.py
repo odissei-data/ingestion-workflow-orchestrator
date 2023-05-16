@@ -69,14 +69,28 @@ def workflow_executor(
     :param settings_dict: dict, containing all settings for the workflow.
     """
     logger = get_run_logger()
-    bucket_name = settings.BUCKET_NAME
-    object_prefix = settings_dict.METADATA_DIRECTORY
-    response = minio_client.list_objects(Bucket=bucket_name,
-                                         Prefix=object_prefix)
-    for obj in response.get('Contents', []):
-        object_data = minio_client.get_object(Bucket=bucket_name,
-                                              Key=obj['Key'])
-        xml_metadata = object_data['Body'].read()
-        logger.info(f"Retrieved file: {obj['Key']}, Size: {len(xml_metadata)}")
-        data_provider_workflow(xml_metadata, version, settings_dict,
-                               return_state=True)
+
+    paginator = minio_client.get_paginator("list_objects_v2")
+    bucket = settings.BUCKET_NAME
+    prefix = settings_dict.METADATA_DIRECTORY
+    pages = paginator.paginate(
+        Bucket=bucket,
+        Prefix=prefix
+    )
+
+    for page in pages:
+        for obj in page["Contents"]:
+            object_data = minio_client.get_object(
+                Bucket=bucket,
+                Key=obj['Key']
+            )
+            xml_metadata = object_data['Body'].read()
+            logger.info(
+                f"Retrieved file: {obj['Key']}, Size: {len(xml_metadata)}"
+            )
+            data_provider_workflow(
+                xml_metadata,
+                version,
+                settings_dict,
+                return_state=True
+            )
