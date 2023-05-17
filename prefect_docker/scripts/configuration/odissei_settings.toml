@@ -19,34 +19,33 @@ CBS={"ALIAS"="cbs", "METADATA_DIRECTORY"="@format {this.CBS_METADATA_DIRECTORY}"
 EASY={"ALIAS"="easy", "METADATA_DIRECTORY"="@format {this.EASY_METADATA_DIRECTORY}", "TEMPLATE_FILE_PATH"="@format {this.EASY_TEMPLATE_FILE_PATH}", "MAPPING_FILE_PATH"="@format {this.EASY_MAPPING_FILE_PATH}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}"}
 LISS={"ALIAS"="liss", "METADATA_DIRECTORY"="@format {this.LISS_METADATA_DIRECTORY}", "TEMPLATE_FILE_PATH"="@format {this.LISS_TEMPLATE_FILE_PATH}", "MAPPING_FILE_PATH"="@format {this.LISS_MAPPING_FILE_PATH}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}"}
 
+DATAVERSE_NL_METADATA_DIRECTORY="dataverse.nl-metadata"
+RESEARCH_DATA_METADATA_DIRECTORY="dataverse.nl-4tu"
+AVANS_METADATA_DIRECTORY="dataverse.nl-avans"
+FONTYS_METADATA_DIRECTORY="dataverse.nl-fontys"
+GRONINGEN_METADATA_DIRECTORY="dataverse.nl-groningen"
+HANZE_METADATA_DIRECTORY="dataverse.nl-hanze"
+HR_METADATA_DIRECTORY="dataverse.nl-hr"
+LEIDEN_METADATA_DIRECTORY="dataverse.nl-leiden"
+MAASTRICHT_METADATA_DIRECTORY="dataverse.nl-maastricht"
+TILBURG_METADATA_DIRECTORY="dataverse.nl-tilburg"
+TRIMBOS_METADATA_DIRECTORY="dataverse.nl-trimbos"
+UMCU_METADATA_DIRECTORY="dataverse.nl-umc"
+UTRECHT_METADATA_DIRECTORY="dataverse.nl-utrecht"
+VU_METADATA_DIRECTORY="dataverse.nl-vu"
+CBS_METADATA_DIRECTORY="cbs-metadata"
+EASY_METADATA_DIRECTORY="easy-metadata"
+LISS_METADATA_DIRECTORY="liss-metadata"
 
 [development]
 ODISSEI_URL="http://dataverse:8080"
 
-DATAVERSE_NL_METADATA_DIRECTORY="dataverse_nl-metadata"
-RESEARCH_DATA_METADATA_DIRECTORY="dataverse_nl/4tu"
-AVANS_METADATA_DIRECTORY="dataverse_nl/avans"
-FONTYS_METADATA_DIRECTORY="dataverse_nl/fontys"
-GRONINGEN_METADATA_DIRECTORY="dataverse_nl/groningen"
-HANZE_METADATA_DIRECTORY="dataverse_nl/hanze"
-HR_METADATA_DIRECTORY="dataverse_nl/hr"
-LEIDEN_METADATA_DIRECTORY="dataverse_nl/leiden"
-MAASTRICHT_METADATA_DIRECTORY="dataverse_nl/maastricht"
-TILBURG_METADATA_DIRECTORY="dataverse_nl/tilburg"
-TRIMBOS_METADATA_DIRECTORY="dataverse_nl/trimbos"
-UMCU_METADATA_DIRECTORY="dataverse_nl/umc"
-UTRECHT_METADATA_DIRECTORY="dataverse_nl/utrecht"
-VU_METADATA_DIRECTORY="dataverse_nl/vu"
-
-CBS_METADATA_DIRECTORY="cbs-metadata"
 CBS_TEMPLATE_FILE_PATH="/resources/templates/cbs_dataverse_template.json"
 CBS_MAPPING_FILE_PATH="/resources/mappings/cbs-mapping.json"
 
-EASY_METADATA_DIRECTORY="easy-metadata"
 EASY_TEMPLATE_FILE_PATH="/resources/templates/easy_dataverse_template.json"
 EASY_MAPPING_FILE_PATH="/resources/mappings/easy-mapping.json"
 
-LISS_METADATA_DIRECTORY="liss-metadata"
 LISS_TEMPLATE_FILE_PATH="/resources/templates/liss_dataverse_template.json"
 LISS_MAPPING_FILE_PATH="/resources/mappings/liss-mapping.json"
 
@@ -55,30 +54,12 @@ DATAVERSE_NL_REFINER_ENDPOINT = "/metadata-refinement/dataverse-nl"
 [production]
 ODISSEI_URL="https://portal.staging.odissei.nl"
 
-DATAVERSE_NL_METADATA_DIRECTORY="dataverse_nl-metadata"
-RESEARCH_DATA_METADATA_DIRECTORY="dataverse_nl/4tu"
-AVANS_METADATA_DIRECTORY="dataverse_nl/avans"
-FONTYS_METADATA_DIRECTORY="dataverse_nl/fontys"
-GRONINGEN_METADATA_DIRECTORY="dataverse_nl/groningen"
-HANZE_METADATA_DIRECTORY="dataverse_nl/hanze"
-HR_METADATA_DIRECTORY="dataverse_nl/hr"
-LEIDEN_METADATA_DIRECTORY="dataverse_nl/leiden"
-MAASTRICHT_METADATA_DIRECTORY="dataverse_nl/maastricht"
-TILBURG_METADATA_DIRECTORY="dataverse_nl/tilburg"
-TRIMBOS_METADATA_DIRECTORY="dataverse_nl/trimbos"
-UMCU_METADATA_DIRECTORY="dataverse_nl/umc"
-UTRECHT_METADATA_DIRECTORY="dataverse_nl/utrecht"
-VU_METADATA_DIRECTORY="dataverse_nl/vu"
-
-CBS_METADATA_DIRECTORY="cbs-metadata"
 CBS_TEMPLATE_FILE_PATH="/resources/templates/cbs_dataverse_template.json"
 CBS_MAPPING_FILE_PATH="/resources/mappings/cbs-mapping.json"
 
-EASY_METADATA_DIRECTORY="easy-metadata"
 EASY_TEMPLATE_FILE_PATH="/resources/templates/easy_dataverse_template.json"
 EASY_MAPPING_FILE_PATH="/resources/mappings/easy-mapping.json"
 
-LISS_METADATA_DIRECTORY="liss-metadata"
 LISS_TEMPLATE_FILE_PATH="/resources/templates/liss_dataverse_template.json"
 LISS_MAPPING_FILE_PATH="/resources/mappings/liss-mapping.json"
 
