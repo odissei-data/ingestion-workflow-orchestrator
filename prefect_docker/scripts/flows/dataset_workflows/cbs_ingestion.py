@@ -2,7 +2,7 @@ import jmespath
 from prefect import flow
 from prefect.orion.schemas.states import Completed, Failed
 
-from queries import CBS_ID_QUERY, DIST_DATE_QUERY
+from queries import DIST_DATE_QUERY
 from tasks.base_tasks import xml2json, dataverse_mapper, \
     dataverse_import, update_publication_date, add_workflow_versioning_url, \
     sanitize_emails, semantic_enrichment, refine_metadata, doi_minter
