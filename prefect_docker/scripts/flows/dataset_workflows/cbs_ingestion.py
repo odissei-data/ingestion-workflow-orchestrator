@@ -5,7 +5,7 @@ from prefect.orion.schemas.states import Completed, Failed
 from queries import CBS_ID_QUERY, DIST_DATE_QUERY
 from tasks.base_tasks import xml2json, dataverse_mapper, \
     dataverse_import, update_publication_date, add_workflow_versioning_url, \
-    sanitize_emails
+    sanitize_emails, semantic_enrichment
 
 
 @flow
@@ -55,5 +55,9 @@ def cbs_metadata_ingestion(xml_metadata, version, settings_dict):
         )
         if not pub_date_response:
             return Failed(message='Unable to update publication date.')
+
+    enrichment_response = semantic_enrichment(settings_dict, doi)
+    if not enrichment_response:
+        return Failed(message="Unable to add enrichments.")
 
     return Completed(message=doi + 'ingested successfully.')
