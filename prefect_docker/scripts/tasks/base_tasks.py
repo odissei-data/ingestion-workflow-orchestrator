@@ -132,7 +132,7 @@ def update_publication_date(publication_date, pid, settings_dict):
 
     :param publication_date: The original date of publication.
     :param pid: The DOI of the dataset in question.
-    :param settings_dict: dict, contains settings for the current task
+    :param settings_dict: dict, contains settings for the current task.
     :return: Response body on success | None on failure.
     """
     logger = get_run_logger()
@@ -389,6 +389,7 @@ def semantic_enrichment(settings_dict, pid: str):
     It then matches those keywords on ELSST terms and adds them to the search
     index of SOLR. This makes them searchable in Dataverse.
 
+    :param settings_dict: Contains settings for the current task.
     :param pid: The pid of the dataset.
     """
     logger = get_run_logger()
