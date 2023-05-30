@@ -1,4 +1,5 @@
 [default]
+ELSST_SKOSMOS_URL="https://thesauri.cessda.eu"
 
 [development]
 debug = true
@@ -12,8 +13,7 @@ DATAVERSE_MAPPER_URL="http://dataverse-mapper-v2:8094"
 DANS_TRANSFORMER_SERVICE="https://transformer.labs.dans.knaw.nl"
 EMAIL_SANITATION_SERVICE="https://emailsanitizer.labs.dans.knaw.nl/sanitize"
 METADATA_REFINER_URL="http://metadata-refiner:7878"
-
-BUCKET_NAME = "harvested-metadata"
+SEMANTIC_API_URL= "http://semanticapi:80/importdoi"
 
 [production]
 debug = false
@@ -26,5 +26,4 @@ DATAVERSE_MAPPER_URL="https://dataverse-mapper.labs.dans.knaw.nl"
 DANS_TRANSFORMER_SERVICE="https://transformer.labs.dans.knaw.nl"
 EMAIL_SANITIZER_URL="https://emailsanitizer.labs.dans.knaw.nl/sanitize"
 METADATA_REFINER_URL="https://metadata-refiner.labs.dans.knaw.nl"
-
-BUCKET_NAME = "harvested-metadata"
+SEMANTIC_API_URL="https://semantic-enrichment.labs.dans.knaw.nl"
