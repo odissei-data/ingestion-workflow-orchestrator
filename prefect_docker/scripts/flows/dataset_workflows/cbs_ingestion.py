@@ -5,7 +5,7 @@ from prefect.orion.schemas.states import Completed, Failed
 from queries import CBS_ID_QUERY, DIST_DATE_QUERY
 from tasks.base_tasks import xml2json, dataverse_mapper, \
     dataverse_import, update_publication_date, add_workflow_versioning_url, \
-    sanitize_emails, semantic_enrichment
+    sanitize_emails, semantic_enrichment, refine_metadata
 
 
 @flow
@@ -35,6 +35,10 @@ def cbs_metadata_ingestion(xml_metadata, version, settings_dict):
 
     if not mapped_metadata:
         return Failed(message='Unable to map metadata.')
+
+    mapped_metadata = refine_metadata(mapped_metadata, settings_dict)
+    if not mapped_metadata:
+        return Failed(message='Unable to refine metadata.')
 
     mapped_metadata = add_workflow_versioning_url(mapped_metadata, version)
     if not mapped_metadata:
