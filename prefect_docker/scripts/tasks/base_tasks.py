@@ -3,7 +3,6 @@ import json
 from configuration.config import settings
 from prefect import task, get_run_logger
 import requests
-from requests.structures import CaseInsensitiveDict
 
 import utils
 
@@ -261,21 +260,23 @@ def get_license(json_metadata):
 @task
 def doi_minter(metadata):
     """
-    TODO
+    Mints a DOI for the given dataset using the Datacite API.
 
-    :param metadata:
-    :return:
+    :param metadata: Metadata of the dataset that needs minting.
+    :return: Minted DOI
     """
-    dataverse_json = json.dumps(metadata)
-    url = "http://0.0.0.0:8566/submit-to-datacite"
+    logger = get_run_logger()
+    url = settings.DOI_MINTER_URL
 
-    headers = CaseInsensitiveDict()
     headers = {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer @km1-10122004-lamA',
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': settings.MINTER_API_TOKEN,
     }
-    response = requests.post(url, headers=headers, data=dataverse_json)
+
+    response = requests.post(url, headers=headers, data=json.dumps(metadata))
+    if not response.ok:
+        logger.info(response.text)
+        return None
     doi = response.text.replace('"', '').replace('{', '').replace('}', '')
     return doi
 

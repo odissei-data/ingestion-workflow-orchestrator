@@ -2,10 +2,10 @@ import jmespath
 from prefect import flow
 from prefect.orion.schemas.states import Completed, Failed
 
-from queries import CBS_ID_QUERY, DIST_DATE_QUERY
+from queries import DIST_DATE_QUERY
 from tasks.base_tasks import xml2json, dataverse_mapper, \
     dataverse_import, update_publication_date, add_workflow_versioning_url, \
-    sanitize_emails, semantic_enrichment, refine_metadata
+    sanitize_emails, semantic_enrichment, refine_metadata, doi_minter
 
 
 @flow
@@ -44,9 +44,9 @@ def cbs_metadata_ingestion(xml_metadata, version, settings_dict):
     if not mapped_metadata:
         return Failed(message='Unable to store workflow version.')
 
-    # TODO: Add DOI minter step.
-    cbs_id = jmespath.search(CBS_ID_QUERY, mapped_metadata)
-    doi = 'doi:10.57934/' + cbs_id
+    doi = doi_minter(mapped_metadata)
+    if not doi:
+        return Failed(message='Failed to mint or update DOI with Datacite API')
 
     import_response = dataverse_import(mapped_metadata, settings_dict, doi)
     if not import_response:
