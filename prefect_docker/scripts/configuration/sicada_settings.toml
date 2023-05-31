@@ -20,6 +20,19 @@ SSH_REFINER_ENDPOINT="@format {this.SICADA_REFINER_ENDPOINT}"
 DVNL_URL="https://dataverse.nl/"
 DVNL_REFINER_ENDPOINT="@format {this.SICADA_REFINER_ENDPOINT}"
 
+[staging]
+SICADA_URL="https://google.nl"  # TODO set production value
+SICADA_REFINER_ENDPOINT="/metadata-refinement/sicada"
+
+IISG_URL="https://datasets.iisg.amsterdam"
+IISG_REFINER_ENDPOINT="@format {this.SICADA_REFINER_ENDPOINT}"
+
+SSH_URL="google.nl" # TODO set production value
+SSH_REFINER_ENDPOINT="@format {this.SICADA_REFINER_ENDPOINT}"
+
+DVNL_URL="https://dataverse.nl/"
+DVNL_REFINER_ENDPOINT="@format {this.SICADA_REFINER_ENDPOINT}"
+
 [production]
 SICADA_URL="https://google.nl"  # TODO set production value
 SICADA_REFINER_ENDPOINT="/metadata-refinement/sicada"
