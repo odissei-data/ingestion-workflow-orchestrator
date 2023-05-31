@@ -266,12 +266,13 @@ def doi_minter(metadata):
     :return: Minted DOI
     """
     logger = get_run_logger()
-    url = "https://dataciteminter.labs.dans.knaw.nl/submit-to-datacite/draft"
+    url = settings.DOI_MINTER_URL
 
     headers = {
         'Content-Type': 'application/json',
         'Authorization': settings.MINTER_API_TOKEN,
     }
+
     response = requests.post(url, headers=headers, data=json.dumps(metadata))
     if not response.ok:
         logger.info(response.text)
