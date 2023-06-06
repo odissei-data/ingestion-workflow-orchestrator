@@ -121,7 +121,7 @@ def create_ingestion_workflow_versioning(
             github_repo=refiner_name,
             docker_username='fjodorvr',
             image_repo=refiner_name,
-            endpoint='https://metadata-refiner.labs.dans.knaw.nl/'
+            endpoint='https://metadata-refiner.labs.dans.knaw.nl'
                      + settings.REFINER_ENDPOINT
         )
         version_dict[refiner_name] = refiner
