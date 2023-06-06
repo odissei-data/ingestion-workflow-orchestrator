@@ -1,4 +1,6 @@
 import os
+from datetime import datetime
+
 from prefect import flow
 from tasks.versioning_tasks import get_service_version, store_workflow_version
 
@@ -6,10 +8,16 @@ VERSION = os.getenv('VERSION')
 
 
 @flow
-def create_ingestion_workflow_versioning(transformer=None, mapper=None,
-                                         fetcher=None, minter=None,
-                                         importer=None, updater=None
-                                         ):
+def create_ingestion_workflow_versioning(
+        transformer: bool = None,
+        mapper: bool = None,
+        fetcher: bool = None,
+        minter: bool = None,
+        importer: bool = None,
+        updater: bool = None,
+        refiner: bool = None,
+        settings=None
+):
     """ Creates a version dictionary detailing a specific ingestion workflow.
 
     The different workflows all use a set of services that have their own
@@ -21,6 +29,10 @@ def create_ingestion_workflow_versioning(transformer=None, mapper=None,
     """
 
     version_dict = {'workflow_orchestrator': VERSION}
+
+    current_datetime = datetime.now()
+    formatted_datetime = current_datetime.strftime("%d-%m-%Y %H:%M:%S")
+    version_dict['created_on'] = formatted_datetime
 
     if transformer:
         transformer_name = 'DANS-transformer-service'
@@ -104,6 +116,21 @@ def create_ingestion_workflow_versioning(transformer=None, mapper=None,
                      'publication-date-updater'
         )
         version_dict[updater_name] = updater
+
+    if refiner:
+        refiner_name = 'metadata-refiner'
+        refiner = get_service_version(
+            service_url='https://metadata-refiner.labs.dans.knaw.nl/'
+                        'version',
+            service_name=refiner_name,
+            github_username='odissei-data',
+            github_repo=refiner_name,
+            docker_username='fjodorvr',
+            image_repo=refiner_name,
+            endpoint='https://metadata-refiner.labs.dans.knaw.nl'
+                     + settings.REFINER_ENDPOINT
+        )
+        version_dict[refiner_name] = refiner
 
     version = store_workflow_version(version_dict)
 
