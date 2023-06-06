@@ -1,4 +1,6 @@
 import os
+from datetime import datetime
+
 from prefect import flow
 from tasks.versioning_tasks import get_service_version, store_workflow_version
 
@@ -27,6 +29,10 @@ def create_ingestion_workflow_versioning(
     """
 
     version_dict = {'workflow_orchestrator': VERSION}
+
+    current_datetime = datetime.now()
+    formatted_datetime = current_datetime.strftime("%d-%m-%Y %H:%M:%S")
+    version_dict['created_on'] = formatted_datetime
 
     if transformer:
         transformer_name = 'DANS-transformer-service'
