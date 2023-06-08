@@ -1,4 +1,5 @@
 import requests
+from configuration.config import settings
 from prefect import flow, task
 from prefect.orion.schemas.states import Failed
 
@@ -6,9 +7,10 @@ from tasks.base_tasks import semantic_enrichment
 
 
 @flow
-def dataverse_semantic_enrichment(dataverse_url, persistent_id, api_token,
-                                  settings_dict):
-    pids = extract_dataverse_pids(dataverse_url, persistent_id, api_token)
+def dataverse_semantic_enrichment(dataverse_url, subverse, api_token,
+                                  settings_dict_name):
+    settings_dict = getattr(settings, settings_dict_name)
+    pids = extract_dataverse_pids(dataverse_url, subverse, api_token)
     if not pids:
         return Failed(message="Unable to extract pids from dataverse")
     for pid in pids:
@@ -18,8 +20,8 @@ def dataverse_semantic_enrichment(dataverse_url, persistent_id, api_token,
 
 
 @task
-def extract_dataverse_pids(dataverse_url, persistent_id, api_token):
-    api_endpoint = f"{dataverse_url}/api/dataverses/{persistent_id}/contents"
+def extract_dataverse_pids(dataverse_url, subverse, api_token):
+    api_endpoint = f"{dataverse_url}/api/dataverses/{subverse}/contents"
     headers = {"X-Dataverse-key": api_token,
                'Content-Type': 'application/json'}
 
