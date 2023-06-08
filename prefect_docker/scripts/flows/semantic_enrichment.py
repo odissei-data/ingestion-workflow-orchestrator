@@ -9,6 +9,13 @@ from tasks.base_tasks import semantic_enrichment
 @flow
 def dataverse_semantic_enrichment(dataverse_url, subverse, api_token,
                                   settings_dict_name):
+    """
+    :param dataverse_url: example: portal.staging.odissei.nl
+    :param subverse: example: cbs
+    :param api_token: the API token of the dataverse instance.
+    :param settings_dict_name: The name of the dict that needs to be used,
+     can be found in odissei_settings. always in capital letters. example: DANS
+    """
     settings_dict = getattr(settings, settings_dict_name)
     pids = extract_dataverse_pids(dataverse_url, subverse, api_token)
     if not pids:
