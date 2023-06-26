@@ -381,6 +381,18 @@ def refine_metadata(metadata: dict, settings_dict):
         return None
     return response.json()
 
+@task
+def extract_doi_from_dataverse(settings_dict):
+    """
+    Method to extract a list of DOI's from a given dataverse
+    """
+    from pyDataverse.api import NativeApi
+    api = NativeApi(base_url='https://portal.odissei.nl', api_token='28904573-e231-47b1-85d9-0a1346eac15b')
+    datasets = api.get_children(parent='cbs', children_types=['datasets'])
+    pids = []
+    for child in datasets:
+        pids.append(child['pid'])
+    return pids
 
 @task
 def semantic_enrichment(settings_dict, pid: str):

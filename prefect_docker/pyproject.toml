@@ -12,6 +12,7 @@ boto3 = "^1.26.75"
 dynaconf = "^3.1.11"
 jmespath = "^1.0.1"
 pydantic = "^1.10.0"
+pydataverse = "^0.3.1"
 
 [tool.poetry.dev-dependencies]
 
