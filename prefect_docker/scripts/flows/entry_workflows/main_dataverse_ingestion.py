@@ -19,11 +19,15 @@ def dataverse_ingestion_pipeline(settings_dict_name):
     :param settings_dict_name: string, name of the settings you wish to use
     :return: None
     """
+    settings_dict = getattr(settings, settings_dict_name)
+
     version = create_ingestion_workflow_versioning(
         transformer=True,
         fetcher=True,
         importer=True,
-        updater=True
+        updater=True,
+        refiner=True,
+        settings=settings_dict
     )
 
     minio_client = boto3.client(
@@ -33,7 +37,6 @@ def dataverse_ingestion_pipeline(settings_dict_name):
         aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
     )
 
-    settings_dict = getattr(settings, settings_dict_name)
     utils.workflow_executor(
         dataverse_metadata_ingestion,
         version,

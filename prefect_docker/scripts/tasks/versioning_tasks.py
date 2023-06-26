@@ -57,11 +57,9 @@ def get_latest_image_tag_version(docker_username, image_repo):
     tags = response.json()
 
     latest_tag = max(tags['results'], key=lambda x: x['last_updated'])
-    latest_tag_link = 'https://hub.docker.com/r/' \
-                      f'{docker_username}/{image_repo}/tags/' \
-                      f'{latest_tag["name"]}'
+    latest_image = f'{docker_username}/{image_repo}:{latest_tag["name"]}'
 
-    return latest_tag_link
+    return latest_image
 
 
 def get_latest_github_release_version(github_username, github_repo):

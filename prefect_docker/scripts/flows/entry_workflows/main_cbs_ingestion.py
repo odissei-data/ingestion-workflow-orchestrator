@@ -10,12 +10,16 @@ from flows.workflow_versioning.workflow_versioner import \
 
 @flow
 def cbs_ingestion_pipeline():
+    settings_dict = settings.CBS
+
     version = create_ingestion_workflow_versioning(
         transformer=True,
         mapper=True,
         minter=True,
         importer=True,
-        updater=True
+        updater=True,
+        refiner=True,
+        settings=settings.CBS
     )
 
     minio_client = boto3.client(
@@ -25,7 +29,6 @@ def cbs_ingestion_pipeline():
         aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
     )
 
-    settings_dict = settings.CBS
     utils.workflow_executor(
         cbs_metadata_ingestion,
         version,

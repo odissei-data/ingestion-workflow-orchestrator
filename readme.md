@@ -20,10 +20,32 @@ to start development.
 First you need to get a couple of containers running. All of these are needed
 as they are used by the Ingestion Orchestrator.
 
-### Harvester
+### Minio file storage
 
-Harvesters are outside the scope of this project. As long as you have a couple
-of `xml` files with metadata you are good to go.
+The metadata that is used by the workflows is stored in s3 buckets. The key, id
+and url of the server of the s3 storage should be set in the .secrets.toml as
+`AWS_SECRET_ACCESS_KEY`, `AWS_ACCESS_KEY_ID` and `MINIO_SERVER_URL`
+respectively.
+
+For a specific data provider a `BUCKET_NAME` should be added for that provider.
+The bucket in s3 storage that contains the metadata for the provider should use
+the same name as the `BUCKET_NAME` for that provider.
+
+example in odissei_settings.toml:
+
+```
+HSN_BUCKET_NAME="hsn-metadata"
+```
+
+```
+HSN={"ALIAS"="HSN_NL", "BUCKET_NAME"="@format {this.HSN_BUCKET_NAME}", "SOURCE_DATAVERSE_URL"="@format {this.IISG_URL}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}", "REFINER_ENDPOINT"="@format {this.HSN_REFINER_ENDPOINT}"}
+```
+
+In this example, HSN contains all information relating to settings specific to
+ingesting the HSN metadata. The BUCKET_NAME set in the HSN dictionary can be
+generically used in the code when a bucket name is necessary. It is set to the
+HSN_BUCKET_NAME which declares the specific name for the bucket for HSN.
+Further explanation on the settings can be found in [Settings files section](#settings-files).
 
 ### Dataverse
 
@@ -34,7 +56,10 @@ https://github.com/IQSS/dataverse-docker
 > Only a Super User can deposit via the API.
 
 Set the `superuser` boolean to true in the `authenticateduser` table. You are
-now a Super User. 
+now a Super User.
+
+More information on how to do this can be found in the documentation of the
+ODISSEI dataverse stack [here](https://github.com/odissei-data/odissei-stack#becoming-superuser).
 
 ### Dataverse Importer
 
@@ -74,10 +99,26 @@ Refines JSON metadata.
 
 https://github.com/odissei-data/metadata-refiner
 
+### DOI Minter
+
+Mints a DOI for a dataset. Should be used with **CAUTION**
+since if used with production settings this will mint a permanent DOI.
+
+https://github.com/ekoi/submitmd2dc-service/tree/using-dans-transformer-service
+
+### Semantic Enrichment
+
+Enriches the SOLR index with ELSST translations of the keywords from the
+[ELSST skosmos](https://thesauri.cessda.eu/elsst-3/en/).
+
+https://github.com/Dans-labs/semantic-enrichment
+
 ## Docker Network
 
-To allow the containers to communicate with each other you need to create a
-network. The commands below should do the trick.
+If the containers of the services are setup locally and do not use the
+dans-labs services, you need to setup a docker network between the
+ingestion-network and the local containers. The commands below should do the
+trick.
 
 ```shell
 docker network create -d bridge ingestion-network
@@ -89,9 +130,11 @@ docker network connect ingestion-network prefect
 docker network connect ingestion-network dataverse-mapper-v2
 docker network connect ingestion-network dans-transformer-service
 docker network connect ingestion-network metadata-refiner
+docker network connect ingestion-network semantic-enrichment
 ```
 
 ### Ports
+
 The containers are assumed to be running on the following ports. If needed,
 adjust the port numbers in the `.env` file.
 
@@ -102,6 +145,7 @@ adjust the port numbers in the `.env` file.
 - dataverse-mapper-v2: 8094
 - dans-transformer-service: 1745
 - metadata-refiner: 7878
+- semantic-enrichment: 8099
 
 # Dynaconf
 
@@ -109,10 +153,10 @@ The Ingestion Workflow Orchestrator uses Dynaconf to manage its settings. This
 chapter will give a very short introduction on Dynaconf. For more information
 read the docs.
 
-Use the `.env` file to set the environment to either development or production.
-
+Use the `.env` file to set the environment to either development, staging or
+production. Be careful that setting the env to production will mean that all
+flows that use the DOI-minter will be minting persistent DOI's.
 > ENV_FOR_DYNACONF=development
-
 
 ## Settings files
 
@@ -135,16 +179,14 @@ changes based on the current environment.
 
 ```toml
 [default]
-"METADATA_DIRECTORY"="@format {this.METADATA_DIRECTORY}"
+"BUCKET_NAME" = "@format {this.BUCKET_NAME}"
 
 [development]
-"METADATA_DIRECTORY"="path/to/local/dir"
+"BUCKET_NAME" = "path/to/local/dir"
 
 [production]
-"METADATA_DIRECTORY"="path/to/s3/bucket"
+"BUCKET_NAME" = "path/to/s3/bucket"
 ```
-
-
 
 # Dans Transformer Service
 

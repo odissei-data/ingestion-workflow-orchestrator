@@ -166,6 +166,12 @@
             "typeClass": "primitive",
             "multiple": true,
             "value": []
+          },
+          {
+            "typeName": "relatedMaterial",
+            "multiple": true,
+            "typeClass": "primitive",
+            "value": []
           }
         ]
       },
@@ -218,14 +224,134 @@
                   "typeClass": "primitive",
                   "value": ""
                 },
-                "variableLabel": {
-                  "typeName": "variableLabel",
+                "conceptVariableDefinition": {
+                  "typeName": "conceptVariableDefinition",
                   "multiple": false,
                   "typeClass": "primitive",
                   "value": ""
+                },
+                "conceptVariableObjecttype": {
+                  "typeName": "conceptVariableObjecttype",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                },
+                "conceptVariableValidFrom": {
+                  "typeName": "conceptVariableValidFrom",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                },
+                "conceptVariableName": {
+                  "typeName": "conceptVariableName",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                },
+                "conceptVariableID": {
+                  "typeName": "conceptVariableID",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                },
+                "conceptVariableVersion": {
+                  "typeName": "conceptVariableVersion",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                },
+                "conceptVariableVersionResponsibility": {
+                  "typeName": "conceptVariableVersionResponsibility",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                },
+                "variableProcessingInstruction": {
+                  "typeName": "variableProcessingInstruction",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                },
+                "variableDataType": {
+                  "typeName": "variableDataType",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                },
+                "variableDefinition": {
+                  "typeName": "variableDefinition",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                },
+                "conceptVariableGroeppad": {
+                  "typeName": "conceptVariableGroeppad",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                },
+                "conceptVariableWaardestelselnaam": {
+                  "typeName": "conceptVariableWaardestelselnaam",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                },
+                "conceptVariableThema": {
+                  "typeName": "conceptVariableThema",
+                  "multiple": true,
+                  "typeClass": "primitive",
+                  "value": []
+                },
+                "variableVolgnummer": {
+                  "typeName": "variableVolgnummer",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                },
+                "variableTrefwoord": {
+                  "typeName": "variableTrefwoord",
+                  "multiple": true,
+                  "typeClass": "primitive",
+                  "value": []
                 }
               }
             ]
+          }
+        ]
+      },
+      "CBSMetadata": {
+        "fields": [
+          {
+            "typeName": "NaamInDscCatalogus",
+            "typeClass": "primitive",
+            "multiple": false,
+            "value": ""
+          },
+          {
+            "typeName": "UniekeNaam",
+            "multiple": false,
+            "typeClass": "primitive",
+            "value": ""
+          },          {
+            "typeName": "Eigenaar",
+            "multiple": false,
+            "typeClass": "primitive",
+            "value": ""
+          },          {
+            "typeName": "GeldigVanaf",
+            "multiple": false,
+            "typeClass": "primitive",
+            "value": ""
+          },          {
+            "typeName": "GeldigTot",
+            "multiple": false,
+            "typeClass": "primitive",
+            "value": ""
+          },          {
+            "typeName": "Versie",
+            "multiple": false,
+            "typeClass": "primitive",
+            "value": ""
           }
         ]
       }

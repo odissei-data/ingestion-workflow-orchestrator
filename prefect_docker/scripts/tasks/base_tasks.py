@@ -3,7 +3,6 @@ import json
 from configuration.config import settings
 from prefect import task, get_run_logger
 import requests
-from requests.structures import CaseInsensitiveDict
 
 import utils
 
@@ -132,7 +131,7 @@ def update_publication_date(publication_date, pid, settings_dict):
 
     :param publication_date: The original date of publication.
     :param pid: The DOI of the dataset in question.
-    :param settings_dict: dict, contains settings for the current task
+    :param settings_dict: dict, contains settings for the current task.
     :return: Response body on success | None on failure.
     """
     logger = get_run_logger()
@@ -261,21 +260,23 @@ def get_license(json_metadata):
 @task
 def doi_minter(metadata):
     """
-    TODO
+    Mints a DOI for the given dataset using the Datacite API.
 
-    :param metadata:
-    :return:
+    :param metadata: Metadata of the dataset that needs minting.
+    :return: Minted DOI
     """
-    dataverse_json = json.dumps(metadata)
-    url = "http://0.0.0.0:8566/submit-to-datacite"
+    logger = get_run_logger()
+    url = settings.DOI_MINTER_URL
 
-    headers = CaseInsensitiveDict()
     headers = {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer @km1-10122004-lamA',
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': settings.MINTER_API_TOKEN,
     }
-    response = requests.post(url, headers=headers, data=dataverse_json)
+
+    response = requests.post(url, headers=headers, data=json.dumps(metadata))
+    if not response.ok:
+        logger.info(response.text)
+        return None
     doi = response.text.replace('"', '').replace('{', '').replace('}', '')
     return doi
 
@@ -319,6 +320,12 @@ def add_workflow_versioning_url(mapped_metadata, version):
 
 @task
 def sanitize_emails(xml_metadata, replacement_email: str = None):
+    """ sends data to a services that sanitizes the emails out of the data.
+
+    Emails get replaced by empty string if no replacement email is specified.
+    :param xml_metadata: The data to sanitize.
+    :param replacement_email: The email to replace any found emails with.
+    """
     logger = get_run_logger()
     if replacement_email is None:
         replacement_email = ""
@@ -345,6 +352,15 @@ def sanitize_emails(xml_metadata, replacement_email: str = None):
 
 @task
 def refine_metadata(metadata: dict, settings_dict):
+    """ Sends the metadata to a service for refinement.
+
+    This type of refinement that is done depends on the endpoint being called.
+    This service does not enrich or add metadata, it only cleans-up or refines
+    existing metadata.
+
+    :param metadata: The metadata to refine.
+    :param settings_dict: The settings dict containing the endpoint to be used.
+    """
     logger = get_run_logger()
     headers = {
         'accept': 'application/json',
@@ -359,6 +375,36 @@ def refine_metadata(metadata: dict, settings_dict):
         settings.METADATA_REFINER_URL + settings_dict.REFINER_ENDPOINT,
         headers=headers, data=json.dumps(data)
     )
+
+    if not response.ok:
+        logger.info(response.text)
+        return None
+    return response.json()
+
+
+@task
+def semantic_enrichment(settings_dict, pid: str):
+    """ An API call to a service that enriches the search index.
+
+    The semantic enrichment API takes the keywords of a dataset in Dataverse.
+    It then matches those keywords on ELSST terms and adds them to the search
+    index of SOLR. This makes them searchable in Dataverse.
+
+    :param settings_dict: Contains settings for the current task.
+    :param pid: The pid of the dataset.
+    """
+    logger = get_run_logger()
+    url = settings.SEMANTIC_API_URL
+    params = {
+        'token': settings_dict.DESTINATION_DATAVERSE_API_KEY,
+        'pid': pid,
+        'base': settings_dict.DESTINATION_DATAVERSE_URL,
+        'skosmosendpoint': settings.ELSST_SKOSMOS_URL,
+        'fields': 'prefLabel',
+        'vocab': 'elsst-3'
+    }
+
+    response = requests.get(url, params=params)
 
     if not response.ok:
         logger.info(response.text)
