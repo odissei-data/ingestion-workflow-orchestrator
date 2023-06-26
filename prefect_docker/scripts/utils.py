@@ -71,7 +71,7 @@ def workflow_executor(
     logger = get_run_logger()
 
     paginator = minio_client.get_paginator("list_objects_v2")
-    bucket = settings_dict.METADATA_DIRECTORY
+    bucket = settings_dict.BUCKET_NAME
     pages = paginator.paginate(
         Bucket=bucket,
     )
