@@ -410,3 +410,28 @@ def semantic_enrichment(settings_dict, pid: str):
         logger.info(response.text)
         return None
     return response.json()
+
+@task(task_run_name="{endpoint}-enrichment-task")
+def enrich_metadata(metadata: dict, endpoint: str) -> dict:
+    """ Uses the metadata-enhancer service to enrich the metadata.
+
+    :param metadata: The metadata to enrich.
+    :param endpoint: The endpoint that expresses the type of enrichment needed.
+    """
+    logger = get_run_logger()
+    url = f"{settings.METADATA_ENHANCER_URL}/{endpoint}"
+
+    headers = {
+        'accept': 'application/json',
+        'Content-Type': 'application/json'
+    }
+
+    data = {
+        "metadata": metadata,
+    }
+
+    response = requests.post(url, headers=headers, data=json.dumps(data))
+    if not response.ok:
+        logger.info(response.text)
+        return {}
+    return response.json()
