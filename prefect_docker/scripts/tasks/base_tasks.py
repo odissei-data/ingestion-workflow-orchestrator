@@ -381,6 +381,21 @@ def refine_metadata(metadata: dict, settings_dict):
         return None
     return response.json()
 
+@task
+def extract_doi_from_dataverse(settings_dict):
+    """
+    Method to extract a list of DOI's from a given dataverse
+    """
+    from pyDataverse.api import NativeApi
+    api = NativeApi(
+        base_url=settings_dict.DESTINATION_DATAVERSE_URL,
+        api_token=settings_dict.DESTINATION_DATAVERSE_API_KEY
+    )
+    datasets = api.get_children(parent='cbs', children_types=['datasets'])
+    pids = []
+    for child in datasets:
+        pids.append(child['pid'])
+    return pids
 
 @task
 def semantic_enrichment(settings_dict, pid: str):
@@ -409,4 +424,29 @@ def semantic_enrichment(settings_dict, pid: str):
     if not response.ok:
         logger.info(response.text)
         return None
+    return response.json()
+
+@task(task_run_name="{endpoint}-enrichment-task")
+def enrich_metadata(metadata: dict, endpoint: str) -> dict:
+    """ Uses the metadata-enhancer service to enrich the metadata.
+
+    :param metadata: The metadata to enrich.
+    :param endpoint: The endpoint that expresses the type of enrichment needed.
+    """
+    logger = get_run_logger()
+    url = f"{settings.METADATA_ENHANCER_URL}/{endpoint}"
+
+    headers = {
+        'accept': 'application/json',
+        'Content-Type': 'application/json'
+    }
+
+    data = {
+        "metadata": metadata,
+    }
+
+    response = requests.post(url, headers=headers, data=json.dumps(data))
+    if not response.ok:
+        logger.info(response.text)
+        return {}
     return response.json()
