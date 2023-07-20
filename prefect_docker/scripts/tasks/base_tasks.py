@@ -1,5 +1,5 @@
 import json
-
+from pyDataverse.api import NativeApi
 from configuration.config import settings
 from prefect import task, get_run_logger
 import requests
@@ -7,7 +7,7 @@ import requests
 import utils
 
 
-@task
+@task(timeout_seconds=300, retries=1)
 def xml2json(xml_metadata):
     """ Sends XML to the transformer server, receives JSON with same hierarchy.
 
@@ -36,7 +36,7 @@ def xml2json(xml_metadata):
     return response.json()
 
 
-@task
+@task(timeout_seconds=300, retries=1)
 def dataverse_mapper(json_metadata, mapping_file_path, template_file_path,
                      has_doi=True):
     """ Sends plain JSON to the mapper service, receives JSON formatted for DV.
@@ -76,7 +76,7 @@ def dataverse_mapper(json_metadata, mapping_file_path, template_file_path,
     return response.json()
 
 
-@task
+@task(timeout_seconds=300, retries=1)
 def dataverse_import(mapped_metadata, settings_dict, doi=None):
     """ Sends a request to the import service to import the given metadata.
 
@@ -107,8 +107,6 @@ def dataverse_import(mapped_metadata, settings_dict, doi=None):
     if doi:
         data['doi'] = doi
 
-    logger.info(data)
-
     url = f"{settings.DATAVERSE_IMPORTER_URL}/importer"
     response = requests.post(
         url,
@@ -121,7 +119,7 @@ def dataverse_import(mapped_metadata, settings_dict, doi=None):
     return response
 
 
-@task
+@task(timeout_seconds=300, retries=1)
 def update_publication_date(publication_date, pid, settings_dict):
     """ Sends a request to the publication date updater to update the pub date.
 
@@ -161,7 +159,7 @@ def update_publication_date(publication_date, pid, settings_dict):
     return response
 
 
-@task
+@task(timeout_seconds=300, retries=1)
 def dataverse_metadata_fetcher(metadata_format, doi, settings_dict):
     """
     Fetches the metadata of a dataset with the given DOI.
@@ -199,7 +197,7 @@ def dataverse_metadata_fetcher(metadata_format, doi, settings_dict):
     return response.json()
 
 
-@task
+@task(timeout_seconds=300, retries=1)
 def get_doi_from_dv_json(dataverse_json):
     """ Retrieves the DOI of a dataset from mapped Dataverse JSON
 
@@ -216,7 +214,7 @@ def get_doi_from_dv_json(dataverse_json):
     return doi
 
 
-@task
+@task(timeout_seconds=300, retries=1)
 def get_doi_from_header(json_metadata):
     """ Retrieves the DOI from the header in the basic JSON metadata.
 
@@ -234,7 +232,7 @@ def get_doi_from_header(json_metadata):
     return doi
 
 
-@task
+@task(timeout_seconds=300, retries=1)
 def get_license(json_metadata):
     """ Retrieves the license name from the given metadata.
 
@@ -257,7 +255,7 @@ def get_license(json_metadata):
         return 'DANS Licence'
 
 
-@task
+@task(timeout_seconds=300, retries=1)
 def doi_minter(metadata):
     """
     Mints a DOI for the given dataset using the Datacite API.
@@ -281,7 +279,7 @@ def doi_minter(metadata):
     return doi
 
 
-@task
+@task(timeout_seconds=300, retries=1)
 def add_workflow_versioning_url(mapped_metadata, version):
     """ Adds the workflow versioning URL to the metadata.
 
@@ -318,7 +316,7 @@ def add_workflow_versioning_url(mapped_metadata, version):
     return mapped_metadata
 
 
-@task
+@task(timeout_seconds=300, retries=1)
 def sanitize_emails(xml_metadata, replacement_email: str = None):
     """ sends data to a services that sanitizes the emails out of the data.
 
@@ -350,7 +348,7 @@ def sanitize_emails(xml_metadata, replacement_email: str = None):
     return data['data'].encode('utf-8')
 
 
-@task
+@task(timeout_seconds=300, retries=1)
 def refine_metadata(metadata: dict, settings_dict):
     """ Sends the metadata to a service for refinement.
 
@@ -381,23 +379,24 @@ def refine_metadata(metadata: dict, settings_dict):
         return None
     return response.json()
 
+
 @task
-def extract_doi_from_dataverse(settings_dict):
+def extract_doi_from_dataverse(settings_dict, alias):
     """
     Method to extract a list of DOI's from a given dataverse
     """
-    from pyDataverse.api import NativeApi
     api = NativeApi(
         base_url=settings_dict.DESTINATION_DATAVERSE_URL,
         api_token=settings_dict.DESTINATION_DATAVERSE_API_KEY
     )
-    datasets = api.get_children(parent='cbs', children_types=['datasets'])
+    datasets = api.get_children(parent=alias, children_types=['datasets'])
     pids = []
     for child in datasets:
         pids.append(child['pid'])
     return pids
 
-@task
+
+@task(timeout_seconds=300, retries=1)
 def semantic_enrichment(settings_dict, pid: str):
     """ An API call to a service that enriches the search index.
 
@@ -426,7 +425,9 @@ def semantic_enrichment(settings_dict, pid: str):
         return None
     return response.json()
 
-@task(task_run_name="{endpoint}-enrichment-task")
+
+@task(task_run_name="{endpoint}-enrichment-task", timeout_seconds=300,
+      retries=1)
 def enrich_metadata(metadata: dict, endpoint: str) -> dict:
     """ Uses the metadata-enhancer service to enrich the metadata.
 
