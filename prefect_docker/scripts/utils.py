@@ -2,8 +2,6 @@ import re
 
 from prefect import get_run_logger
 
-from configuration.config import settings
-
 
 def retrieve_license_name(license_string):
     dataset_lic = ''
@@ -74,6 +72,11 @@ def workflow_executor(
     bucket = settings_dict.BUCKET_NAME
     pages = paginator.paginate(
         Bucket=bucket,
+    )
+
+    logger.info(
+        f'Ingesting into Dataverse with URL: '
+        f'{settings_dict.DESTINATION_DATAVERSE_URL}.'
     )
 
     for page in pages:
