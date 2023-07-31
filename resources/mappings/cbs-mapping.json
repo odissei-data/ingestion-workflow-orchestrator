@@ -41,5 +41,5 @@
   "GeldigTot": ["result.Dataontwerpversies.Versie.Dataontwerp.GeldigTot"],
   "Versie": ["result.Dataontwerpversies.Versie.Dataontwerp.Versie"],
   "Eigenaar": ["result.Dataontwerpversies.Versie.Dataontwerp.Eigenaar"],
-  "relatedMaterial": ["result.Dataontwerpversies.Versie.Dataontwerp.Statlinetabellen.Statlinetabel"]
+  "statlineTabel": ["result.Dataontwerpversies.Versie.Dataontwerp.Statlinetabellen.Statlinetabel"]
 }
