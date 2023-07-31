@@ -332,26 +332,36 @@
             "multiple": false,
             "typeClass": "primitive",
             "value": ""
-          },          {
+          },
+          {
             "typeName": "Eigenaar",
             "multiple": false,
             "typeClass": "primitive",
             "value": ""
-          },          {
+          },
+          {
             "typeName": "GeldigVanaf",
             "multiple": false,
             "typeClass": "primitive",
             "value": ""
-          },          {
+          },
+          {
             "typeName": "GeldigTot",
             "multiple": false,
             "typeClass": "primitive",
             "value": ""
-          },          {
+          },
+          {
             "typeName": "Versie",
             "multiple": false,
             "typeClass": "primitive",
             "value": ""
+          },
+          {
+            "typeName": "statlineTabel",
+            "multiple": true,
+            "typeClass": "primitive",
+            "value": []
           }
         ]
       }
