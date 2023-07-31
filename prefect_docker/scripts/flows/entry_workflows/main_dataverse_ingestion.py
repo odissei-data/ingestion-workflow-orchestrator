@@ -24,9 +24,9 @@ def dataverse_ingestion_pipeline(settings_dict_name):
     version = create_ingestion_workflow_versioning(
         transformer=True,
         fetcher=True,
+        refiner=True,
         importer=True,
         updater=True,
-        refiner=True,
         settings=settings_dict
     )
 
