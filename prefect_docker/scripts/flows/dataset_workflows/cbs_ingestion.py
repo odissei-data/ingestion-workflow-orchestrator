@@ -71,6 +71,15 @@ def cbs_metadata_ingestion(xml_metadata, version, settings_dict):
         return Failed(
             message='Unable to enrich metadata using ELSST enrichment.')
 
+    mapped_metadata = enrich_metadata(
+        mapped_metadata,
+        'dataverse-frequency-enhancer'
+    )
+
+    if not mapped_metadata:
+        return Failed(
+            message='Unable to enrich metadata with frequency of use data.')
+
     import_response = dataverse_import(mapped_metadata, settings_dict, doi)
     if not import_response:
         return Failed(message='Unable to import dataset into Dataverse.')
