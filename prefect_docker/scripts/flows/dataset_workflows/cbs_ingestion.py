@@ -92,8 +92,8 @@ def cbs_metadata_ingestion(xml_metadata, version, settings_dict):
         if not pub_date_response:
             return Failed(message='Unable to update publication date.')
 
-    enrichment_response = semantic_enrichment(settings_dict, doi)
-    if not enrichment_response:
-        return Failed(message="Unable to add enrichments.")
+    # enrichment_response = semantic_enrichment(settings_dict, doi)
+    # if not enrichment_response:
+    #     return Failed(message="Unable to add enrichments.")
 
-    return Completed(message=doi + 'ingested successfully.')
+    return Completed(message=doi + ' ingested successfully.')
