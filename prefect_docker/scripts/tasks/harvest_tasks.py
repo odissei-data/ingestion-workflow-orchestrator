@@ -35,5 +35,29 @@ def harvest_metadata(metadata_prefix, oai_endpoint, bucket_name, verb,
 
     if not response.ok:
         raise Exception(
-            f'Request failed with status code {response.status_code}: {response.text}')
+            f'Request failed with status code {response.status_code}:'
+            f' {response.text}')
+
+
+@task(timeout_seconds=300, retries=1)
+def liss_harvest_metadata(bucket_name):
+    headers = {
+        'Content-Type': 'application/json',
+        'accept': 'application/json'
+    }
+
+    data = {
+        "bucket_name": bucket_name,
+    }
+
+    url = f"{settings.HARVESTER_URL}/start_liss_harvest"
+
+    response = requests.post(
+        url, headers=headers, data=json.dumps(data)
+    )
+
+    if not response.ok:
+        raise Exception(
+            f'Request failed with status code {response.status_code}: '
+            f'{response.text}')
 
