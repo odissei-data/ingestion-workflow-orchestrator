@@ -37,9 +37,10 @@
   "universe": ["result.Dataontwerpversies.Versie.Dataontwerp.BeschrijvingVanDePopulatie"],
   "NaamInDscCatalogus": ["result.Dataontwerpversies.Versie.Dataontwerp.NaamInDscCatalogus"],
   "UniekeNaam": ["result.Dataontwerpversies.Versie.Dataontwerp.UniekeNaam"],
+  "CBSAccess":  ["result.Dataontwerpversies.Versie.Dataontwerp.CbsAccess"],
   "GeldigVanaf": ["result.Dataontwerpversies.Versie.Dataontwerp.GeldigVanaf"],
   "GeldigTot": ["result.Dataontwerpversies.Versie.Dataontwerp.GeldigTot"],
   "Versie": ["result.Dataontwerpversies.Versie.Dataontwerp.Versie"],
   "Eigenaar": ["result.Dataontwerpversies.Versie.Dataontwerp.Eigenaar"],
-  "statlineTabel": ["result.Dataontwerpversies.Versie.Dataontwerp.Statlinetabellen.Statlinetabel"]
+  "relatedMaterial": ["result.Dataontwerpversies.Versie.Dataontwerp.Statlinetabellen.Statlinetabel"]
 }

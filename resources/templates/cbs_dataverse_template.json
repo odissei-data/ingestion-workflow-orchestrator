@@ -334,6 +334,12 @@
             "value": ""
           },
           {
+            "typeName": "CBSAccess",
+            "multiple": false,
+            "typeClass": "primitive",
+            "value": ""
+          },
+          {
             "typeName": "Eigenaar",
             "multiple": false,
             "typeClass": "primitive",
