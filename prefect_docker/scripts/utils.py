@@ -141,4 +141,4 @@ def identifier_list_workflow_executor(
                     f" does not have a list as value.")
     print(identifiers_dict)
     for pid in identifiers_dict['pids']:
-        data_provider_workflow(pid, version, settings_dict)
+        data_provider_workflow(pid, version, settings_dict, return_state=True)
