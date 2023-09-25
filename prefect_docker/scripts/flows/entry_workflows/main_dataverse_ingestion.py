@@ -38,14 +38,25 @@ def dataverse_ingestion_pipeline(settings_dict_name):
         aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
     )
 
-    harvest_metadata(
-        settings.METADATA_PREFIX,
-        f'{settings_dict.SOURCE_DATAVERSE_URL}/oai',
-        settings_dict.BUCKET_NAME,
-        'ListIdentifiers',
-        'start_harvest',
-        settings_dict.OAI_SET
-    )
+    # Check if settings_dict.OAI_SET is not null or empty
+    if hasattr(settings_dict, 'OAI_SET') and settings_dict.OAI_SET:
+        harvest_metadata(
+            settings.METADATA_PREFIX,
+            f'{settings_dict.SOURCE_DATAVERSE_URL}/oai',
+            settings_dict.BUCKET_NAME,
+            'ListIdentifiers',
+            'start_harvest',
+            settings_dict.OAI_SET
+        )
+
+    else:
+        harvest_metadata(
+            settings.METADATA_PREFIX,
+            f'{settings_dict.SOURCE_DATAVERSE_URL}/oai',
+            settings_dict.BUCKET_NAME,
+            'ListIdentifiers',
+            'start_harvest'
+        )
 
     utils.identifier_list_workflow_executor(
         dataverse_metadata_ingestion,
