@@ -4,14 +4,13 @@
   "dsDescriptionValue": ["abstract"],
   "title": ["title"],
   "distributorName": ["publisher"],
-  "keywordValue": ["concepts[*]"],
-  "topicClassValue": ["topics[*]"],
+  "keywordValue": ["concepts"],
+  "topicClassValue": ["topics"],
   "publication": {
     "mapping": "publications[*]",
     "children": {
       "publicationCitation": ["creator"],
-      "publicationIDNumber": ["intl_identifier"],
-      "publicationURL": ["url"]
+      "publicationIDNumber": ["intl_identifier"]
     }
   },
   "grantNumberAgency": ["funding_organizations[*]"],
