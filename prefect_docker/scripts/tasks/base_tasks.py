@@ -5,6 +5,7 @@ from prefect import task, get_run_logger
 import requests
 
 import utils
+logger = get_run_logger()
 
 
 @task(timeout_seconds=300, retries=1)
@@ -17,7 +18,6 @@ def xml2json(xml_metadata):
     :param xml_metadata: The XML contents
     :return: Plain JSON metadata | None on failure.
     """
-    logger = get_run_logger()
     headers = {
         'Content-Type': 'application/xml',
         'Authorization': settings.XML2JSON_API_TOKEN,
@@ -50,7 +50,6 @@ def dataverse_mapper(json_metadata, mapping_file_path, template_file_path,
     :param json_metadata: Plain JSON metadata.
     :return: JSON metadata formatted for the Native API | None on failure.
     """
-    logger = get_run_logger()
     headers = {
         'accept': 'application/json',
         'Content-Type': 'application/json'
@@ -90,7 +89,6 @@ def dataverse_import(mapped_metadata, settings_dict, doi=None):
     :param doi: The DOI of the dataset that is being imported.
     :return: Response body on success | None on failure.
     """
-    logger = get_run_logger()
     headers = {
         'accept': 'application/json',
         'Content-Type': 'application/json'
@@ -132,7 +130,6 @@ def update_publication_date(publication_date, pid, settings_dict):
     :param settings_dict: dict, contains settings for the current task.
     :return: Response body on success | None on failure.
     """
-    logger = get_run_logger()
     headers = {
         'accept': 'application/json',
         'Content-Type': 'application/json'
@@ -172,7 +169,6 @@ def dataverse_metadata_fetcher(metadata_format, doi, settings_dict):
     :param settings_dict: dict, contains settings for the current task
     :return: JSON or None
     """
-    logger = get_run_logger()
     headers = {
         'accept': 'application/json',
         'Content-Type': 'application/json'
@@ -215,24 +211,6 @@ def get_doi_from_dv_json(dataverse_json):
 
 
 @task(timeout_seconds=300, retries=1)
-def get_doi_from_header(json_metadata):
-    """ Retrieves the DOI from the header in the basic JSON metadata.
-
-    For data exported from a Dataverse instance, the DOI will be in the header
-    of the metadata. get_doi_from_header retrieves the DOI from metadata
-    that has already been transformed from XML to basic JSON.
-
-    :param json_metadata: Plain JSON metadata of a dataset.
-    :return: The DOI of the dataset.
-    """
-    try:
-        doi = json_metadata["result"]["record"]["header"]["identifier"]
-    except KeyError:
-        return None
-    return doi
-
-
-@task(timeout_seconds=300, retries=1)
 def get_license(json_metadata):
     """ Retrieves the license name from the given metadata.
 
@@ -263,7 +241,6 @@ def doi_minter(metadata):
     :param metadata: Metadata of the dataset that needs minting.
     :return: Minted DOI
     """
-    logger = get_run_logger()
     url = settings.DOI_MINTER_URL
 
     headers = {
@@ -324,7 +301,6 @@ def sanitize_emails(xml_metadata, replacement_email: str = None):
     :param xml_metadata: The data to sanitize.
     :param replacement_email: The email to replace any found emails with.
     """
-    logger = get_run_logger()
     if replacement_email is None:
         replacement_email = ""
 
@@ -359,7 +335,6 @@ def refine_metadata(metadata: dict, settings_dict):
     :param metadata: The metadata to refine.
     :param settings_dict: The settings dict containing the endpoint to be used.
     """
-    logger = get_run_logger()
     headers = {
         'accept': 'application/json',
         'Content-Type': 'application/json'
@@ -407,7 +382,6 @@ def semantic_enrichment(settings_dict, pid: str):
     :param settings_dict: Contains settings for the current task.
     :param pid: The pid of the dataset.
     """
-    logger = get_run_logger()
     url = settings.SEMANTIC_API_URL
     params = {
         'token': settings_dict.DESTINATION_DATAVERSE_API_KEY,
@@ -434,7 +408,6 @@ def enrich_metadata(metadata: dict, endpoint: str) -> dict:
     :param metadata: The metadata to enrich.
     :param endpoint: The endpoint that expresses the type of enrichment needed.
     """
-    logger = get_run_logger()
     url = f"{settings.METADATA_ENHANCER_URL}/{endpoint}"
 
     headers = {

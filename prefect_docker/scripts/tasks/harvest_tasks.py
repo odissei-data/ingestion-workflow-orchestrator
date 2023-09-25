@@ -21,13 +21,10 @@ def harvest_metadata(metadata_prefix, oai_endpoint, bucket_name, verb,
         "verb": verb
     }
 
-    print(f'data: {data}')
-
     if oai_set is not None:
         data['oai_set'] = oai_set
 
     url = f"{settings.HARVESTER_URL}/{harvester_endpoint}"
-    print(f'url: {url}')
 
     response = requests.post(
         url, headers=headers, data=json.dumps(data)
