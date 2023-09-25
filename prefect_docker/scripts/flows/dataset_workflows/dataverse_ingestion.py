@@ -1,5 +1,5 @@
 from prefect import flow
-from prefect.orion.schemas.states import Failed, Completed
+from prefect.server.schemas.states import Failed, Completed
 
 from tasks.base_tasks import dataverse_metadata_fetcher, dataverse_import, \
     update_publication_date, add_workflow_versioning_url, refine_metadata
@@ -15,17 +15,14 @@ def dataverse_metadata_ingestion(pid, version, settings_dict):
     :param settings_dict: dict, contains settings for the current workflow.
     :return: prefect.orion.schemas.states Failed or Completed.
     """
-    print(f'pid {pid}')
     dataverse_json = dataverse_metadata_fetcher(
         "dataverse_json", pid, settings_dict
     )
     if not dataverse_json:
         return Failed(message='Could not fetch dataverse metadata.')
-    print(dataverse_json)
     dataverse_json = refine_metadata(dataverse_json, settings_dict)
     if not dataverse_json:
         return Failed(message='Unable to refine metadata.')
-    print(dataverse_json)
     dataverse_json = add_workflow_versioning_url(dataverse_json, version)
     if not dataverse_json:
         return Failed(message='Unable to store workflow version.')

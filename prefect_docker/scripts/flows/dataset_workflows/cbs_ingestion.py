@@ -1,6 +1,6 @@
 import jmespath
 from prefect import flow
-from prefect.orion.schemas.states import Completed, Failed
+from prefect.server.schemas.states import Completed, Failed
 
 from queries import DIST_DATE_QUERY, CBS_ID_QUERY
 from tasks.base_tasks import xml2json, dataverse_mapper, \
