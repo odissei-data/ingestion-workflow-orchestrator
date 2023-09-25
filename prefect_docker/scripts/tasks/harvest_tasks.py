@@ -9,6 +9,18 @@ from configuration.config import settings
 @task(timeout_seconds=300, retries=1)
 def harvest_metadata(metadata_prefix, oai_endpoint, bucket_name, verb,
                      harvester_endpoint, oai_set=None):
+    """ A task that harvests metadata using the oai-harvester service.
+
+    This tasks harvests a list of records or identifiers and places the
+    harvested data in a specified bucket.
+
+    :param metadata_prefix: The metadata format of the harvested data.
+    :param oai_endpoint: The endpoint where the data will be harvested.
+    :param bucket_name: The bucket the harvested data will be stored in.
+    :param verb: The type of harvest. (ListRecords or ListIdentifiers).
+    :param harvester_endpoint: The API of the harvester service.
+    :param oai_set: A specific set of data that will be harvested.
+    """
     headers = {
         'Content-Type': 'application/json',
         'accept': 'application/json'
@@ -38,6 +50,14 @@ def harvest_metadata(metadata_prefix, oai_endpoint, bucket_name, verb,
 
 @task(timeout_seconds=300, retries=1)
 def liss_harvest_metadata(bucket_name):
+    """ A task that harvests the LISS dataset metadata.
+
+    The LISS server where we harvest metadata has a different
+    implementation than oai-pmh. This task calls the endpoint in the harvester
+    service that implements the harvesting protocol that is unique to LISS.
+
+    :param bucket_name: The bucket the LISS metadata will be stored in.
+    """
     headers = {
         'Content-Type': 'application/json',
         'accept': 'application/json'
