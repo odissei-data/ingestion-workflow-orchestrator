@@ -88,12 +88,12 @@ def workflow_executor(
                 Bucket=bucket,
                 Key=obj['Key']
             )
-            xml_metadata = object_data['Body'].read()
+            metadata = object_data['Body'].read()
             logger.info(
-                f"Retrieved file: {obj['Key']}, Size: {len(xml_metadata)}"
+                f"Retrieved file: {obj['Key']}, Size: {len(metadata)}"
             )
             data_provider_workflow(
-                xml_metadata,
+                metadata,
                 version,
                 settings_dict,
                 return_state=True
