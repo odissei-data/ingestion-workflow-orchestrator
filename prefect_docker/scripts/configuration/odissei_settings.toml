@@ -20,7 +20,7 @@ TRIMBOS={"ALIAS"="trimbos", "OAI_SET"="@format {this.TRIMBOS_OAI_SET}", "BUCKET_
 UMCU={"ALIAS"="UMCU", "OAI_SET"="@format {this.UMCU_OAI_SET}", "BUCKET_NAME"="@format {this.UMCU_BUCKET_NAME}", "SOURCE_DATAVERSE_URL"="@format {this.DATAVERSE_NL_URL}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}", "REFINER_ENDPOINT"="@format {this.DATAVERSE_NL_REFINER_ENDPOINT}"}
 UTRECHT={"ALIAS"="UU", "OAI_SET"="@format {this.UTRECHT_OAI_SET}", "BUCKET_NAME"="@format {this.UTRECHT_BUCKET_NAME}", "SOURCE_DATAVERSE_URL"="@format {this.DATAVERSE_NL_URL}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}", "REFINER_ENDPOINT"="@format {this.DATAVERSE_NL_REFINER_ENDPOINT}"}
 VU={"ALIAS"="vuamsterdam", "OAI_SET"="@format {this.VU_OAI_SET}", "BUCKET_NAME"="@format {this.VU_BUCKET_NAME}", "SOURCE_DATAVERSE_URL"="@format {this.DATAVERSE_NL_URL}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}", "REFINER_ENDPOINT"="@format {this.DATAVERSE_NL_REFINER_ENDPOINT}"}
-DANS={"ALIAS"="dans", "BUCKET_NAME"="@format {this.DANS_BUCKET_NAME}", "SOURCE_DATAVERSE_URL"="@format {this.SSH_DATASTATION_URL}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}", "REFINER_ENDPOINT"="@format {this.DATASTATION_REFINER_ENDPOINT}"}
+DANS={"ALIAS"="dans", "OAI_SET"="@format {this.DANS_OAI_SET}", "BUCKET_NAME"="@format {this.DANS_BUCKET_NAME}", "SOURCE_DATAVERSE_URL"="@format {this.SSH_DATASTATION_URL}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}", "REFINER_ENDPOINT"="@format {this.DATASTATION_REFINER_ENDPOINT}"}
 CBS={"ALIAS"="cbs", "BUCKET_NAME"="@format {this.CBS_BUCKET_NAME}", "TEMPLATE_FILE_PATH"="@format {this.CBS_TEMPLATE_FILE_PATH}", "MAPPING_FILE_PATH"="@format {this.CBS_MAPPING_FILE_PATH}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}", "REFINER_ENDPOINT"="@format {this.CBS_REFINER_ENDPOINT}"}
 LISS={"ALIAS"="liss", "BUCKET_NAME"="@format {this.LISS_BUCKET_NAME}", "TEMPLATE_FILE_PATH"="@format {this.LISS_TEMPLATE_FILE_PATH}", "MAPPING_FILE_PATH"="@format {this.LISS_MAPPING_FILE_PATH}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}"}
 HSN={"ALIAS"="HSN_NL", "BUCKET_NAME"="@format {this.HSN_BUCKET_NAME}", "SOURCE_DATAVERSE_URL"="@format {this.IISG_URL}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}", "REFINER_ENDPOINT"="@format {this.DATAVERSE_NL_REFINER_ENDPOINT}"}
@@ -39,6 +39,7 @@ TRIMBOS_OAI_SET = "Trimbos_Social_Sciences"
 UMCU_OAI_SET = "UMCU_Social_Sciences"
 UTRECHT_OAI_SET = "UU_Social_Sciences"
 VU_OAI_SET = "VU_Social_Sciences"
+DANS_OAI_SET = "social_sciences"
 
 TWENTE_BUCKET_NAME="dataverse.nl-twente"
 DELFT_BUCKET_NAME="dataverse.nl-delft"
@@ -54,10 +55,10 @@ TRIMBOS_BUCKET_NAME="dataverse.nl-trimbos"
 UMCU_BUCKET_NAME="dataverse.nl-umc"
 UTRECHT_BUCKET_NAME="dataverse.nl-utrecht"
 VU_BUCKET_NAME="dataverse.nl-vu"
-CBS_BUCKET_NAME = "cbs-metadata-03072023"
-DANS_BUCKET_NAME = "ssh-social-metadata"
-LISS_BUCKET_NAME = "liss-metadata"
-HSN_BUCKET_NAME = "hsn-metadata"
+CBS_BUCKET_NAME="cbs-metadata-03072023"
+DANS_BUCKET_NAME="ssh-social-metadata"
+LISS_BUCKET_NAME="liss-harvest-test-1"
+HSN_BUCKET_NAME="hsn-metadata"
 
 [development]
 ODISSEI_URL="http://dataverse:8080"
@@ -72,7 +73,7 @@ LISS_TEMPLATE_FILE_PATH="/resources/templates/liss_dataverse_template.json"
 LISS_MAPPING_FILE_PATH="/resources/mappings/liss-mapping.json"
 
 [staging]
-ODISSEI_URL="https://portal.dev.odissei.nl"
+ODISSEI_URL="https://portal.staging.odissei.nl"
 
 CBS_TEMPLATE_FILE_PATH="/resources/templates/cbs_dataverse_template.json"
 CBS_MAPPING_FILE_PATH="/resources/mappings/cbs-mapping.json"
