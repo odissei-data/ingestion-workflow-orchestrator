@@ -16,9 +16,10 @@ def cbs_ingestion_pipeline():
         transformer=True,
         mapper=True,
         minter=True,
+        refiner=True,
+        enhancer=True,
         importer=True,
         updater=True,
-        refiner=True,
         settings=settings.CBS
     )
 
