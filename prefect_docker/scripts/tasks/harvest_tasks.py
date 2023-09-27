@@ -23,7 +23,8 @@ def harvest_metadata(metadata_prefix, oai_endpoint, bucket_name, verb,
     """
     headers = {
         'Content-Type': 'application/json',
-        'accept': 'application/json'
+        'accept': 'application/json',
+        'X-API-Key': settings.HARVESTER_API_TOKEN
     }
 
     data = {
