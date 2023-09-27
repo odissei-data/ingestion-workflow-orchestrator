@@ -57,7 +57,7 @@ UTRECHT_BUCKET_NAME="dataverse.nl-utrecht"
 VU_BUCKET_NAME="dataverse.nl-vu"
 CBS_BUCKET_NAME="cbs-metadata-03072023"
 DANS_BUCKET_NAME="ssh-social-metadata"
-LISS_BUCKET_NAME="liss-harvest-test-1"
+LISS_BUCKET_NAME="liss-metadata"
 HSN_BUCKET_NAME="hsn-metadata"
 
 [development]
