@@ -19,7 +19,7 @@ def liss_metadata_ingestion(json_metadata, version, settings_dict):
     :param json_metadata: json_metadata of the data provider.
     :param version: dict, contains all version info of the workflow.
     :param settings_dict: dict, contains settings for the current workflow.
-    :return: prefect.orion.schemas.states Failed or Completed.
+    :return: prefect.server.schemas.states Failed or Completed.
     """
 
     decoded_json = json.loads(json_metadata.decode())

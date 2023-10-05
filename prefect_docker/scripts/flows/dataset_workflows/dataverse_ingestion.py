@@ -13,7 +13,7 @@ def dataverse_metadata_ingestion(pid, version, settings_dict):
     :param pid: pid of the dataset.
     :param version: dict, contains all version info of the workflow.
     :param settings_dict: dict, contains settings for the current workflow.
-    :return: prefect.orion.schemas.states Failed or Completed.
+    :return: prefect.server.schemas.states Failed or Completed.
     """
     dataverse_json = dataverse_metadata_fetcher(
         "dataverse_json", pid, settings_dict

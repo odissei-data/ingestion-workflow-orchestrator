@@ -17,7 +17,7 @@ def cbs_metadata_ingestion(xml_metadata, version, settings_dict):
     :param xml_metadata: xml_metadata of the data provider.
     :param version: dict, contains all version info of the workflow
     :param settings_dict: dict, contains settings for the current workflow
-    :return: prefect.orion.schemas.states Failed or Completed
+    :return: prefect.server.schemas.states Failed or Completed
     """
 
     xml_metadata_sanitized = sanitize_emails(xml_metadata)
