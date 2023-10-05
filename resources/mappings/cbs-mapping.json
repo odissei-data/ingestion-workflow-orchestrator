@@ -12,13 +12,13 @@
   "frequencyOfDataCollection": ["result.Dataontwerpversies.Versie.Dataontwerp.TypeVerslagperiode"],
   "samplingProcedure": ["result.Dataontwerpversies.Versie.Dataontwerp.GebruikteMethodologie"],
   "socialScienceNotesSubject": ["result.Dataontwerpversies.Versie.Dataontwerp.Procesverloop"],
-  "variable": {
+  "odisseiVariable": {
     "mapping": "result.Dataontwerpversies.Versie.Dataontwerp.Contextvariabelen.Contextvariabele[*]",
     "children": {
       "odisseiVariableName": ["VerkorteSchrijfwijzeNaamVariabele"],
       "odisseiVariableLabel": ["LabelVanDeVariabele"],
       "odisseiConceptVariableDefinition": ["Variabele.Definitie"],
-      "odisseiConceptVariableObjecttype": ["VariabeleObjecttypenaam"],
+      "odisseiConceptVariableObjecttype": ["Variabele.Objecttypenaam"],
       "odisseiConceptVariableValidFrom": ["Variabele.GeldigVanaf"],
       "odisseiConceptVariableName": ["Variabele.UniekeNaam"],
       "odisseiConceptVariableID": ["Variabele.Id"],
