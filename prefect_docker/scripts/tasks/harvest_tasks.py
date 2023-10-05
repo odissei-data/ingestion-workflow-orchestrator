@@ -61,7 +61,8 @@ def liss_harvest_metadata(bucket_name):
     """
     headers = {
         'Content-Type': 'application/json',
-        'accept': 'application/json'
+        'accept': 'application/json',
+        'X-API-Key': settings.HARVESTER_API_TOKEN
     }
 
     data = {
