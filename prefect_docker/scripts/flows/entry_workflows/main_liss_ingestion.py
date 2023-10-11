@@ -6,6 +6,7 @@ from prefect import flow
 from flows.dataset_workflows.liss_ingestion import liss_metadata_ingestion
 from flows.workflow_versioning.workflow_versioner import \
     create_ingestion_workflow_versioning
+from tasks.harvest_tasks import liss_harvest_metadata
 
 
 @flow
@@ -25,6 +26,11 @@ def liss_ingestion_pipeline():
     )
 
     settings_dict = settings.LISS
+
+    liss_harvest_metadata(
+        settings_dict.BUCKET_NAME,
+    )
+
     utils.workflow_executor(
         liss_metadata_ingestion,
         version,

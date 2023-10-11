@@ -1,30 +1,31 @@
+import json
+
 import jmespath
 from prefect import flow
-from prefect.orion.schemas.states import Completed, Failed
+from prefect.server.schemas.states import Completed, Failed
 
 from queries import DIST_DATE_QUERY
-from tasks.base_tasks import xml2json, dataverse_mapper, \
+from tasks.base_tasks import dataverse_mapper, \
     dataverse_import, update_publication_date, get_doi_from_dv_json, \
     add_workflow_versioning_url
 from utils import is_lower_level_liss_study
 
 
 @flow
-def liss_metadata_ingestion(xml_metadata, version, settings_dict):
+def liss_metadata_ingestion(json_metadata, version, settings_dict):
     """
     Ingestion flow for metadata from LISS.
 
-    :param xml_metadata: xml_metadata of the data provider.
+    :param json_metadata: json_metadata of the data provider.
     :param version: dict, contains all version info of the workflow.
     :param settings_dict: dict, contains settings for the current workflow.
-    :return: prefect.orion.schemas.states Failed or Completed.
+    :return: prefect.server.schemas.states Failed or Completed.
     """
-    json_metadata = xml2json(xml_metadata)
-    if not json_metadata:
-        return Failed(message='Unable to transform from xml to json')
+
+    decoded_json = json.loads(json_metadata.decode())
 
     mapped_metadata = dataverse_mapper(
-        json_metadata,
+        decoded_json,
         settings_dict.MAPPING_FILE_PATH,
         settings_dict.TEMPLATE_FILE_PATH
     )

@@ -1,7 +1,7 @@
 import requests
 from configuration.config import settings
 from prefect import flow, task
-from prefect.orion.schemas.states import Failed
+from prefect.server.schemas.states import Failed
 
 from tasks.base_tasks import semantic_enrichment
 

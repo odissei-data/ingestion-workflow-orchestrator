@@ -1,4 +1,4 @@
-import boto3
+from prefect import flow
 
 from configuration.config import settings
 from tasks.base_tasks import semantic_enrichment
@@ -9,7 +9,7 @@ from tasks.base_tasks import extract_doi_from_dataverse
 def enrichment_ingestion_pipeline():
     settings_dict = settings.CBS
 
-    dois = extract_doi_from_dataverse(settings_dict)
+    dois = extract_doi_from_dataverse(settings_dict, settings_dict.ALIAS)
 
     for doi in dois:
         semantic_enrichment(settings_dict, doi)

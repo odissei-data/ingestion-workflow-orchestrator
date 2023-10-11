@@ -1,6 +1,6 @@
 import jmespath
 from prefect import flow
-from prefect.orion.schemas.states import Completed, Failed
+from prefect.server.schemas.states import Completed, Failed
 
 from queries import DIST_DATE_QUERY, CBS_ID_QUERY
 from tasks.base_tasks import xml2json, dataverse_mapper, \
@@ -17,7 +17,7 @@ def cbs_metadata_ingestion(xml_metadata, version, settings_dict):
     :param xml_metadata: xml_metadata of the data provider.
     :param version: dict, contains all version info of the workflow
     :param settings_dict: dict, contains settings for the current workflow
-    :return: prefect.orion.schemas.states Failed or Completed
+    :return: prefect.server.schemas.states Failed or Completed
     """
 
     xml_metadata_sanitized = sanitize_emails(xml_metadata)
@@ -71,6 +71,15 @@ def cbs_metadata_ingestion(xml_metadata, version, settings_dict):
         return Failed(
             message='Unable to enrich metadata using ELSST enrichment.')
 
+    mapped_metadata = enrich_metadata(
+        mapped_metadata,
+        'dataverse-frequency-enhancer'
+    )
+
+    if not mapped_metadata:
+        return Failed(
+            message='Unable to enrich metadata with frequency of use data.')
+
     import_response = dataverse_import(mapped_metadata, settings_dict, doi)
     if not import_response:
         return Failed(message='Unable to import dataset into Dataverse.')
@@ -83,8 +92,8 @@ def cbs_metadata_ingestion(xml_metadata, version, settings_dict):
         if not pub_date_response:
             return Failed(message='Unable to update publication date.')
 
-    enrichment_response = semantic_enrichment(settings_dict, doi)
-    if not enrichment_response:
-        return Failed(message="Unable to add enrichments.")
+    # enrichment_response = semantic_enrichment(settings_dict, doi)
+    # if not enrichment_response:
+    #     return Failed(message="Unable to add enrichments.")
 
-    return Completed(message=doi + 'ingested successfully.')
+    return Completed(message=doi + ' ingested successfully.')

@@ -213,103 +213,109 @@
       "variableInformation": {
         "fields": [
           {
-            "typeName": "variable",
+            "typeName": "odisseiVariable",
             "multiple": true,
             "typeClass": "compound",
             "value": [
               {
-                "variableName": {
-                  "typeName": "variableName",
+                "odisseiVariableName": {
+                  "typeName": "odisseiVariableName",
                   "multiple": false,
                   "typeClass": "primitive",
                   "value": ""
                 },
-                "conceptVariableDefinition": {
-                  "typeName": "conceptVariableDefinition",
+                "odisseiVariableLabel": {
+                  "typeName": "odisseiVariableLabel",
                   "multiple": false,
                   "typeClass": "primitive",
                   "value": ""
                 },
-                "conceptVariableObjecttype": {
-                  "typeName": "conceptVariableObjecttype",
+                "odisseiConceptVariableDefinition": {
+                  "typeName": "odisseiConceptVariableDefinition",
                   "multiple": false,
                   "typeClass": "primitive",
                   "value": ""
                 },
-                "conceptVariableValidFrom": {
-                  "typeName": "conceptVariableValidFrom",
+                "odisseiConceptVariableObjecttype": {
+                  "typeName": "odisseiConceptVariableObjecttype",
                   "multiple": false,
                   "typeClass": "primitive",
                   "value": ""
                 },
-                "conceptVariableName": {
-                  "typeName": "conceptVariableName",
+                "odisseiConceptVariableValidFrom": {
+                  "typeName": "odisseiConceptVariableValidFrom",
                   "multiple": false,
                   "typeClass": "primitive",
                   "value": ""
                 },
-                "conceptVariableID": {
-                  "typeName": "conceptVariableID",
+                "odisseiConceptVariableName": {
+                  "typeName": "odisseiConceptVariableName",
                   "multiple": false,
                   "typeClass": "primitive",
                   "value": ""
                 },
-                "conceptVariableVersion": {
-                  "typeName": "conceptVariableVersion",
+                "odisseiConceptVariableID": {
+                  "typeName": "odisseiConceptVariableID",
                   "multiple": false,
                   "typeClass": "primitive",
                   "value": ""
                 },
-                "conceptVariableVersionResponsibility": {
-                  "typeName": "conceptVariableVersionResponsibility",
+                "odisseiConceptVariableVersion": {
+                  "typeName": "odisseiConceptVariableVersion",
                   "multiple": false,
                   "typeClass": "primitive",
                   "value": ""
                 },
-                "variableProcessingInstruction": {
-                  "typeName": "variableProcessingInstruction",
+                "odisseiConceptVariableVersionResponsibility": {
+                  "typeName": "odisseiConceptVariableVersionResponsibility",
                   "multiple": false,
                   "typeClass": "primitive",
                   "value": ""
                 },
-                "variableDataType": {
-                  "typeName": "variableDataType",
+                "odisseiVariableProcessingInstruction": {
+                  "typeName": "odisseiVariableProcessingInstruction",
                   "multiple": false,
                   "typeClass": "primitive",
                   "value": ""
                 },
-                "variableDefinition": {
-                  "typeName": "variableDefinition",
+                "odisseiVariableDataType": {
+                  "typeName": "odisseiVariableDataType",
                   "multiple": false,
                   "typeClass": "primitive",
                   "value": ""
                 },
-                "conceptVariableGroeppad": {
-                  "typeName": "conceptVariableGroeppad",
+                "odisseiVariableDefinition": {
+                  "typeName": "odisseiVariableDefinition",
                   "multiple": false,
                   "typeClass": "primitive",
                   "value": ""
                 },
-                "conceptVariableWaardestelselnaam": {
-                  "typeName": "conceptVariableWaardestelselnaam",
+                "odisseiConceptVariableGroeppad": {
+                  "typeName": "odisseiConceptVariableGroeppad",
                   "multiple": false,
                   "typeClass": "primitive",
                   "value": ""
                 },
-                "conceptVariableThema": {
-                  "typeName": "conceptVariableThema",
+                "odisseiConceptVariableWaardestelselnaam": {
+                  "typeName": "odisseiConceptVariableWaardestelselnaam",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                },
+                "odisseiConceptVariableThema": {
+                  "typeName": "odisseiConceptVariableThema",
                   "multiple": true,
                   "typeClass": "primitive",
                   "value": []
                 },
-                "variableVolgnummer": {
-                  "typeName": "variableVolgnummer",
+                "odisseiVariableVolgnummer": {
+                  "typeName": "odisseiVariableVolgnummer",
                   "multiple": false,
                   "typeClass": "primitive",
                   "value": ""
                 },
-                "variableTrefwoord": {
-                  "typeName": "variableTrefwoord",
+                "odisseiVariableTrefwoord": {
+                  "typeName": "odisseiVariableTrefwoord",
                   "multiple": true,
                   "typeClass": "primitive",
                   "value": []
@@ -332,26 +338,42 @@
             "multiple": false,
             "typeClass": "primitive",
             "value": ""
-          },          {
+          },
+          {
+            "typeName": "CBSAccess",
+            "multiple": false,
+            "typeClass": "primitive",
+            "value": ""
+          },
+          {
             "typeName": "Eigenaar",
             "multiple": false,
             "typeClass": "primitive",
             "value": ""
-          },          {
+          },
+          {
             "typeName": "GeldigVanaf",
             "multiple": false,
             "typeClass": "primitive",
             "value": ""
-          },          {
+          },
+          {
             "typeName": "GeldigTot",
             "multiple": false,
             "typeClass": "primitive",
             "value": ""
-          },          {
+          },
+          {
             "typeName": "Versie",
             "multiple": false,
             "typeClass": "primitive",
             "value": ""
+          },
+          {
+            "typeName": "statlineTabel",
+            "multiple": true,
+            "typeClass": "primitive",
+            "value": []
           }
         ]
       }

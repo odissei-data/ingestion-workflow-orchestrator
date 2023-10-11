@@ -1,6 +1,6 @@
 import jmespath
 from prefect import flow
-from prefect.orion.schemas.states import Completed, Failed
+from prefect.server.schemas.states import Completed, Failed
 
 from queries import DIST_DATE_QUERY
 from tasks.base_tasks import xml2json, dataverse_mapper, \
@@ -16,7 +16,7 @@ def easy_metadata_ingestion(xml_metadata, version, settings_dict):
     :param xml_metadata: xml_metadata of the data provider.
     :param version: dict, contains all version info of the workflow
     :param settings_dict: dict, contains settings for the current workflow
-    :return: prefect.orion.schemas.states Failed or Completed
+    :return: prefect.server.schemas.states Failed or Completed
     """
     json_metadata = xml2json(xml_metadata)
     if not json_metadata:

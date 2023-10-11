@@ -1,8 +1,9 @@
 import re
+import json
 
+from botocore.exceptions import ClientError
 from prefect import get_run_logger
-
-from configuration.config import settings
+from prefect.states import Failed
 
 
 def retrieve_license_name(license_string):
@@ -76,19 +77,68 @@ def workflow_executor(
         Bucket=bucket,
     )
 
+    logger.info(
+        f'Ingesting into Dataverse with URL: '
+        f'{settings_dict.DESTINATION_DATAVERSE_URL}.'
+    )
+
     for page in pages:
         for obj in page["Contents"]:
             object_data = minio_client.get_object(
                 Bucket=bucket,
                 Key=obj['Key']
             )
-            xml_metadata = object_data['Body'].read()
+            metadata = object_data['Body'].read()
             logger.info(
-                f"Retrieved file: {obj['Key']}, Size: {len(xml_metadata)}"
+                f"Retrieved file: {obj['Key']}, Size: {len(metadata)}"
             )
             data_provider_workflow(
-                xml_metadata,
+                metadata,
                 version,
                 settings_dict,
                 return_state=True
             )
+
+
+def identifier_list_workflow_executor(
+        data_provider_workflow,
+        version,
+        settings_dict,
+        s3_client
+):
+    """
+    Grabs a file called identifiers.json from the bucket
+    in settings_dict.BUCKET_NAME. That json file should be made into a dict.
+    Check that the dict contains a key called pids that has a list as value.
+    If not return FAILED, if it does execute the data_provider_workflow
+    for every pid in the list.
+
+    :param data_provider_workflow: A function representing the data provider workflow
+    :param version: The version of the workflow to be executed
+    :param settings_dict: A dictionary containing the settings including the BUCKET_NAME
+    :param s3_client: An object representing the Boto3 S3 client to access the bucket
+    :return: 'SUCCESS' if the workflow is executed successfully, 'FAILED' otherwise
+    """
+
+    try:
+        file_data = s3_client.get_object(
+            Bucket=settings_dict.BUCKET_NAME,
+            Key='identifiers.json')['Body'].read()
+        identifiers_dict = json.loads(file_data)
+    except ClientError as e:
+        if e.response['Error']['Code'] == 'NoSuchKey':
+            return Failed(message="identifiers.json not found in the bucket.")
+        else:
+            return Failed(
+                message="Error accessing identifiers.json from the bucket.")
+    except json.JSONDecodeError as e:
+        return Failed(message="identifiers.json is not in valid JSON format.")
+
+    if 'pids' not in identifiers_dict or not isinstance(
+            identifiers_dict['pids'], list):
+        return Failed(
+            message=f"identifiers.json does not contain the pids key or it"
+                    f" does not have a list as value.")
+    print(identifiers_dict)
+    for pid in identifiers_dict['pids']:
+        data_provider_workflow(pid, version, settings_dict, return_state=True)

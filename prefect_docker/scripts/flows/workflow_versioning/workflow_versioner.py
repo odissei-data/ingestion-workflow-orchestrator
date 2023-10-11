@@ -13,15 +13,16 @@ def create_ingestion_workflow_versioning(
         mapper: bool = None,
         fetcher: bool = None,
         minter: bool = None,
+        refiner: bool = None,
+        enhancer: bool = None,
         importer: bool = None,
         updater: bool = None,
-        refiner: bool = None,
         settings=None
 ):
     """ Creates a version dictionary detailing a specific ingestion workflow.
 
     The different workflows all use a set of services that have their own
-    versioning information. This flow creates a dictionary with up to date
+    versioning information. This flow creates a dictionary with up-to-date
     information on the services passed as parameters. All parameters are bools
     indicating if the service in question was used.
 
@@ -120,8 +121,7 @@ def create_ingestion_workflow_versioning(
     if refiner:
         refiner_name = 'metadata-refiner'
         refiner = get_service_version(
-            service_url='https://metadata-refiner.labs.dans.knaw.nl/'
-                        'version',
+            service_url='https://metadata-refiner.labs.dans.knaw.nl/version',
             service_name=refiner_name,
             github_username='odissei-data',
             github_repo=refiner_name,
@@ -131,6 +131,26 @@ def create_ingestion_workflow_versioning(
                      + settings.REFINER_ENDPOINT
         )
         version_dict[refiner_name] = refiner
+
+    if enhancer:
+        enhancer_name = 'metadata-enhancer'
+        enhancer = get_service_version(
+            service_url='https://metadata-enhancer.labs.dans.knaw.nl/version',
+            service_name=enhancer_name,
+            github_username='odissei-data',
+            github_repo=enhancer_name,
+            docker_username='fjodorvr',
+            image_repo=enhancer_name,
+            endpoint=[
+                'https://metadata-enhancer.labs.dans.knaw.nl/'
+                'dataverse-ELSST-enhancer'
+                'https://metadata-enhancer.labs.dans.knaw.nl/'
+                'dataverse-variable-enhancer'
+                'https://metadata-enhancer.labs.dans.knaw.nl/'
+                'dataverse-frequency-enhancer'
+            ]
+        )
+        version_dict[enhancer_name] = enhancer
 
     version = store_workflow_version(version_dict)
 

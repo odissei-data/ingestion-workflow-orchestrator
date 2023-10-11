@@ -9,6 +9,7 @@ from flows.dataset_workflows.dataverse_ingestion import \
 from flows.workflow_versioning.workflow_versioner import \
     create_ingestion_workflow_versioning
 import utils
+from tasks.harvest_tasks import harvest_metadata
 
 
 @flow
@@ -24,9 +25,9 @@ def dataverse_ingestion_pipeline(settings_dict_name):
     version = create_ingestion_workflow_versioning(
         transformer=True,
         fetcher=True,
+        refiner=True,
         importer=True,
         updater=True,
-        refiner=True,
         settings=settings_dict
     )
 
@@ -37,7 +38,27 @@ def dataverse_ingestion_pipeline(settings_dict_name):
         aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
     )
 
-    utils.workflow_executor(
+    # Check if settings_dict.OAI_SET is not null or empty
+    if hasattr(settings_dict, 'OAI_SET') and settings_dict.OAI_SET:
+        harvest_metadata(
+            settings.METADATA_PREFIX,
+            f'{settings_dict.SOURCE_DATAVERSE_URL}/oai',
+            settings_dict.BUCKET_NAME,
+            'ListIdentifiers',
+            'start_harvest',
+            settings_dict.OAI_SET
+        )
+
+    else:
+        harvest_metadata(
+            settings.METADATA_PREFIX,
+            f'{settings_dict.SOURCE_DATAVERSE_URL}/oai',
+            settings_dict.BUCKET_NAME,
+            'ListIdentifiers',
+            'start_harvest'
+        )
+
+    utils.identifier_list_workflow_executor(
         dataverse_metadata_ingestion,
         version,
         settings_dict,

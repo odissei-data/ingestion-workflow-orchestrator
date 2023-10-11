@@ -1,9 +1,41 @@
 {
-    "authorName": ["result.record.metadata.oai_dc:dc.dc:creator"],
-    "title": ["result.record.metadata.oai_dc:dc.dc:title"],
-    "dsDescriptionValue": ["result.record.metadata.oai_dc:dc.dc:description"],
-    "producerName": ["result.record.metadata.oai_dc:dc.dc:publisher"],
-    "distributorName": ["result.record.metadata.oai_dc:dc.dc:publisher"],
-    "distributionDate": ["result.record.metadata.oai_dc:dc.dc:date"],
-    "datasetPersistentId": ["result.record.metadata.oai_dc:dc.dc:identifier"]
+  "datasetPersistentId": ["DOI"],
+  "authorName": ["creator"],
+  "dsDescriptionValue": ["abstract"],
+  "title": ["title"],
+  "distributorName": ["publisher"],
+  "keywordValue": ["concepts"],
+  "topicClassValue": ["topics"],
+  "publication": {
+    "mapping": "publications[*]",
+    "children": {
+      "publicationCitation": ["creator"],
+      "publicationIDNumber": ["intl_identifier"],
+      "publicationURL": ["url"]
+    }
+  },
+  "grantNumberAgency": ["funding_organizations[*]"],
+  "dateOfCollectionStart": ["begin_date"],
+  "dateOfCollectionEnd": ["end_date"],
+  "kindOfData": ["longitudinal_type"],
+  "collectionMode": ["collection_events[*].mode"],
+  "dataCollectionSituation": ["response_overview"],
+  "actionsToMinimizeLoss": ["collection_events[*].minimize_losses"],
+  "variable": {
+    "mapping": "datasets[*].variables[]",
+    "children": {
+      "variableName": ["name"],
+      "variableLabel": ["label"]
+    }
+  },
+  "questionSchemeName": ["questionnaires[*].name"],
+  "questionSchemeDescription": ["questionnaires[*].description"],
+  "question":{
+    "mapping": "questionnaires[].questions[]",
+    "children":{
+      "questionName": ["name"],
+      "questionText": ["question_text"]
+    }
+  },
+  "distributionDate": ["created"]
 }
