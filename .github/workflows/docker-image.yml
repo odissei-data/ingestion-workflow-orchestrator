@@ -36,4 +36,4 @@ jobs:
           context: ./prefect_docker/
           file: ./prefect_docker/Dockerfile
           push: true
-          tags: dansknaw/dans-prefect:${{ GITHUB_REF_NAME }}
+          tags: dansknaw/dans-prefect:${{  github.ref_name }}
