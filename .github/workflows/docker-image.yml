@@ -10,6 +10,7 @@ env:
   DOCKER_IMAGE_NAME: "dans-prefect"
   DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
   DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+  ORG: "dansknaw"
   
 
 jobs:
@@ -36,4 +37,4 @@ jobs:
           context: .
           file: ./prefect_docker/Dockerfile
           push: true
-          tags: $DOCKER_HUB_USERNAME/$DOCKER_IMAGE_NAME:$TAG
+          tags: $ORG/$DOCKER_IMAGE_NAME:$TAG
