@@ -11,7 +11,6 @@ env:
   DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
   DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
   ORG: "dansknaw"
-  
 
 jobs:
   build:
@@ -37,4 +36,4 @@ jobs:
           context: ./prefect_docker/
           file: ./prefect_docker/Dockerfile
           push: true
-          tags: dansknaw/dans-prefect:latest
+          tags: dansknaw/dans-prefect:$GITHUB_REF_NAME
