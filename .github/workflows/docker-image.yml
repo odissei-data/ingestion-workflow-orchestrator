@@ -34,7 +34,7 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ./prefect_docker/
           file: ./prefect_docker/Dockerfile
           push: true
           tags: dansknaw/dans-prefect:latest
