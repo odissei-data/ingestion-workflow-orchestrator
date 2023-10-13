@@ -37,4 +37,4 @@ jobs:
           context: .
           file: ./prefect_docker/Dockerfile
           push: true
-          tags: $ORG/$DOCKER_IMAGE_NAME:$TAG
+          tags: dansknaw/dans-prefect:latest
