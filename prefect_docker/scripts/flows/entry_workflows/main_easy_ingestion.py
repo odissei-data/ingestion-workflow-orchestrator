@@ -3,6 +3,7 @@ import boto3
 import utils
 from configuration.config import settings
 from prefect import flow
+from prefect.deployments.deployments import Deployment
 from flows.dataset_workflows.easy_ingestion import easy_metadata_ingestion
 from flows.workflow_versioning.workflow_versioner import \
     create_ingestion_workflow_versioning
@@ -33,5 +34,15 @@ def easy_ingestion_pipeline():
     )
 
 
+
+def build_deployment():
+    deployment = Deployment.build_from_flow(
+        name='easy_ingestion',
+        flow_name='easy_ingestion',
+        flow=easy_ingestion_pipeline,
+        work_queue_name='default'
+    )
+    deployment.apply()
+
 if __name__ == "__main__":
-    easy_ingestion_pipeline()
+    build_deployment()

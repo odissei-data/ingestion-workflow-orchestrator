@@ -1,17 +1,20 @@
-FROM python:3.11-slim
+FROM thomasve/prefect-base:latest
 
-WORKDIR app
+# ENV PYTHONPATH "${PYTHONPATH}:/app/scripts/"
+# ENV PYTHONDONTWRITEBYTECODE 1
+# EXPOSE 4200
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-RUN pip install poetry
-RUN poetry config virtualenvs.create false
+RUN prefect config set PREFECT_API_DATABASE_CONNECTION_URL="postgresql+asyncpg://postgres:lolgres@db:5432/prefect"
 
-COPY pyproject.toml pyproject.toml
-
-RUN poetry install
-RUN poetry update
-
-EXPOSE 4200
-
+WORKDIR /
 COPY ./scripts .
+WORKDIR /scripts
 
-RUN apt-get update && apt-get install git -y
+CMD ["/usr/bin/supervisord"]
+
+# WORKDIR app
+# RUN pip install poetry
+# RUN poetry config virtualenvs.create false
+# COPY pyproject.toml .
+# RUN poetry install
