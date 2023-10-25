@@ -2,6 +2,7 @@ import boto3
 
 from configuration.config import settings
 from prefect import flow
+from prefect.deployments.deployments import Deployment
 import utils
 from flows.dataset_workflows.cbs_ingestion import cbs_metadata_ingestion
 from flows.workflow_versioning.workflow_versioner import \
@@ -38,5 +39,15 @@ def cbs_ingestion_pipeline():
     )
 
 
+
+def build_deployment():
+    deployment = Deployment.build_from_flow(
+        name='cbs_ingestion',
+        flow_name='cbs_ingestion',
+        flow=cbs_ingestion_pipeline,
+        work_queue_name='default'
+    )
+    deployment.apply()
+
 if __name__ == "__main__":
-    cbs_ingestion_pipeline()
+    build_deployment()

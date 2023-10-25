@@ -85,7 +85,7 @@ LISS_TEMPLATE_FILE_PATH="/resources/templates/liss_dataverse_template.json"
 LISS_MAPPING_FILE_PATH="/resources/mappings/liss-mapping.json"
 
 [production]
-ODISSEI_URL="https://portal.staging.odissei.nl"
+ODISSEI_URL="https://portal.odissei.nl"
 
 CBS_TEMPLATE_FILE_PATH="/resources/templates/cbs_dataverse_template.json"
 CBS_MAPPING_FILE_PATH="/resources/mappings/cbs-mapping.json"
