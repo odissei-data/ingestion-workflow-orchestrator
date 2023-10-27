@@ -2,10 +2,10 @@ from dynaconf import Dynaconf
 
 settings = Dynaconf(
     settings_files=[
-        'app/configuration/settings.toml',
-        'app/configuration/odissei_settings.toml',
-        'app/configuration/sicada_settings.toml',
-        'app/configuration/.secrets.toml'
+        'scripts/configuration/settings.toml',
+        'scripts/configuration/odissei_settings.toml',
+        'scripts/configuration/sicada_settings.toml',
+        'scripts/configuration/.secrets.toml'
     ],
     environments=True,
 )
