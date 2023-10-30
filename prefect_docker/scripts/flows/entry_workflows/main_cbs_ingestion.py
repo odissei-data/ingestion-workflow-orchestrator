@@ -21,7 +21,7 @@ def cbs_ingestion_pipeline():
         enhancer=True,
         importer=True,
         updater=True,
-        settings=settings.CBS
+        settings=settings
     )
 
     minio_client = boto3.client(
@@ -39,13 +39,13 @@ def cbs_ingestion_pipeline():
     )
 
 
-
 def build_deployment():
     deployment = Deployment.build_from_flow(
         name='cbs_ingestion',
         flow_name='cbs_ingestion',
         flow=cbs_ingestion_pipeline,
-        work_queue_name='default'
+        work_queue_name='default',
+        load_existing=True
     )
     deployment.apply()
 
