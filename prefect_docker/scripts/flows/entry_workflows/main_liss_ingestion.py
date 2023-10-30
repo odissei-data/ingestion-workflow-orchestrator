@@ -11,7 +11,20 @@ from tasks.harvest_tasks import liss_harvest_metadata
 
 
 @flow
-def liss_ingestion_pipeline():
+def liss_ingestion_pipeline(target_url: str = None, target_key: str = None):
+    """ Ingestion pipeline dedicated to the LISS metadata ingestion.
+
+    :param target_url: Optional target dataverse url.
+    :param target_key: API key of the optional target dataverse.
+    """
+    settings_dict = settings.LISS
+
+    if target_url:
+        settings_dict.DESTINATION_DATAVERSE_URL = target_url
+
+    if target_key:
+        settings_dict.DESTINATION_DATAVERSE_API_KEY = target_key
+
     version = create_ingestion_workflow_versioning(
         transformer=True,
         mapper=True,
@@ -25,8 +38,6 @@ def liss_ingestion_pipeline():
         aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
         aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
     )
-
-    settings_dict = settings.LISS
 
     liss_harvest_metadata(
         settings_dict.BUCKET_NAME,
