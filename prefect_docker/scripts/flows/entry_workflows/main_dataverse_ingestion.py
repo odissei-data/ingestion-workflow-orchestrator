@@ -13,14 +13,21 @@ from tasks.harvest_tasks import harvest_metadata
 
 
 @flow
-def dataverse_ingestion_pipeline(settings_dict_name):
-    """
-    Ingestion pipeline dedicated to the Dataverse to Dataverse workflow.
+def dataverse_ingestion_pipeline(settings_dict_name, target_url: str = None,
+                                 target_key: str = None):
+    """ Ingestion pipeline dedicated to the Dataverse to Dataverse workflow.
 
+    :param target_url: Optional target dataverse url.
+    :param target_key: API key of the optional target dataverse.
     :param settings_dict_name: string, name of the settings you wish to use
-    :return: None
     """
     settings_dict = getattr(settings, settings_dict_name)
+
+    if target_url:
+        settings_dict.DESTINATION_DATAVERSE_URL = target_url
+
+    if target_key:
+        settings_dict.DESTINATION_DATAVERSE_API_KEY = target_key
 
     version = create_ingestion_workflow_versioning(
         transformer=True,
