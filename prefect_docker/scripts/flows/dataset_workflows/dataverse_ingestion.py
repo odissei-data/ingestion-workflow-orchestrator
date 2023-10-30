@@ -1,4 +1,4 @@
-from prefect import flow
+from prefect import flow, get_run_logger
 from prefect.server.schemas.states import Failed, Completed
 
 from tasks.base_tasks import dataverse_metadata_fetcher, dataverse_import, \
@@ -26,7 +26,6 @@ def dataverse_metadata_ingestion(pid, version, settings_dict):
     dataverse_json = add_workflow_versioning_url(dataverse_json, version)
     if not dataverse_json:
         return Failed(message='Unable to store workflow version.')
-
     import_response = dataverse_import(dataverse_json, settings_dict, pid)
     if not import_response:
         return Failed(message='Unable to import dataset into Dataverse')
