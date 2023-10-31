@@ -28,7 +28,7 @@ EMAIL_SANITIZER_URL="https://emailsanitizer.labs.dans.knaw.nl/sanitize"
 METADATA_REFINER_URL="https://metadata-refiner.labs.dans.knaw.nl"
 METADATA_ENHANCER_URL="https://metadata-enhancer.labs.dans.knaw.nl"
 SEMANTIC_API_URL="http://semanticapi:80/importdoi"
-HARVESTER_URL="http://oai-harvester:7890"
+HARVESTER_URL="https://oai-harvester.labs.dans.knaw.nl"
 
 [production]
 debug = false
