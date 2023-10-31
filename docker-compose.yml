@@ -3,14 +3,11 @@ version: '3.7'
 services:
   prefect:
     build:
-      context: prefect_docker/.
+      context: .
       dockerfile: Dockerfile
     container_name: 'prefect'
     volumes:
       - "/tmp:/tmp"
-      - ./prefect_docker/scripts:/scripts/
-      - ./local-metadata:/local-metadata/
-      - ./resources:/resources/
     ports:
       # Local development only
       - "4200:4200"

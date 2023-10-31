@@ -8,7 +8,8 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 RUN prefect config set PREFECT_API_DATABASE_CONNECTION_URL="postgresql+asyncpg://postgres:lolgres@db:5432/prefect"
 
 WORKDIR /
-COPY ./scripts ./scripts
+COPY scripts ./scripts
+COPY resources ./resources
 WORKDIR /scripts
 
 CMD ["/usr/bin/supervisord"]
