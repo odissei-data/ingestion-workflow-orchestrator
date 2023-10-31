@@ -33,7 +33,7 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: ./prefect_docker/
-          file: ./prefect_docker/Dockerfile
+          context: .
+          file: Dockerfile
           push: true
           tags: dansknaw/dans-prefect:${{  github.ref_name }}
