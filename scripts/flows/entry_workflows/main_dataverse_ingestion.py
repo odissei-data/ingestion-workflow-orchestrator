@@ -2,6 +2,7 @@ import argparse
 
 import boto3
 from prefect import flow
+from prefect.deployments import Deployment
 
 from configuration.config import settings
 from flows.dataset_workflows.dataverse_ingestion import \
@@ -73,11 +74,16 @@ def dataverse_ingestion_pipeline(settings_dict_name, target_url: str = None,
     )
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Ingestion pipeline for Dataverse2Dataverse workflow.")
-    parser.add_argument("settings_dict_name",
-                        help="Name of the target subverse.")
-    args = parser.parse_args()
+def build_deployment():
+    deployment = Deployment.build_from_flow(
+        name='dataverse_ingestion',
+        flow_name='dataverse_ingestion',
+        flow=dataverse_ingestion_pipeline,
+        work_queue_name='default'
+    )
+    deployment.apply()
 
-    dataverse_ingestion_pipeline(args.settings_dict_name)
+
+if __name__ == "__main__":
+    build_deployment()
+

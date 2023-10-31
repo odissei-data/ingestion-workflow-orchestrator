@@ -50,6 +50,7 @@ def liss_ingestion_pipeline(target_url: str = None, target_key: str = None):
         minio_client
     )
 
+
 def build_deployment():
     deployment = Deployment.build_from_flow(
         name='liss_ingestion',
@@ -58,6 +59,7 @@ def build_deployment():
         work_queue_name='default'
     )
     deployment.apply()
+
 
 if __name__ == "__main__":
     build_deployment()
