@@ -7,8 +7,8 @@ from configuration.config import settings
 
 
 @task(timeout_seconds=300, retries=1)
-def harvest_metadata(metadata_prefix, oai_endpoint, bucket_name, verb,
-                     harvester_endpoint, oai_set=None):
+def oai_harvest_metadata(metadata_prefix, oai_endpoint, bucket_name, verb,
+                         harvester_endpoint, oai_set=None):
     """ A task that harvests metadata using the oai-harvester service.
 
     This tasks harvests a list of records or identifiers and places the
@@ -50,13 +50,14 @@ def harvest_metadata(metadata_prefix, oai_endpoint, bucket_name, verb,
 
 
 @task(timeout_seconds=300, retries=1)
-def liss_harvest_metadata(bucket_name):
+def harvest_metadata(bucket_name, endpoint):
     """ A task that harvests the LISS dataset metadata.
 
     The LISS server where we harvest metadata has a different
     implementation than oai-pmh. This task calls the endpoint in the harvester
     service that implements the harvesting protocol that is unique to LISS.
 
+    :param endpoint: The harvester endpoint to call.
     :param bucket_name: The bucket the LISS metadata will be stored in.
     """
     headers = {
@@ -69,8 +70,8 @@ def liss_harvest_metadata(bucket_name):
         "bucket_name": bucket_name,
     }
 
-    url = f"{settings.HARVESTER_URL}/start_liss_harvest"
-
+    url = f"{settings.HARVESTER_URL}/{endpoint}"
+    print(url)
     response = requests.post(
         url, headers=headers, data=json.dumps(data)
     )

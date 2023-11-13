@@ -1,10 +1,6 @@
 [default]
 DATAVERSE_NL_URL="https://dataverse.nl"
 SSH_DATASTATION_URL="https://ssh.datastations.nl"
-DATAVERSE_NL_REFINER_ENDPOINT="/metadata-refinement/dataverse-nl"
-CBS_REFINER_ENDPOINT="/metadata-refinement/cbs"
-DATASTATION_REFINER_ENDPOINT="/metadata-refinement/dataverse-nl"
-HSN_REFINER_ENDPOINT="/metadata-refinement/dataverse-nl"
 
 TWENTE={"ALIAS"="twente", "OAI_SET"="@format {this.TWENTE_OAI_SET}", "BUCKET_NAME"="@format {this.TWENTE_BUCKET_NAME}", "SOURCE_DATAVERSE_URL"="@format {this.DATAVERSE_NL_URL}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}", "REFINER_ENDPOINT"="@format {this.DATAVERSE_NL_REFINER_ENDPOINT}"}
 DELFT={"ALIAS"="delft", "OAI_SET"="@format {this.DELFT_OAI_SET}", "BUCKET_NAME"="@format {this.DELFT_BUCKET_NAME}", "SOURCE_DATAVERSE_URL"="@format {this.DATAVERSE_NL_URL}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}", "REFINER_ENDPOINT"="@format {this.DATAVERSE_NL_REFINER_ENDPOINT}"}
@@ -24,6 +20,7 @@ DANS={"ALIAS"="dans", "OAI_SET"="@format {this.DANS_OAI_SET}", "BUCKET_NAME"="@f
 CBS={"ALIAS"="cbs", "BUCKET_NAME"="@format {this.CBS_BUCKET_NAME}", "TEMPLATE_FILE_PATH"="@format {this.CBS_TEMPLATE_FILE_PATH}", "MAPPING_FILE_PATH"="@format {this.CBS_MAPPING_FILE_PATH}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}", "REFINER_ENDPOINT"="@format {this.CBS_REFINER_ENDPOINT}"}
 LISS={"ALIAS"="liss", "BUCKET_NAME"="@format {this.LISS_BUCKET_NAME}", "TEMPLATE_FILE_PATH"="@format {this.LISS_TEMPLATE_FILE_PATH}", "MAPPING_FILE_PATH"="@format {this.LISS_MAPPING_FILE_PATH}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}"}
 HSN={"ALIAS"="HSN_NL", "BUCKET_NAME"="@format {this.HSN_BUCKET_NAME}", "SOURCE_DATAVERSE_URL"="@format {this.IISG_URL}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}", "REFINER_ENDPOINT"="@format {this.DATAVERSE_NL_REFINER_ENDPOINT}"}
+CID={"ALIAS"="cid", "BUCKET_NAME"="@format {this.CID_BUCKET_NAME}", "TEMPLATE_FILE_PATH"="@format {this.CID_TEMPLATE_FILE_PATH}", "MAPPING_FILE_PATH"="@format {this.CID_MAPPING_FILE_PATH}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}", "REFINER_ENDPOINT"="@format {this.CID_REFINER_ENDPOINT}"}
 
 TWENTE_OAI_SET = "Twente_Social_Sciences"
 DELFT_OAI_SET = "TUDelft_Social_Sciences"
@@ -59,36 +56,29 @@ CBS_BUCKET_NAME="cbs-metadata-03072023"
 DANS_BUCKET_NAME="ssh-social-metadata"
 LISS_BUCKET_NAME="liss-metadata"
 HSN_BUCKET_NAME="hsn-metadata"
+CID_BUCKET_NAME="cid-metadata"
+
+DATAVERSE_NL_REFINER_ENDPOINT="/metadata-refinement/dataverse-nl"
+CBS_REFINER_ENDPOINT="/metadata-refinement/cbs"
+DATASTATION_REFINER_ENDPOINT="/metadata-refinement/dataverse-nl"
+HSN_REFINER_ENDPOINT="/metadata-refinement/dataverse-nl"
+CID_REFINER_ENDPOINT="/metadata-refinement/cid"
+
+
+CBS_TEMPLATE_FILE_PATH="/resources/templates/cbs_dataverse_template.json"
+CBS_MAPPING_FILE_PATH="/resources/mappings/cbs-mapping.json"
+
+LISS_TEMPLATE_FILE_PATH="/resources/templates/liss_dataverse_template.json"
+LISS_MAPPING_FILE_PATH="/resources/mappings/liss-mapping.json"
+
+CID_TEMPLATE_FILE_PATH="/resources/templates/cid_dataverse_template.json"
+CID_MAPPING_FILE_PATH="/resources/mappings/cid-mapping.json"
 
 [development]
 ODISSEI_URL="http://dataverse:8080"
 
-CBS_TEMPLATE_FILE_PATH="/resources/templates/cbs_dataverse_template.json"
-CBS_MAPPING_FILE_PATH="/resources/mappings/cbs-mapping.json"
-
-EASY_TEMPLATE_FILE_PATH="/resources/templates/easy_dataverse_template.json"
-EASY_MAPPING_FILE_PATH="/resources/mappings/easy-mapping.json"
-
-LISS_TEMPLATE_FILE_PATH="/resources/templates/liss_dataverse_template.json"
-LISS_MAPPING_FILE_PATH="/resources/mappings/liss-mapping.json"
-
 [staging]
 ODISSEI_URL="https://portal.alpha.odissei.nl"
 
-CBS_TEMPLATE_FILE_PATH="/resources/templates/cbs_dataverse_template.json"
-CBS_MAPPING_FILE_PATH="/resources/mappings/cbs-mapping.json"
-
-EASY_TEMPLATE_FILE_PATH="/resources/templates/easy_dataverse_template.json"
-EASY_MAPPING_FILE_PATH="/resources/mappings/easy-mapping.json"
-
-LISS_TEMPLATE_FILE_PATH="/resources/templates/liss_dataverse_template.json"
-LISS_MAPPING_FILE_PATH="/resources/mappings/liss-mapping.json"
-
 [production]
 ODISSEI_URL="https://portal.odissei.nl"
-
-CBS_TEMPLATE_FILE_PATH="/resources/templates/cbs_dataverse_template.json"
-CBS_MAPPING_FILE_PATH="/resources/mappings/cbs-mapping.json"
-
-LISS_TEMPLATE_FILE_PATH="/resources/templates/liss_dataverse_template.json"
-LISS_MAPPING_FILE_PATH="/resources/mappings/liss-mapping.json"
