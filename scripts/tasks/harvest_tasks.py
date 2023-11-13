@@ -71,7 +71,6 @@ def harvest_metadata(bucket_name, endpoint):
     }
 
     url = f"{settings.HARVESTER_URL}/{endpoint}"
-    print(url)
     response = requests.post(
         url, headers=headers, data=json.dumps(data)
     )

@@ -25,22 +25,23 @@ def retrieve_license_name(license_string):
 
 
 def is_lower_level_liss_study(metadata):
+    logger = get_run_logger()
     title = metadata['datasetVersion']['metadataBlocks']['citation'][
         'fields'][0]['value']
-    print("Title is", title)
+    logger.info("Title is", title)
     square_bracket_amount = title.count('>')
     if square_bracket_amount == 0:
-        print('no square brackets')
+        logger.info('no square brackets')
         return False, title
     if square_bracket_amount == 1:
         liss_match = re.search(r'L[iI]SS [Pp]anel', title)
         immigrant_match = re.search(r'Immigrant [Pp]anel', title)
         if liss_match or immigrant_match:
             if liss_match:
-                print("Matched on liss panel")
+                logger.info("Matched on liss panel")
                 return False, title
             if immigrant_match:
-                print("Matched on immigrant panel")
+                logger.info("Matched on immigrant panel")
                 return False, title
         else:
             return True, title
@@ -139,6 +140,5 @@ def identifier_list_workflow_executor(
         return Failed(
             message=f"identifiers.json does not contain the pids key or it"
                     f" does not have a list as value.")
-    print(identifiers_dict)
     for pid in identifiers_dict['pids']:
         data_provider_workflow(pid, version, settings_dict, return_state=True)
