@@ -7,7 +7,7 @@ from prefect.deployments.deployments import Deployment
 from flows.dataset_workflows.liss_ingestion import liss_metadata_ingestion
 from flows.workflow_versioning.workflow_versioner import \
     create_ingestion_workflow_versioning
-from tasks.harvest_tasks import liss_harvest_metadata
+from tasks.harvest_tasks import harvest_metadata
 
 
 @flow
@@ -39,8 +39,9 @@ def liss_ingestion_pipeline(target_url: str = None, target_key: str = None):
         aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
     )
 
-    liss_harvest_metadata(
+    harvest_metadata(
         settings_dict.BUCKET_NAME,
+        "start_liss_harvest"
     )
 
     utils.workflow_executor(
