@@ -177,5 +177,6 @@ cython_debug/
 
 /letsencrypt
 /local-metadata/
+/db
 # Ignore dynaconf secret files
 scripts/configuration/.secrets.toml
