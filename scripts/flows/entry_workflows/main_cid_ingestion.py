@@ -1,4 +1,6 @@
 import boto3
+from prefect.deployments import Deployment
+
 import utils
 from prefect import flow
 from configuration.config import settings
@@ -9,11 +11,10 @@ from flows.workflow_versioning.workflow_versioner import \
 
 @flow
 def cid_ingestion_pipeline(target_url: str = None, target_key: str = None):
-    """
+    """ Ingestion pipeline dedicated to the CID metadata ingestion.
 
-    :param target_url:
-    :param target_key:
-    :return:
+    :param target_url: Optional target dataverse url.
+    :param target_key: API key of the optional target dataverse.
     """
 
     settings_dict = settings.CID
@@ -38,11 +39,6 @@ def cid_ingestion_pipeline(target_url: str = None, target_key: str = None):
         aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
     )
 
-    # harvest_metadata(
-    #     settings_dict.BUCKET_NAME,
-    #     "start_cid_harvest"
-    # )
-
     utils.workflow_executor(
         cid_metadata_ingestion,
         version,
@@ -51,6 +47,16 @@ def cid_ingestion_pipeline(target_url: str = None, target_key: str = None):
     )
 
 
+def build_deployment():
+    deployment = Deployment.build_from_flow(
+        name='cid_ingestion',
+        flow_name='cid_ingestion',
+        flow=cid_ingestion_pipeline,
+        work_queue_name='default',
+        load_existing=True
+    )
+    deployment.apply()
+
+
 if __name__ == "__main__":
-    cid_ingestion_pipeline("https://portal.alpha.odissei.nl",
-                           "a22cb0b4-af35-4b03-a123-36b9e63f5eda")
+    build_deployment()
