@@ -10,11 +10,12 @@ from flows.dataset_workflows.dataverse_ingestion import \
 from flows.workflow_versioning.workflow_versioner import \
     create_ingestion_workflow_versioning
 import utils
-from tasks.harvest_tasks import harvest_metadata
+from tasks.harvest_tasks import oai_harvest_metadata
 
 
 @flow
-def dataverse_ingestion_pipeline(settings_dict_name, target_url: str = None,
+def dataverse_ingestion_pipeline(settings_dict_name: str,
+                                 target_url: str = None,
                                  target_key: str = None):
     """ Ingestion pipeline dedicated to the Dataverse to Dataverse workflow.
 
@@ -48,7 +49,7 @@ def dataverse_ingestion_pipeline(settings_dict_name, target_url: str = None,
 
     # Check if settings_dict.OAI_SET is not null or empty
     if hasattr(settings_dict, 'OAI_SET') and settings_dict.OAI_SET:
-        harvest_metadata(
+        oai_harvest_metadata(
             settings.METADATA_PREFIX,
             f'{settings_dict.SOURCE_DATAVERSE_URL}/oai',
             settings_dict.BUCKET_NAME,
@@ -58,7 +59,7 @@ def dataverse_ingestion_pipeline(settings_dict_name, target_url: str = None,
         )
 
     else:
-        harvest_metadata(
+        oai_harvest_metadata(
             settings.METADATA_PREFIX,
             f'{settings_dict.SOURCE_DATAVERSE_URL}/oai',
             settings_dict.BUCKET_NAME,
@@ -86,4 +87,3 @@ def build_deployment():
 
 if __name__ == "__main__":
     build_deployment()
-
