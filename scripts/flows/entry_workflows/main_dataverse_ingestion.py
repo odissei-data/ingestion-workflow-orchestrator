@@ -2,6 +2,7 @@ import argparse
 
 import boto3
 from prefect import flow
+from prefect.deployments import Deployment
 
 from configuration.config import settings
 from flows.dataset_workflows.dataverse_ingestion import \
@@ -9,18 +10,26 @@ from flows.dataset_workflows.dataverse_ingestion import \
 from flows.workflow_versioning.workflow_versioner import \
     create_ingestion_workflow_versioning
 import utils
-from tasks.harvest_tasks import harvest_metadata
+from tasks.harvest_tasks import oai_harvest_metadata
 
 
 @flow
-def dataverse_ingestion_pipeline(settings_dict_name):
-    """
-    Ingestion pipeline dedicated to the Dataverse to Dataverse workflow.
+def dataverse_ingestion_pipeline(settings_dict_name: str,
+                                 target_url: str = None,
+                                 target_key: str = None):
+    """ Ingestion pipeline dedicated to the Dataverse to Dataverse workflow.
 
+    :param target_url: Optional target dataverse url.
+    :param target_key: API key of the optional target dataverse.
     :param settings_dict_name: string, name of the settings you wish to use
-    :return: None
     """
     settings_dict = getattr(settings, settings_dict_name)
+
+    if target_url:
+        settings_dict.DESTINATION_DATAVERSE_URL = target_url
+
+    if target_key:
+        settings_dict.DESTINATION_DATAVERSE_API_KEY = target_key
 
     version = create_ingestion_workflow_versioning(
         transformer=True,
@@ -40,7 +49,7 @@ def dataverse_ingestion_pipeline(settings_dict_name):
 
     # Check if settings_dict.OAI_SET is not null or empty
     if hasattr(settings_dict, 'OAI_SET') and settings_dict.OAI_SET:
-        harvest_metadata(
+        oai_harvest_metadata(
             settings.METADATA_PREFIX,
             f'{settings_dict.SOURCE_DATAVERSE_URL}/oai',
             settings_dict.BUCKET_NAME,
@@ -50,7 +59,7 @@ def dataverse_ingestion_pipeline(settings_dict_name):
         )
 
     else:
-        harvest_metadata(
+        oai_harvest_metadata(
             settings.METADATA_PREFIX,
             f'{settings_dict.SOURCE_DATAVERSE_URL}/oai',
             settings_dict.BUCKET_NAME,
@@ -66,11 +75,15 @@ def dataverse_ingestion_pipeline(settings_dict_name):
     )
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Ingestion pipeline for Dataverse2Dataverse workflow.")
-    parser.add_argument("settings_dict_name",
-                        help="Name of the target subverse.")
-    args = parser.parse_args()
+def build_deployment():
+    deployment = Deployment.build_from_flow(
+        name='dataverse_ingestion',
+        flow_name='dataverse_ingestion',
+        flow=dataverse_ingestion_pipeline,
+        work_queue_name='default'
+    )
+    deployment.apply()
 
-    dataverse_ingestion_pipeline(args.settings_dict_name)
+
+if __name__ == "__main__":
+    build_deployment()

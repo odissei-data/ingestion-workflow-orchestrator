@@ -1,0 +1,251 @@
+{
+  "datasetVersion": {
+    "datasetPersistentId": "",
+    "metadataBlocks": {
+      "citation": {
+        "displayName": "Citation Metadata",
+        "name": "citation",
+        "fields": [
+          {
+            "typeName": "title",
+            "multiple": false,
+            "typeClass": "primitive",
+            "value": ""
+          },
+          {
+            "typeName": "author",
+            "multiple": true,
+            "typeClass": "compound",
+            "value": [
+              {
+                "authorName": {
+                  "typeName": "authorName",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                },
+                "authorAffiliation": {
+                  "typeName": "authorAffiliation",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                },
+                "authorIdentifierScheme": {
+                  "typeName": "authorIdentifierScheme",
+                  "multiple": false,
+                  "typeClass": "controlledVocabulary",
+                  "value": ""
+                },
+                "authorIdentifier": {
+                  "typeName": "authorIdentifier",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                }
+              }
+            ]
+          },
+          {
+            "typeName": "datasetContact",
+            "multiple": true,
+            "typeClass": "compound",
+            "value": [
+              {
+                "datasetContactEmail": {
+                  "typeName": "datasetContactEmail",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": "portal@odissei.nl"
+                }
+              }
+            ]
+          },
+          {
+            "typeName": "dsDescription",
+            "multiple": true,
+            "typeClass": "compound",
+            "value": [
+              {
+                "dsDescriptionValue": {
+                  "typeName": "dsDescriptionValue",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                }
+              }
+            ]
+          },
+          {
+            "typeName": "subject",
+            "multiple": true,
+            "typeClass": "controlledVocabulary",
+            "value": [
+              "Social Sciences",
+              "Arts and Humanities"
+            ]
+          },
+          {
+            "typeName": "keyword",
+            "multiple": true,
+            "typeClass": "compound",
+            "value": [
+              {
+                "keywordValue": {
+                  "typeName": "keywordValue",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                }
+              }
+            ]
+          },
+          {
+            "typeName": "topicClassification",
+            "multiple": true,
+            "typeClass": "compound",
+            "value": [
+              {
+                "topicClassValue": {
+                  "typeName": "topicClassValue",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                }
+              }
+            ]
+          },
+          {
+            "typeName": "publication",
+            "multiple": true,
+            "typeClass": "compound",
+            "value": [
+              {
+                "publicationCitation": {
+                  "typeName": "publicationCitation",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                },
+                "publicationURL": {
+                  "typeName": "publicationURL",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                }
+              }
+            ]
+          },
+          {
+            "typeName": "language",
+            "multiple": true,
+            "typeClass": "controlledVocabulary",
+            "value": []
+          },
+          {
+            "typeName": "producer",
+            "multiple": true,
+            "typeClass": "compound",
+            "value": [
+              {
+                "producerName": {
+                  "typeName": "producerName",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                },
+                "producerURL": {
+                  "typeName": "producerURL",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                }
+              }
+            ]
+          },
+          {
+            "typeName": "productionDate",
+            "multiple": false,
+            "typeClass": "primitive",
+            "value": ""
+          },
+          {
+            "typeName": "productionPlace",
+            "multiple": true,
+            "typeClass": "primitive",
+            "value": []
+          },
+          {
+            "typeName": "contributor",
+            "multiple": true,
+            "typeClass": "compound",
+            "value": [
+              {
+                "contributorName": {
+                  "typeName": "contributorName",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                }
+              }
+            ]
+          },
+          {
+            "typeName": "grantNumber",
+            "multiple": true,
+            "typeClass": "compound",
+            "value": [
+              {
+                "grantNumberAgency": {
+                  "typeName": "grantNumberAgency",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                },
+                "grantNumberValue": {
+                  "typeName": "grantNumberValue",
+                  "multiple": false,
+                  "typeClass": "primitive",
+                  "value": ""
+                }
+              }
+            ]
+          },
+          {
+            "typeName": "distributionDate",
+            "multiple": false,
+            "typeClass": "primitive",
+            "value": ""
+          }
+        ]
+      },
+      "socialscience": {
+        "fields": [
+          {
+            "typeName": "universe",
+            "multiple": true,
+            "typeClass": "primitive",
+            "value": []
+          },
+          {
+            "typeName": "unitOfAnalysis",
+            "typeClass": "primitive",
+            "multiple": true,
+            "value": []
+          },
+          {
+            "typeName": "timeMethod",
+            "multiple": false,
+            "typeClass": "primitive",
+            "value": ""
+          },
+          {
+            "typeName": "collectionMode",
+            "multiple": true,
+            "typeClass": "primitive",
+            "value": []
+          }
+        ]
+      }
+    }
+  }
+}

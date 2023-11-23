@@ -3,66 +3,24 @@ version: '3.7'
 services:
   prefect:
     build:
-      context: prefect_docker/.
+      context: .
       dockerfile: Dockerfile
     container_name: 'prefect'
-    command: sh start-prefect.sh
     volumes:
       - "/tmp:/tmp"
-      - ./prefect_docker/scripts:/scripts/
-      - ./local-metadata:/local-metadata/
-      - ./resources:/resources/
     ports:
       # Local development only
       - "4200:4200"
-    networks:
-      - traefik-prefect
     env_file: .env
+    depends_on:
+      - db
 
-  reverse-proxy:
-  # The official v2 Traefik docker image
-    image: traefik:v2.2
-    container_name: traefik-prefect
-  # Enables the web UI and tells Traefik to listen to docker
-    command:
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--providers.file.filename=/etc/traefik/conf.d/rules.toml"
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.websecure.address=:443"
-      # These rules perform https redirection for prod.
-      # - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
-      # - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
-      # - "--entrypoints.web.http.redirections.entryPoint.priority=10" # disable permanent forwarding for every route
-      - "--certificatesresolvers.myresolver.acme.tlschallenge=true" # <== Enable TLS-ALPN-01 to generate and renew ACME certs
-      - "--certificatesresolvers.myresolver.acme.email=${useremail}"
-      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
-      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
-    extra_hosts:
-      - host.docker.internal:127.0.0.1
-    ports:
-      # The HTTP port
-      - "81:81"
-      # The HTTPS port
-      - "444:444"
-      # The Web UI (enabled by --api.insecure=true)
-      - "8090:8081"
-    environment:
-      - "traefikhost"
-      - "hostname"
-      - "proxyname"
+  db:
+    image: postgres:latest
+    container_name: db
     volumes:
-      # So that Traefik can listen to the Docker events
-      - /var/run/docker.sock:/var/run/docker.sock
-      # volume to store letsencrypt certificates
-      - "./letsencrypt:/letsencrypt"
-      # - ./traefik/traefik.toml:/traefik.toml
-      - ./traefik/rules-infra.toml:/etc/traefik/conf.d/rules.toml
-    networks:
-      - traefik-prefect
-      - default
-
-networks:
-  traefik-prefect:
-    external: true
+      - ./db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=lolgres
+      - POSTGRES_DB=prefect

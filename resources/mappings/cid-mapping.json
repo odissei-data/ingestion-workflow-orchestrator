@@ -1,0 +1,46 @@
+{
+    "title": ["title"],
+    "dsDescriptionValue": ["dc_additional_info", "notes"],
+    "distributionDate": ["metadata_created"],
+    "productionDate": ["wave[*].wave_start_date_collection"],
+    "productionPlace": ["wave[*].wave_spatial_country_code"],
+    "contributorName": ["study[*].study_contributor[*]. study_contributor_name[]"],
+    "keywordValue": ["dc_labels[*].dc_label"],
+    "topicClassValue": ["dc_constructs[*].dc_construct"],
+    "relatedMaterial": ["dc_measurement_references[*].dc_measurements_references_citation", "dc_measurement_references[*]. dc_measurements_references_doi"],
+
+    "unitOfAnalysis": ["dc_analysis_unit"],
+    "universe": ["study[*].study_universe"],
+    "timeMethod": ["study[*].study_time_method"],
+    "collectionMode": ["dc_modes_of_collection[*].dc_mode_of_collection"],
+
+    "publication": {
+        "mapping": "cohort[*].cohort_references[]",
+        "children": {
+            "publicationCitation": ["cohort_reference_citation"]
+        }
+    },
+    "grantNumber": {
+        "mapping": "study[*].study_funding[]",
+        "children": {
+            "grantNumberValue": ["study_funder"],
+            "grantNumberAgency": ["study_grant_number"]
+        }
+    },
+    "producer": {
+        "mapping": "study[*].study_publisher[]",
+        "children": {
+            "producerName": ["study_publisher_name"],
+            "producerURL": ["study_publisher_identifier"]
+        }
+    },
+    "author": {
+        "mapping": "study[*].study_principal_investigators[]",
+        "children": {
+            "authorName": ["study_pi_name"],
+            "authorAffiliation": ["study_pi_affiliation"],
+            "authorIdentifier": ["study_pi_pid"],
+            "authorIdentifierScheme": ["study_pi_identifier_type"]
+        }
+    }
+}

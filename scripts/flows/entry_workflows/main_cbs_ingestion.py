@@ -1,7 +1,7 @@
 import boto3
-
 from configuration.config import settings
 from prefect import flow
+from prefect.deployments.deployments import Deployment
 import utils
 from flows.dataset_workflows.cbs_ingestion import cbs_metadata_ingestion
 from flows.workflow_versioning.workflow_versioner import \
@@ -9,8 +9,19 @@ from flows.workflow_versioning.workflow_versioner import \
 
 
 @flow
-def cbs_ingestion_pipeline():
+def cbs_ingestion_pipeline(target_url: str = None, target_key: str = None):
+    """ Ingestion pipeline dedicated to the CBS metadata ingestion.
+
+    :param target_url: Optional target dataverse url.
+    :param target_key: API key of the optional target dataverse.
+    """
     settings_dict = settings.CBS
+
+    if target_url:
+        settings_dict.DESTINATION_DATAVERSE_URL = target_url
+
+    if target_key:
+        settings_dict.DESTINATION_DATAVERSE_API_KEY = target_key
 
     version = create_ingestion_workflow_versioning(
         transformer=True,
@@ -38,5 +49,16 @@ def cbs_ingestion_pipeline():
     )
 
 
+def build_deployment():
+    deployment = Deployment.build_from_flow(
+        name='cbs_ingestion',
+        flow_name='cbs_ingestion',
+        flow=cbs_ingestion_pipeline,
+        work_queue_name='default',
+        load_existing=True
+    )
+    deployment.apply()
+
+
 if __name__ == "__main__":
-    cbs_ingestion_pipeline()
+    build_deployment()

@@ -6,3 +6,4 @@ GITHUB_USERNAME="odissei-data"
 DOCKERHUB_USERNAME="fjodorvr"
 VERSION="v0.2.0-alpha"
 ENV_FOR_DYNACONF=development
+PREFECT_SERVER_API_HOST='0.0.0.0'
