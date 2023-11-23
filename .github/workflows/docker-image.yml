@@ -36,4 +36,4 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: dansknaw/dans-prefect:${{  github.ref_name }}
+          tags: dansknaw/dans-prefect:${{ github.ref_name }}
