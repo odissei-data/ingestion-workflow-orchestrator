@@ -9,14 +9,14 @@ VERSION = os.getenv('VERSION')
 
 @flow
 def create_ingestion_workflow_versioning(
-        transformer: bool = None,
-        mapper: bool = None,
-        fetcher: bool = None,
-        minter: bool = None,
-        refiner: bool = None,
-        enhancer: bool = None,
-        importer: bool = None,
-        updater: bool = None,
+        transformer: bool = False,
+        mapper: bool = False,
+        fetcher: bool = False,
+        minter: bool = False,
+        refiner: bool = False,
+        enhancer: bool = False,
+        importer: bool = False,
+        updater: bool = False,
         settings=None
 ):
     """ Creates a version dictionary detailing a specific ingestion workflow.
