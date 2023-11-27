@@ -6,3 +6,6 @@
 	path = scripts/tasks
 	url = git@github.com:thomasve-DANS/prefect-load.git
 	branch = main
+[submodule "resources"]
+	path = resources
+	url = https://github.com/odissei-data/mappings.git
