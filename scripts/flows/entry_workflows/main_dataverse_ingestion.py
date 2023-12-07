@@ -11,9 +11,9 @@ from tasks.harvest_tasks import oai_harvest_metadata
 
 
 @flow
-def dataverse_ingestion_pipeline(settings_dict_name: str,
-                                 target_url: str = None,
-                                 target_key: str = None):
+async def dataverse_ingestion_pipeline(settings_dict_name: str,
+                                       target_url: str = None,
+                                       target_key: str = None):
     """ Ingestion pipeline dedicated to the Dataverse to Dataverse workflow.
 
     :param target_url: Optional target dataverse url.
@@ -64,7 +64,7 @@ def dataverse_ingestion_pipeline(settings_dict_name: str,
             'start_harvest'
         )
 
-    utils.identifier_list_workflow_executor(
+    await utils.identifier_list_workflow_executor(
         dataverse_metadata_ingestion,
         version,
         settings_dict,

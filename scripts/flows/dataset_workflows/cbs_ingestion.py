@@ -10,7 +10,7 @@ from tasks.base_tasks import xml2json, dataverse_mapper, \
 
 
 @flow
-def cbs_metadata_ingestion(xml_metadata, version, settings_dict):
+async def cbs_metadata_ingestion(xml_metadata, version, settings_dict):
     """
     Ingestion flow for metadata from CBS.
 
@@ -20,25 +20,24 @@ def cbs_metadata_ingestion(xml_metadata, version, settings_dict):
     :return: prefect.server.schemas.states Failed or Completed
     """
 
-    xml_metadata_sanitized = sanitize_emails(xml_metadata)
+    xml_metadata_sanitized = await sanitize_emails(xml_metadata)
     if not xml_metadata_sanitized:
         return Failed(message='Unable to sanitize emails from XML metadata.')
 
-    json_metadata = xml2json(xml_metadata_sanitized)
+    json_metadata = await xml2json(xml_metadata_sanitized)
     if not json_metadata:
         return Failed(message='Unable to transform from xml to json.')
 
-    mapped_metadata = dataverse_mapper(
+    mapped_metadata = await dataverse_mapper(
         json_metadata,
         settings_dict.MAPPING_FILE_PATH,
         settings_dict.TEMPLATE_FILE_PATH,
         False
     )
-
     if not mapped_metadata:
         return Failed(message='Unable to map metadata.')
 
-    mapped_metadata = refine_metadata(mapped_metadata, settings_dict)
+    mapped_metadata = await refine_metadata(mapped_metadata, settings_dict)
     if not mapped_metadata:
         return Failed(message='Unable to refine metadata.')
 
@@ -53,7 +52,7 @@ def cbs_metadata_ingestion(xml_metadata, version, settings_dict):
     # if not doi:
     #     return Failed(message='Failed to mint or update DOI with Datacite API')
 
-    mapped_metadata = enrich_metadata(
+    mapped_metadata = await enrich_metadata(
         mapped_metadata,
         'dataverse-variable-enhancer'
     )
@@ -62,7 +61,7 @@ def cbs_metadata_ingestion(xml_metadata, version, settings_dict):
         return Failed(
             message='Unable to enrich metadata using variable enrichment.')
 
-    mapped_metadata = enrich_metadata(
+    mapped_metadata = await enrich_metadata(
         mapped_metadata,
         'dataverse-ELSST-enhancer'
     )
@@ -71,7 +70,7 @@ def cbs_metadata_ingestion(xml_metadata, version, settings_dict):
         return Failed(
             message='Unable to enrich metadata using ELSST enrichment.')
 
-    mapped_metadata = enrich_metadata(
+    mapped_metadata = await enrich_metadata(
         mapped_metadata,
         'dataverse-frequency-enhancer'
     )
@@ -80,13 +79,13 @@ def cbs_metadata_ingestion(xml_metadata, version, settings_dict):
         return Failed(
             message='Unable to enrich metadata with frequency of use data.')
 
-    import_response = dataverse_import(mapped_metadata, settings_dict, doi)
+    import_response = await dataverse_import(mapped_metadata, settings_dict, doi)
     if not import_response:
         return Failed(message='Unable to import dataset into Dataverse.')
 
     publication_date = jmespath.search(DIST_DATE_QUERY, mapped_metadata)
     if publication_date:
-        pub_date_response = update_publication_date(
+        pub_date_response = await update_publication_date(
             publication_date, doi, settings_dict
         )
         if not pub_date_response:

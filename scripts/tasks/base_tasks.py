@@ -1,6 +1,5 @@
 import json
 from datetime import timedelta
-
 from pyDataverse.api import NativeApi
 from configuration.config import settings
 from prefect import task, get_run_logger
@@ -10,7 +9,7 @@ import utils
 
 
 @task(timeout_seconds=300, retries=1, cache_expiration=timedelta(minutes=10))
-def xml2json(xml_metadata):
+async def xml2json(xml_metadata):
     """ Sends XML to the transformer server, receives JSON with same hierarchy.
 
     Sends a request to the transformer endpoint for transformation
@@ -40,8 +39,9 @@ def xml2json(xml_metadata):
 
 
 @task(timeout_seconds=300, retries=1, cache_expiration=timedelta(minutes=10))
-def dataverse_mapper(json_metadata, mapping_file_path, template_file_path,
-                     has_doi=True):
+async def dataverse_mapper(json_metadata, mapping_file_path,
+                           template_file_path,
+                           has_doi=True):
     """ Sends plain JSON to the mapper service, receives JSON formatted for DV.
 
     Uses the template and mapping file in the resources volume, and metadata
@@ -53,8 +53,6 @@ def dataverse_mapper(json_metadata, mapping_file_path, template_file_path,
     :param json_metadata: Plain JSON metadata.
     :return: JSON metadata formatted for the Native API | None on failure.
     """
-    logger = get_run_logger()
-
     headers = {
         'accept': 'application/json',
         'Content-Type': 'application/json'
@@ -70,18 +68,12 @@ def dataverse_mapper(json_metadata, mapping_file_path, template_file_path,
     data["has_existing_doi"] = has_doi
 
     url = f"{settings.DATAVERSE_MAPPER_URL}/mapper"
-    response = requests.post(
-        url,
-        headers=headers, data=json.dumps(data)
-    )
-    if not response.ok:
-        logger.info(response.text)
-        return None
-    return response.json()
+    result = await utils.async_http_request_handler(url, headers, data)
+    return result
 
 
 @task(timeout_seconds=300, retries=1, cache_expiration=timedelta(minutes=10))
-def dataverse_import(mapped_metadata, settings_dict, doi=None):
+async def dataverse_import(mapped_metadata, settings_dict, doi=None):
     """ Sends a request to the import service to import the given metadata.
 
     The dataverse_information field in the data takes three fields:
@@ -94,8 +86,6 @@ def dataverse_import(mapped_metadata, settings_dict, doi=None):
     :param doi: The DOI of the dataset that is being imported.
     :return: Response body on success | None on failure.
     """
-    logger = get_run_logger()
-
     headers = {
         'accept': 'application/json',
         'Content-Type': 'application/json'
@@ -113,19 +103,12 @@ def dataverse_import(mapped_metadata, settings_dict, doi=None):
         data['doi'] = doi
 
     url = f"{settings.DATAVERSE_IMPORTER_URL}/importer"
-    response = requests.post(
-        url,
-        headers=headers,
-        data=json.dumps(data)
-    )
-    if not response.ok:
-        logger.info(response.text)
-        return None
-    return response
+    result = await utils.async_http_request_handler(url, headers, data)
+    return result
 
 
 @task(timeout_seconds=300, retries=1, cache_expiration=timedelta(minutes=10))
-def update_publication_date(publication_date, pid, settings_dict):
+async def update_publication_date(publication_date, pid, settings_dict):
     """ Sends a request to the publication date updater to update the pub date.
 
     The dataverse_information field in the data takes two fields:
@@ -137,8 +120,6 @@ def update_publication_date(publication_date, pid, settings_dict):
     :param settings_dict: dict, contains settings for the current task.
     :return: Response body on success | None on failure.
     """
-    logger = get_run_logger()
-
     headers = {
         'accept': 'application/json',
         'Content-Type': 'application/json'
@@ -154,19 +135,12 @@ def update_publication_date(publication_date, pid, settings_dict):
     }
 
     url = f"{settings.PUBLICATION_DATA_UPDATER_URL}/publication-date-updater"
-    response = requests.post(
-        url,
-        headers=headers,
-        data=json.dumps(data)
-    )
-    if not response.ok:
-        logger.info(response.text)
-        return None
-    return response
+    result = await utils.async_http_request_handler(url, headers, data)
+    return result
 
 
 @task(timeout_seconds=300, retries=1, cache_expiration=timedelta(minutes=10))
-def dataverse_metadata_fetcher(metadata_format, doi, settings_dict):
+async def dataverse_metadata_fetcher(metadata_format, doi, settings_dict):
     """
     Fetches the metadata of a dataset with the given DOI.
 
@@ -178,7 +152,6 @@ def dataverse_metadata_fetcher(metadata_format, doi, settings_dict):
     :param settings_dict: dict, contains settings for the current task
     :return: JSON or None
     """
-    logger = get_run_logger()
 
     headers = {
         'accept': 'application/json',
@@ -192,16 +165,8 @@ def dataverse_metadata_fetcher(metadata_format, doi, settings_dict):
     }
 
     url = f"{settings.METADATA_FETCHER_URL}/dataverse-metadata-fetcher"
-    response = requests.post(
-        url,
-        headers=headers,
-        data=json.dumps(data)
-    )
-
-    if not response.ok:
-        logger.info(response.text)
-        return None
-    return response.json()
+    result = await utils.async_http_request_handler(url, headers, data)
+    return result
 
 
 @task(timeout_seconds=300, retries=1, cache_expiration=timedelta(minutes=10))
@@ -245,15 +210,13 @@ def get_license(json_metadata):
 
 
 @task(timeout_seconds=300, retries=1, cache_expiration=timedelta(minutes=10))
-def doi_minter(metadata):
+async def doi_minter(metadata):
     """
     Mints a DOI for the given dataset using the Datacite API.
 
     :param metadata: Metadata of the dataset that needs minting.
     :return: Minted DOI
     """
-    logger = get_run_logger()
-
     url = settings.DOI_MINTER_URL
 
     headers = {
@@ -261,12 +224,10 @@ def doi_minter(metadata):
         'Authorization': settings.MINTER_API_TOKEN,
     }
 
-    response = requests.post(url, headers=headers, data=json.dumps(metadata))
-    if not response.ok:
-        logger.info(response.text)
+    result = await utils.async_http_request_handler(url, headers, metadata)
+    if not result:
         return None
-    doi = response.text.replace('"', '').replace('{', '').replace('}', '')
-    return doi
+    return result.text.replace('"', '').replace('{', '').replace('}', '')
 
 
 @task(timeout_seconds=300, retries=1, cache_expiration=timedelta(minutes=10))
@@ -307,7 +268,7 @@ def add_workflow_versioning_url(mapped_metadata, version):
 
 
 @task(timeout_seconds=300, retries=1, cache_expiration=timedelta(minutes=10))
-def sanitize_emails(xml_metadata, replacement_email: str = None):
+async def sanitize_emails(xml_metadata, replacement_email: str = None):
     """ sends data to a services that sanitizes the emails out of the data.
 
     Emails get replaced by empty string if no replacement email is specified.
@@ -328,19 +289,15 @@ def sanitize_emails(xml_metadata, replacement_email: str = None):
         'data': xml_metadata.decode('utf-8'),
         'replacement_email': replacement_email
     }
-    response = requests.post(
-        settings.EMAIL_SANITIZER_URL, headers=headers,
-        data=json.dumps(data))
-
-    if not response.ok:
-        logger.info(response.text)
+    url = settings.EMAIL_SANITIZER_URL
+    result = await utils.async_http_request_handler(url, headers, data)
+    if not result:
         return None
-    data = response.json()
-    return data['data'].encode('utf-8')
+    return result['data'].encode('utf-8')
 
 
 @task(timeout_seconds=300, retries=1, cache_expiration=timedelta(minutes=10))
-def refine_metadata(metadata: dict, settings_dict):
+async def refine_metadata(metadata: dict, settings_dict):
     """ Sends the metadata to a service for refinement.
 
     This type of refinement that is done depends on the endpoint being called.
@@ -350,7 +307,6 @@ def refine_metadata(metadata: dict, settings_dict):
     :param metadata: The metadata to refine.
     :param settings_dict: The settings dict containing the endpoint to be used.
     """
-    logger = get_run_logger()
 
     headers = {
         'accept': 'application/json',
@@ -361,15 +317,9 @@ def refine_metadata(metadata: dict, settings_dict):
         'metadata': metadata,
     }
 
-    response = requests.post(
-        settings.METADATA_REFINER_URL + settings_dict.REFINER_ENDPOINT,
-        headers=headers, data=json.dumps(data)
-    )
-
-    if not response.ok:
-        logger.info(response.text)
-        return None
-    return response.json()
+    url = settings.METADATA_REFINER_URL + settings_dict.REFINER_ENDPOINT
+    result = await utils.async_http_request_handler(url, headers, data)
+    return result
 
 
 @task
@@ -389,7 +339,7 @@ def extract_doi_from_dataverse(settings_dict, alias):
 
 
 @task(timeout_seconds=300, retries=1, cache_expiration=timedelta(minutes=10))
-def semantic_enrichment(settings_dict, pid: str):
+async def semantic_enrichment(settings_dict, pid: str):
     """ An API call to a service that enriches the search index.
 
     The semantic enrichment API takes the keywords of a dataset in Dataverse.
@@ -421,15 +371,12 @@ def semantic_enrichment(settings_dict, pid: str):
 
 @task(task_run_name="{endpoint}-enrichment-task", timeout_seconds=300,
       retries=1, cache_expiration=timedelta(minutes=10))
-def enrich_metadata(metadata: dict, endpoint: str) -> dict:
+async def enrich_metadata(metadata: dict, endpoint: str) -> dict:
     """ Uses the metadata-enhancer service to enrich the metadata.
 
     :param metadata: The metadata to enrich.
     :param endpoint: The endpoint that expresses the type of enrichment needed.
     """
-    logger = get_run_logger()
-
-    url = f"{settings.METADATA_ENHANCER_URL}/{endpoint}"
 
     headers = {
         'accept': 'application/json',
@@ -440,8 +387,6 @@ def enrich_metadata(metadata: dict, endpoint: str) -> dict:
         "metadata": metadata,
     }
 
-    response = requests.post(url, headers=headers, data=json.dumps(data))
-    if not response.ok:
-        logger.info(response.text)
-        return {}
-    return response.json()
+    url = f"{settings.METADATA_ENHANCER_URL}/{endpoint}"
+    result = await utils.async_http_request_handler(url, headers, data)
+    return result

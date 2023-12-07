@@ -9,7 +9,8 @@ from flows.workflow_versioning.workflow_versioner import \
 
 
 @flow
-def cid_ingestion_pipeline(target_url: str = None, target_key: str = None):
+async def cid_ingestion_pipeline(target_url: str = None,
+                                 target_key: str = None):
     """ Ingestion pipeline dedicated to the CID metadata ingestion.
 
     :param target_url: Optional target dataverse url.
@@ -37,7 +38,7 @@ def cid_ingestion_pipeline(target_url: str = None, target_key: str = None):
         aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
     )
 
-    utils.workflow_executor(
+    await utils.workflow_executor(
         cid_metadata_ingestion,
         version,
         settings_dict,
