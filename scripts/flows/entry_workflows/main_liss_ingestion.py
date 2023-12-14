@@ -1,3 +1,5 @@
+import argparse
+
 import boto3
 
 import utils
@@ -52,15 +54,11 @@ def liss_ingestion_pipeline(target_url: str = None, target_key: str = None):
     )
 
 
-def build_deployment():
-    deployment = Deployment.build_from_flow(
-        name='liss_ingestion',
-        flow_name='liss_ingestion',
-        flow=liss_ingestion_pipeline,
-        work_queue_name='default'
-    )
-    deployment.apply()
-
-
 if __name__ == "__main__":
-    build_deployment()
+    parser = argparse.ArgumentParser(
+        description="Ingestion pipeline for LISS.")
+    parser.add_argument('--target_url', type=str, help='Target URL')
+    parser.add_argument('--target_key', type=str, help='Target key')
+    args = parser.parse_args()
+
+    liss_ingestion_pipeline(args.target_url, args.target_key)

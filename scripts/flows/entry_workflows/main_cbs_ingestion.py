@@ -1,3 +1,5 @@
+import argparse
+
 import boto3
 from configuration.config import settings
 from prefect import flow
@@ -49,16 +51,10 @@ def cbs_ingestion_pipeline(target_url: str = None, target_key: str = None):
     )
 
 
-def build_deployment():
-    deployment = Deployment.build_from_flow(
-        name='cbs_ingestion',
-        flow_name='cbs_ingestion',
-        flow=cbs_ingestion_pipeline,
-        work_queue_name='default',
-        load_existing=True
-    )
-    deployment.apply()
-
-
 if __name__ == "__main__":
-    build_deployment()
+    parser = argparse.ArgumentParser(description="Ingestion pipeline for CBS.")
+    parser.add_argument('--target_url', type=str, help='Target URL')
+    parser.add_argument('--target_key', type=str, help='Target key')
+    args = parser.parse_args()
+
+    cbs_ingestion_pipeline(args.target_url, args.target_key)

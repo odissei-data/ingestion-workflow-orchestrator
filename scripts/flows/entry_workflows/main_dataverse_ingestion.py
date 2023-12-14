@@ -75,15 +75,14 @@ def dataverse_ingestion_pipeline(settings_dict_name: str,
     )
 
 
-def build_deployment():
-    deployment = Deployment.build_from_flow(
-        name='dataverse_ingestion',
-        flow_name='dataverse_ingestion',
-        flow=dataverse_ingestion_pipeline,
-        work_queue_name='default'
-    )
-    deployment.apply()
-
-
 if __name__ == "__main__":
-    build_deployment()
+    parser = argparse.ArgumentParser(
+        description="Ingestion pipeline for Dataverse.")
+    parser.add_argument("--settings_dict_name",
+                        help="Name of the target subverse.")
+    parser.add_argument('--target_url', type=str, help='Target URL')
+    parser.add_argument('--target_key', type=str, help='Target key')
+    args = parser.parse_args()
+
+    dataverse_ingestion_pipeline(args.settings_dict_name, args.target_url,
+                                 args.target_key)
