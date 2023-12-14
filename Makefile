@@ -51,3 +51,5 @@ submodules: ## Sets up the submodules and checks out their main branch.
 	git submodule foreach git checkout main	
 run: ## Runs a given flow in prefect. eg: make run workflow_name="main_cbs_ingestion.py" args="--target_url https://portal.devstack.odissei.nl --target_key api_key"
 	@docker exec -it ${PROJECT_CONTAINER_NAME} python flows/entry_workflows/${workflow_name} ${args}
+deploy-flows: ## Deploys all ingestion workflows to the prefect server.
+	@docker exec -it prefect python deployment/dedockploy_ingestion_pipelines.py
