@@ -3,6 +3,8 @@ include .env
 
 PROJECT_NAME = prefect_docker
 PROJECT_SRV = ${PROJECT_NAME}
+TARGET_URL ?=
+TARGET_KEY ?=
 
 .PHONY = help
 .DEFAULT:
@@ -49,7 +51,8 @@ python-shell-be: ## Enter into IPython shell in backend container
 submodules: ## Sets up the submodules and checks out their main branch.
 	git submodule init
 	git submodule foreach git checkout main	
-run: ## Runs a given flow in prefect. eg: make run workflow_name="main_cbs_ingestion.py" args="--target_url https://portal.devstack.odissei.nl --target_key api_key"
-	@docker exec -it ${PROJECT_CONTAINER_NAME} python flows/entry_workflows/${workflow_name} ${args}
-deploy-flows: ## Deploys all ingestion workflows to the prefect server.
-	@docker exec -it prefect python deployment/dedockploy_ingestion_pipelines.py
+ingest: ## Runs a given flow in prefect. eg: make ingest data_provider="CBS".
+	@docker exec -it ${PROJECT_CONTAINER_NAME} python run_ingestion.py --data_provider=$(data_provider) --target_url=$(TARGET_URL) --target_key=$(TARGET_KEY)
+
+deploy: ## Deploys all ingestion workflows to the prefect server.
+	@docker exec -it prefect python deployment/deploy_ingestion_pipelines.py
