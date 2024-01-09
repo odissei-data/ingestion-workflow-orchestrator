@@ -1,15 +1,12 @@
-import argparse
-
+import utils
 import boto3
-from prefect import flow
-from prefect.deployments import Deployment
 
+from prefect import flow
 from configuration.config import settings
 from flows.dataset_workflows.dataverse_ingestion import \
     dataverse_metadata_ingestion
 from flows.workflow_versioning.workflow_versioner import \
     create_ingestion_workflow_versioning
-import utils
 from tasks.harvest_tasks import oai_harvest_metadata
 
 
@@ -73,16 +70,3 @@ def dataverse_ingestion_pipeline(settings_dict_name: str,
         settings_dict,
         minio_client
     )
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Ingestion pipeline for Dataverse.")
-    parser.add_argument("--settings_dict_name",
-                        help="Name of the target subverse.")
-    parser.add_argument('--target_url', type=str, help='Target URL')
-    parser.add_argument('--target_key', type=str, help='Target key')
-    args = parser.parse_args()
-
-    dataverse_ingestion_pipeline(args.settings_dict_name, args.target_url,
-                                 args.target_key)

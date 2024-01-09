@@ -1,11 +1,8 @@
-import argparse
-
 import boto3
-
 import utils
+
 from configuration.config import settings
 from prefect import flow
-from prefect.deployments.deployments import Deployment
 from flows.dataset_workflows.liss_ingestion import liss_metadata_ingestion
 from flows.workflow_versioning.workflow_versioner import \
     create_ingestion_workflow_versioning
@@ -52,13 +49,3 @@ def liss_ingestion_pipeline(target_url: str = None, target_key: str = None):
         settings_dict,
         minio_client
     )
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Ingestion pipeline for LISS.")
-    parser.add_argument('--target_url', type=str, help='Target URL')
-    parser.add_argument('--target_key', type=str, help='Target key')
-    args = parser.parse_args()
-
-    liss_ingestion_pipeline(args.target_url, args.target_key)

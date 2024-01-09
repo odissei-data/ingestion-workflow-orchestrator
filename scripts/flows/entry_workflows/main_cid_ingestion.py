@@ -1,9 +1,6 @@
-import argparse
-
 import boto3
-from prefect.deployments import Deployment
-
 import utils
+
 from prefect import flow
 from configuration.config import settings
 from flows.dataset_workflows.cid_ingestion import cid_metadata_ingestion
@@ -18,7 +15,6 @@ def cid_ingestion_pipeline(target_url: str = None, target_key: str = None):
     :param target_url: Optional target dataverse url.
     :param target_key: API key of the optional target dataverse.
     """
-
     settings_dict = settings.CID
 
     if target_url:
@@ -47,13 +43,3 @@ def cid_ingestion_pipeline(target_url: str = None, target_key: str = None):
         settings_dict,
         minio_client
     )
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Ingestion pipeline for CID.")
-    parser.add_argument('--target_url', type=str, help='Target URL')
-    parser.add_argument('--target_key', type=str, help='Target key')
-    args = parser.parse_args()
-
-    cid_ingestion_pipeline(args.target_url, args.target_key)
-
