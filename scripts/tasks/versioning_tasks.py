@@ -113,7 +113,7 @@ def store_workflow_version(version_dict):
     :return: A GET request.
     """
     logger = get_run_logger()
-    url = 'https://version-tracker.labs.dans.knaw.nl/store'
+    url = 'https://version-tracker.labs.dansdemo.nl/store'
     headers = {
         'accept': 'application/json',
         'Content-Type': 'application/json'
@@ -126,4 +126,4 @@ def store_workflow_version(version_dict):
         return None
 
     version_id = response.json()['id']
-    return 'https://version-tracker.labs.dans.knaw.nl/retrieve/' + version_id
+    return 'https://version-tracker.labs.dansdemo.nl/retrieve/' + version_id
