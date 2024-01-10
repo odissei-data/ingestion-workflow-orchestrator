@@ -52,8 +52,6 @@ submodules: ## Sets up the submodules and checks out their main branch.
 	git submodule init
 	git submodule foreach git checkout main	
 ingest: ## Runs the ingest workflow for a specified data provider. The url and key of the target can be optionally added. eg: make ingest data_provider=CBS TARGET_URL=https://portal.example.odissei.nl TARGET_KEY=abcde123-11aa-22bb-3c4d-098765432abc
-
 	@docker exec -it ${PROJECT_CONTAINER_NAME} python run_ingestion.py --data_provider=$(data_provider) --target_url=$(TARGET_URL) --target_key=$(TARGET_KEY)
-
 deploy: ## Deploys all ingestion workflows to the prefect server.
 	@docker exec -it prefect python deployment/deploy_ingestion_pipelines.py
