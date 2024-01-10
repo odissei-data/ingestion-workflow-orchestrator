@@ -68,7 +68,7 @@ Here is a set list of make command that can be used for easy setup:
 - `make deploy`: Deploy all ingestion workflows to the Prefect server.
 
 ## Project setup 
-### development
+### Development setup
 If you want to develop new flows for the Ingestion Orchestrator you might want
 to run the services described above locally. This is possible by following the
 steps:
@@ -81,7 +81,7 @@ steps:
    This should set up the prefect container and the services used during the
    ingestion workflows.
 
-### staging
+### Staging setup
 1. `cp dot_env_example .env`
 2. `cp scripts/configuration/secrets_example.toml scripts/configuration/.secrets.toml`
 3. Add the necessary API tokens and credentials to the .secrets.toml
