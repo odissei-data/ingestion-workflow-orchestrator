@@ -215,7 +215,7 @@ def get_doi_from_dv_json(dataverse_json):
     :return: The DOI of the dataset.
     """
     try:
-        doi = dataverse_json["datasetVersion"]["datasetPersistentId"]
+        doi = dataverse_json["persistentUrl"]
     except KeyError:
         return None
     return doi

@@ -6,14 +6,15 @@ The different flows and tasks used in these workflows are created using Prefect.
 If you run the container locally they can be monitored and ran from the Prefect Orion UI at http://localhost:4200.
 
 Most flows start with an entry workflow that can be found in the directory entry_workflows. 
-Here the metadata is fetched from an S3 storage, and a version is created. 
+Here the metadata is first harvested using OAI-PMH and uploaded to S3 storage. After, the metadata is fetched from that S3 storage, and a provenance object is created for the ingested metadata. 
 A settings dictionary constructed with DynaConf that is specific to the Data Provider is also constructed here.
 
 Next, For every dataset's metadata it runs a sub-flow to handle the actual ingestion.
 These flows can be found in the dataset_workflows directory. The dataset workflow uses simple tasks that make an API call to a service. 
-These services often transform, improve or alter the metadata in someway.
-
+These services often transform, improve or alter the metadata in some way.
+doc
 In short, most ingestion workflows take the following steps:
+- Harvest metadata and upload it to S3 storage.
 - Fetch dataset metadata from S3 storage.
 - Create version object of all services that will be used for ingestion.
 - For every dataset's metadata run dataset workflow.
@@ -26,29 +27,48 @@ In this section the different API services used in the workflows are shown. Thes
 
 | Service Name             | Description                                                                                                                       | Deployment URL                                                                                         | GitHub Repo                                                                               |
 |--------------------------|-----------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
-| Dataverse Importer       | This service imports metadata into Dataverse.                                                                                     | [https://dataverse-importer.labs.dans.knaw.nl/docs](https://dataverse-importer.labs.dans.knaw.nl/docs) | [GitHub](https://github.com/odissei-data/dataverse-importer)                              |
-| Publication Date Updater | Corrects the publication date of the imported metadata.                                                                           | https://dataverse-date-updater.labs.dans.knaw.nl/docs                                                  | [GitHub](https://github.com/odissei-data/publication-date-updater)                        |
-| Metadata Fetcher         | Fetches the metadata of a dataset from a Dataverse.                                                                               | https://dataverse-fetcher.labs.dans.knaw.nl/docs                                                       | [GitHub](https://github.com/odissei-data/dataverse-metadata-fetcher)                      |
-| Dataverse Mapper         | Maps any JSON to Dataverse's JSON format.                                                                                         | https://dataverse-mapper.labs.dans.knaw.nl/docs                                                        | [GitHub](https://github.com/odissei-data/dataverse-mapper)                                |
-| Dans Transformer Service | Transforms from XML to JSON (or from/to other formats).                                                                           | https://transformer.labs.dans.knaw.nl/docs                                                             | [GitHub](https://github.com/ekoi/dans-transformer-service)                                |
-| Metadata Refiner         | Refines JSON metadata.                                                                                                            | https://metadata-enhancer.labs.dans.knaw.nl/docs                                                       | [GitHub](https://github.com/odissei-data/metadata-refiner)                                |
-| Metadata Enhancer        | Enriches JSON metadata.                                                                                                           | https://metadata-refiner.labs.dans.knaw.nl/docs                                                        | [GitHub](https://github.com/odissei-data/metadata-enhancer)                               |
-| Email Sanitizer          | Removes all emails from the metadata.                                                                                             | https://emailsanitizer.labs.dans.knaw.nl/docs                                                          | [GitHub](https://github.com/thomasve-DANS/email-sanitize-microservice)                    |
-| Version Tracker          | Stores JSON containing version information.                                                                                       | https://version-tracker.labs.dans.knaw.nl/docs                                                         | [GitHub](https://github.com/odissei-data/version-tracker)                                 |
-| DOI Minter               | Mints a DOI for a dataset. Should be used with **CAUTION** since if used with production settings this will mint a permanent DOI. | https://dataciteminter.labs.dans.knaw.nl/docs                                                          | [GitHub](https://github.com/ekoi/submitmd2dc-service/tree/using-dans-transformer-service) |
+| Dataverse Importer       | This service imports metadata into Dataverse.                                                                                     | [https://dataverse-importer.labs.dansdemo.nl/docs](https://dataverse-importer.labs.dansdemo.nl/docs) | [GitHub](https://github.com/odissei-data/dataverse-importer)                              |
+| Publication Date Updater | Corrects the publication date of the imported metadata.                                                                           | https://dataverse-date-updater.labs.dansdemo.nl/docs                                                  | [GitHub](https://github.com/odissei-data/publication-date-updater)                        |
+| Metadata Fetcher         | Fetches the metadata of a dataset from a Dataverse.                                                                               | https://dataverse-fetcher.labs.dansdemo.nl/docs                                                       | [GitHub](https://github.com/odissei-data/dataverse-metadata-fetcher)                      |
+| Dataverse Mapper         | Maps any JSON to Dataverse's JSON format.                                                                                         | https://dataverse-mapper.labs.dansdemo.nl/docs                                                        | [GitHub](https://github.com/odissei-data/dataverse-mapper)                                |
+| Dans Transformer Service | Transforms from XML to JSON (or from/to other formats).                                                                           | https://transformer.labs.dansdemo.nl/docs                                                             | [GitHub](https://github.com/ekoi/dans-transformer-service)                                |
+| Metadata Refiner         | Refines JSON metadata.                                                                                                            | https://metadata-enhancer.labs.dansdemo.nl/docs                                                       | [GitHub](https://github.com/odissei-data/metadata-refiner)                                |
+| Metadata Enhancer        | Enriches JSON metadata.                                                                                                           | https://metadata-refiner.labs.dansdemo.nl/docs                                                        | [GitHub](https://github.com/odissei-data/metadata-enhancer)                               |
+| Email Sanitizer          | Removes all emails from the metadata.                                                                                             | https://emailsanitizer.labs.dansdemo.nl/docs                                                          | [GitHub](https://github.com/thomasve-DANS/email-sanitize-microservice)                    |
+| Version Tracker          | Stores JSON containing version information.                                                                                       | https://version-tracker.labs.dansdemo.nl/docs                                                         | [GitHub](https://github.com/odissei-data/version-tracker)                                 |
+| DOI Minter               | Mints a DOI for a dataset. Should be used with **CAUTION** since if used with production settings this will mint a permanent DOI. | https://dataciteminter.labs.dansdemo.nl/docs                                                          | [GitHub](https://github.com/ekoi/submitmd2dc-service/tree/using-dans-transformer-service) |
 | Semantic Enrichment      | Enriches the SOLR index with ELSST translations of the keywords from the [ELSST skosmos](https://thesauri.cessda.eu/elsst-3/en/). |                                                                                                        | [GitHub](https://github.com/Dans-labs/semantic-enrichment)                                |
+| OAI-PMH Harvester        | Harvester service to harvest the metadata from data providers using OAI-PMH.                                                      |                                                                                                        | [GitHub](https://github.com/odissei-data/odissei-harvester)                               |
 
 
-# Development
+## Make commands
+# Django and Docker commands
 
-If you want to develop new flows for the Ingestion Orchestrator you need to set
-up your local environment first. Follow the step below, and you should be able
-to start development.
+Make sure to include your `.env` file before running the commands.
 
-First you need to get a couple of containers running. All of these are needed
-as they are used by the Ingestion Orchestrator.
+## Available Commands
+Here is a set list of make command that can be used for easy setup:
+- `make build`: Build and start the project.
+- `make start`: Start the project in non-detached mode.
+- `make startbg`: Start the project in detached mode (background).
+- `make down`: Down the running project.
+- `make dev-build`: Build and start the development setup.
+- `make dev-down`: Down the ingest services in development mode.
+- `make ingest`: Run a specific ingest flow in Prefect with optional arguments for the target.
+- `make deploy`: Deploy all ingestion workflows to the Prefect server.
 
-### Minio file storage
+
+## Development
+If you want to develop new flows for the Ingestion Orchestrator you might want to run the services described above locally.
+This is possible by following the steps:
+1. `cp dot_env_example .env`
+2. set `ENV_FOR_DYNACONF` in the .env to `development`
+3. `make dev-build`
+
+This should set up the prefect container and the services used during the ingestion workflows.
+
+
+## Minio file storage
 
 The metadata that is used by the workflows is stored in s3 buckets. The key, id
 and url of the server of the s3 storage should be set in the .secrets.toml as
@@ -75,6 +95,7 @@ generically used in the code when a bucket name is necessary. It is set to the
 HSN_BUCKET_NAME which declares the specific name for the bucket for HSN.
 Further explanation on the settings can be found in [Settings files section](#settings-files).
 
+
 ### Dataverse
 
 A local Dataverse instance makes it easy to deposit via the API.
@@ -89,39 +110,7 @@ now a Super User.
 More information on how to do this can be found in the documentation of the
 ODISSEI dataverse stack [here](https://github.com/odissei-data/odissei-stack#becoming-superuser).
 
-### Docker Network
-
-If the containers of the services are setup locally and do not use the
-dans-labs services, you need to setup a docker network between the
-ingestion-network and the local containers. The commands below should do the
-trick.
-
-```shell
-docker network create -d bridge ingestion-network
-docker network connect ingestion-network dataverse
-docker network connect ingestion-network dataverse-importer
-docker network connect ingestion-network publication-date-updater
-docker network connect ingestion-network metadata-fetcher
-docker network connect ingestion-network prefect
-docker network connect ingestion-network dataverse-mapper-v2
-docker network connect ingestion-network dans-transformer-service
-docker network connect ingestion-network metadata-refiner
-docker network connect ingestion-network semantic-enrichment
-```
-
-### Ports
-
-The containers are assumed to be running on the following ports. If needed,
-adjust the port numbers in the `.env` file.
-
-- dataverse: 8080
-- dataverse-importer: 8091
-- metadata-fetcher: 8092
-- publication-date-update: 8093
-- dataverse-mapper-v2: 8094
-- dans-transformer-service: 1745
-- metadata-refiner: 7878
-- semantic-enrichment: 8099
+If you use a containerized Dataverse instance it should live in the same network as the dev services.
 
 ## Dynaconf
 

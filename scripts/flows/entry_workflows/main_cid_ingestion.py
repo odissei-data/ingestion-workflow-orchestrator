@@ -1,7 +1,6 @@
 import boto3
-from prefect.deployments import Deployment
-
 import utils
+
 from prefect import flow
 from configuration.config import settings
 from flows.dataset_workflows.cid_ingestion import cid_metadata_ingestion
@@ -16,7 +15,6 @@ def cid_ingestion_pipeline(target_url: str = None, target_key: str = None):
     :param target_url: Optional target dataverse url.
     :param target_key: API key of the optional target dataverse.
     """
-
     settings_dict = settings.CID
 
     if target_url:
@@ -45,18 +43,3 @@ def cid_ingestion_pipeline(target_url: str = None, target_key: str = None):
         settings_dict,
         minio_client
     )
-
-
-def build_deployment():
-    deployment = Deployment.build_from_flow(
-        name='cid_ingestion',
-        flow_name='cid_ingestion',
-        flow=cid_ingestion_pipeline,
-        work_queue_name='default',
-        load_existing=True
-    )
-    deployment.apply()
-
-
-if __name__ == "__main__":
-    build_deployment()

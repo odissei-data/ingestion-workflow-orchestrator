@@ -1,8 +1,8 @@
 import boto3
+import utils
+
 from configuration.config import settings
 from prefect import flow
-from prefect.deployments.deployments import Deployment
-import utils
 from flows.dataset_workflows.cbs_ingestion import cbs_metadata_ingestion
 from flows.workflow_versioning.workflow_versioner import \
     create_ingestion_workflow_versioning
@@ -47,18 +47,3 @@ def cbs_ingestion_pipeline(target_url: str = None, target_key: str = None):
         settings_dict,
         minio_client
     )
-
-
-def build_deployment():
-    deployment = Deployment.build_from_flow(
-        name='cbs_ingestion',
-        flow_name='cbs_ingestion',
-        flow=cbs_ingestion_pipeline,
-        work_queue_name='default',
-        load_existing=True
-    )
-    deployment.apply()
-
-
-if __name__ == "__main__":
-    build_deployment()

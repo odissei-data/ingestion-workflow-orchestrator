@@ -28,7 +28,7 @@ def is_lower_level_liss_study(metadata):
     logger = get_run_logger()
     title = metadata['datasetVersion']['metadataBlocks']['citation'][
         'fields'][0]['value']
-    logger.info("Title is", title)
+    logger.info(f"Title is {title}")
     square_bracket_amount = title.count('>')
     if square_bracket_amount == 0:
         logger.info('no square brackets')

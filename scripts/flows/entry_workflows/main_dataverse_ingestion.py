@@ -1,15 +1,12 @@
-import argparse
-
+import utils
 import boto3
-from prefect import flow
-from prefect.deployments import Deployment
 
+from prefect import flow
 from configuration.config import settings
 from flows.dataset_workflows.dataverse_ingestion import \
     dataverse_metadata_ingestion
 from flows.workflow_versioning.workflow_versioner import \
     create_ingestion_workflow_versioning
-import utils
 from tasks.harvest_tasks import oai_harvest_metadata
 
 
@@ -73,17 +70,3 @@ def dataverse_ingestion_pipeline(settings_dict_name: str,
         settings_dict,
         minio_client
     )
-
-
-def build_deployment():
-    deployment = Deployment.build_from_flow(
-        name='dataverse_ingestion',
-        flow_name='dataverse_ingestion',
-        flow=dataverse_ingestion_pipeline,
-        work_queue_name='default'
-    )
-    deployment.apply()
-
-
-if __name__ == "__main__":
-    build_deployment()

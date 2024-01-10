@@ -4,8 +4,17 @@ PROJECT_CONTAINER_NAME="prefect"
 PYTHONPATH="/scripts/"
 GITHUB_USERNAME="odissei-data"
 DOCKERHUB_USERNAME="fjodorvr"
-VERSION="v0.2.0-alpha"
+VERSION="v2.4.3"
 ENV_FOR_DYNACONF=development
 PREFECT_SERVER_API_HOST='0.0.0.0'
 PREFECT_API_DATABASE_CONNECTION_URL="postgresql+asyncpg://username:password@db:5432/prefect"
+# metadata-enhancer env's for dev setup
+ELSST_VOCABULARY_URL=https://fuseki.devstack.odissei.nl/skosmos/sparql
+VARIABLE_VOCABULARY_URL=https://fuseki.devstack.odissei.nl/skosmos/sparql
+GITHUB_RAW_URL=https://raw.githubusercontent.com/Dans-labs/semantic-enrichment/master/static/alle-beschikbare-catalogus-bestanden.tsv
 
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=prefect
+POSTGRES_PORT=5432
+POSTGRES_DB_URL=postgresql://postgres:postgres@database:5432/prefect
