@@ -1,0 +1,73 @@
+version: '3.7'
+services:
+  publicationdateupdater:
+      image: fjodorvr/publication-date-updater:0.1.0
+      container_name: publication-date-updater
+      command: ["uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "8081"]
+      ports:
+        - "8081:8081"
+      networks:
+        - ingest
+
+  dataversemapper:
+    image: fjodorvr/dataverse-mapper:1.2.0
+    container_name: dataverse-mapper
+    command: ["uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "8082"]
+    ports:
+      - "8082:8082"
+
+    networks:
+      - ingest
+
+  dataverseimporter:
+    image: fjodorvr/dataverse-importer:0.1.0
+    container_name: dataverse-importer
+    command: [ "uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "8989" ]
+    ports:
+      - "8989:8989"
+    networks:
+      - ingest
+
+  metadatafetcher:
+    image: fjodorvr/dataverse-metadata-fetcher:0.1.1
+    container_name: metadata-fetcher
+    command: [ "uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "8092" ]
+    ports:
+      - "8092:8092"
+    networks:
+      - ingest
+
+  metadata-enhancer:
+    image: fjodorvr/metadata-enhancer:2.1.1
+    container_name: metadata-enhancer
+    command: [ "uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "7070" ]
+    environment:
+      - ELSST_VOCABULARY_URL=${ELSST_VOCABULARY_URL}
+      - VARIABLE_VOCABULARY_URL=${VARIABLE_VOCABULARY_URL}
+      - GITHUB_RAW_URL=${GITHUB_RAW_URL}
+    ports:
+      - "7070:7070"
+    networks:
+      - ingest
+
+  metadatarefiner:
+    image: fjodorvr/metadata-refiner:1.3.0
+    container_name: metadata-refiner
+    command: [ "uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "7878" ]
+    ports:
+      - "7878:7878"
+    networks:
+      - ingest
+
+  emailsanitizer:
+    image: thomasve/emailsanitizer:0.1.5
+    container_name: 'email-sanitizer'
+    command: ["uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "7777"]
+    networks:
+      - ingest
+    ports:
+      - "7777:7777"
+
+networks:
+  ingest:
+    external: true

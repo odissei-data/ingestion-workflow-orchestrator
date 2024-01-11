@@ -38,13 +38,13 @@ def create_ingestion_workflow_versioning(
     if transformer:
         transformer_name = 'DANS-transformer-service'
         transformer = get_service_version(
-            service_url='https://transformer.labs.dans.knaw.nl/',
+            service_url='https://transformer.labs.dansdemo.nl/',
             service_name=transformer_name,
             github_username='',
             github_repo='',
             docker_username='ekoindarto',
             image_repo='dans-transformer-service',
-            endpoint='https://transformer.labs.dans.knaw.nl/'
+            endpoint='https://transformer.labs.dansdemo.nl/'
                      'transform-xml-to-json/true'
         )
         version_dict[transformer_name] = transformer
@@ -52,26 +52,26 @@ def create_ingestion_workflow_versioning(
     if mapper:
         mapper_name = 'dataverse-mapper'
         mapper = get_service_version(
-            service_url='https://dataverse-mapper.labs.dans.knaw.nl/version',
+            service_url='https://dataverse-mapper.labs.dansdemo.nl/version',
             service_name=mapper_name,
             github_username='odissei-data',
             github_repo=mapper_name,
             docker_username='fjodorvr',
             image_repo=mapper_name,
-            endpoint='https://dataverse-mapper.labs.dans.knaw.nl/mapper'
+            endpoint='https://dataverse-mapper.labs.dansdemo.nl/mapper'
         )
         version_dict[mapper_name] = mapper
 
     if fetcher:
         fetcher_name = 'dataverse-metadata-fetcher'
         fetcher = get_service_version(
-            service_url='https://dataverse-fetcher.labs.dans.knaw.nl/version',
+            service_url='https://dataverse-fetcher.labs.dansdemo.nl/version',
             service_name=fetcher_name,
             github_username='odissei-data',
             github_repo=fetcher_name,
             docker_username='fjodorvr',
             image_repo=fetcher_name,
-            endpoint='https://dataverse-fetcher.labs.dans.knaw.nl/'
+            endpoint='https://dataverse-fetcher.labs.dansdemo.nl/'
                      'dataverse-metadata-fetcher'
         )
         version_dict[fetcher_name] = fetcher
@@ -79,13 +79,13 @@ def create_ingestion_workflow_versioning(
     if minter:
         minter_name = 'datacite-minter'
         minter = get_service_version(
-            service_url='https://dataciteminter.labs.dans.knaw.nl/',
+            service_url='https://dataciteminter.labs.dansdemo.nl/',
             service_name=minter_name,
             github_username='',
             github_repo='',
             docker_username='ekoindarto',
             image_repo='submitmd2dc-service',
-            endpoint='https://dataciteminter.labs.dans.knaw.nl/'
+            endpoint='https://dataciteminter.labs.dansdemo.nl/'
                      'submit-to-datacite/register'
         )
         version_dict[minter_name] = minter
@@ -93,27 +93,27 @@ def create_ingestion_workflow_versioning(
     if importer:
         importer_name = 'dataverse-importer'
         importer = get_service_version(
-            service_url='https://dataverse-importer.labs.dans.knaw.nl/version',
+            service_url='https://dataverse-importer.labs.dansdemo.nl/version',
             service_name=importer_name,
             github_username='odissei-data',
             github_repo=importer_name,
             docker_username='fjodorvr',
             image_repo=importer_name,
-            endpoint='https://dataverse-importer.labs.dans.knaw.nl/importer'
+            endpoint='https://dataverse-importer.labs.dansdemo.nl/importer'
         )
         version_dict[importer_name] = importer
 
     if updater:
         updater_name = 'publication-date-updater'
         updater = get_service_version(
-            service_url='https://dataverse-date-updater.labs.dans.knaw.nl/'
+            service_url='https://dataverse-date-updater.labs.dansdemo.nl/'
                         'version',
             service_name=updater_name,
             github_username='odissei-data',
             github_repo=updater_name,
             docker_username='fjodorvr',
             image_repo=updater_name,
-            endpoint='https://dataverse-date-updater.labs.dans.knaw.nl/'
+            endpoint='https://dataverse-date-updater.labs.dansdemo.nl/'
                      'publication-date-updater'
         )
         version_dict[updater_name] = updater
@@ -121,13 +121,13 @@ def create_ingestion_workflow_versioning(
     if refiner:
         refiner_name = 'metadata-refiner'
         refiner = get_service_version(
-            service_url='https://metadata-refiner.labs.dans.knaw.nl/version',
+            service_url='https://metadata-refiner.labs.dansdemo.nl/version',
             service_name=refiner_name,
             github_username='odissei-data',
             github_repo=refiner_name,
             docker_username='fjodorvr',
             image_repo=refiner_name,
-            endpoint='https://metadata-refiner.labs.dans.knaw.nl'
+            endpoint='https://metadata-refiner.labs.dansdemo.nl'
                      + settings.REFINER_ENDPOINT
         )
         version_dict[refiner_name] = refiner
@@ -135,18 +135,18 @@ def create_ingestion_workflow_versioning(
     if enhancer:
         enhancer_name = 'metadata-enhancer'
         enhancer = get_service_version(
-            service_url='https://metadata-enhancer.labs.dans.knaw.nl/version',
+            service_url='https://metadata-enhancer.labs.dansdemo.nl/version',
             service_name=enhancer_name,
             github_username='odissei-data',
             github_repo=enhancer_name,
             docker_username='fjodorvr',
             image_repo=enhancer_name,
             endpoint=[
-                'https://metadata-enhancer.labs.dans.knaw.nl/'
+                'https://metadata-enhancer.labs.dansdemo.nl/'
                 'dataverse-ELSST-enhancer'
-                'https://metadata-enhancer.labs.dans.knaw.nl/'
+                'https://metadata-enhancer.labs.dansdemo.nl/'
                 'dataverse-variable-enhancer'
-                'https://metadata-enhancer.labs.dans.knaw.nl/'
+                'https://metadata-enhancer.labs.dansdemo.nl/'
                 'dataverse-frequency-enhancer'
             ]
         )
