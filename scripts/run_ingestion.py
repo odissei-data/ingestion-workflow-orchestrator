@@ -57,7 +57,7 @@ def run_ingestion():
         if not prompt_for_confirmation(target_url):
             print("Aborted")
         else:
-            dataverse_ingestion_pipeline(settings_dict, target_url,
+            dataverse_ingestion_pipeline(args.data_provider, target_url,
                                          args.target_key)
 
 
