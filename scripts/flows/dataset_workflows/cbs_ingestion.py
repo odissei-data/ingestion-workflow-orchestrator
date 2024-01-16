@@ -7,10 +7,11 @@ from tasks.base_tasks import xml2json, dataverse_mapper, \
     dataverse_import, update_publication_date, add_workflow_versioning_url, \
     sanitize_emails, semantic_enrichment, refine_metadata, doi_minter, \
     enrich_metadata
+from utils import generate_flow_run_name
 
 
-@flow
-def cbs_metadata_ingestion(xml_metadata, version, settings_dict):
+@flow(flow_run_name=generate_flow_run_name)
+def cbs_metadata_ingestion(xml_metadata, version, settings_dict, file_name):
     """
     Ingestion flow for metadata from CBS.
 

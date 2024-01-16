@@ -3,6 +3,7 @@ import json
 
 from botocore.exceptions import ClientError
 from prefect import get_run_logger
+from prefect.runtime import flow_run
 from prefect.states import Failed
 
 
@@ -85,18 +86,20 @@ def workflow_executor(
 
     for page in pages:
         for obj in page["Contents"]:
+            file_name = obj['Key']
             object_data = minio_client.get_object(
                 Bucket=bucket,
-                Key=obj['Key']
+                Key=file_name
             )
             metadata = object_data['Body'].read()
             logger.info(
-                f"Retrieved file: {obj['Key']}, Size: {len(metadata)}"
+                f"Retrieved file: {file_name}, Size: {len(metadata)}"
             )
             data_provider_workflow(
                 metadata,
                 version,
                 settings_dict,
+                file_name,
                 return_state=True
             )
 
@@ -142,3 +145,24 @@ def identifier_list_workflow_executor(
                     f" does not have a list as value.")
     for pid in identifiers_dict['pids']:
         data_provider_workflow(pid, version, settings_dict, return_state=True)
+
+
+def generate_flow_run_name():
+    flow_name = flow_run.flow_name
+
+    parameters = flow_run.parameters
+    file_name = parameters["file_name"]
+
+    return f"{flow_name}-{file_name}"
+
+
+def generate_dv_flow_run_name():
+    flow_name = flow_run.flow_name
+
+    parameters = flow_run.parameters
+    pid = parameters["pid"]
+
+    return f"{flow_name}-{pid}"
+
+
+

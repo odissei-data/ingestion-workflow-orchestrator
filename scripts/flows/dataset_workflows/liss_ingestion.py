@@ -8,11 +8,11 @@ from queries import DIST_DATE_QUERY
 from tasks.base_tasks import dataverse_mapper, \
     dataverse_import, update_publication_date, get_doi_from_dv_json, \
     add_workflow_versioning_url
-from utils import is_lower_level_liss_study
+from utils import is_lower_level_liss_study, generate_flow_run_name
 
 
-@flow
-def liss_metadata_ingestion(json_metadata, version, settings_dict):
+@flow(flow_run_name=generate_flow_run_name)
+def liss_metadata_ingestion(json_metadata, version, settings_dict, file_name):
     """
     Ingestion flow for metadata from LISS.
 
