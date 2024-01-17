@@ -12,7 +12,7 @@ from utils import is_lower_level_liss_study
 
 
 @flow
-def liss_metadata_ingestion(json_metadata, version, settings_dict):
+async def liss_metadata_ingestion(json_metadata, version, settings_dict):
     """
     Ingestion flow for metadata from LISS.
 
@@ -24,7 +24,7 @@ def liss_metadata_ingestion(json_metadata, version, settings_dict):
 
     decoded_json = json.loads(json_metadata.decode())
 
-    mapped_metadata = dataverse_mapper(
+    mapped_metadata = await dataverse_mapper(
         decoded_json,
         settings_dict.MAPPING_FILE_PATH,
         settings_dict.TEMPLATE_FILE_PATH
@@ -44,13 +44,14 @@ def liss_metadata_ingestion(json_metadata, version, settings_dict):
     if not mapped_metadata:
         return Failed(message='Unable to store workflow version.')
 
-    import_response = dataverse_import(mapped_metadata, settings_dict, doi)
+    import_response = await dataverse_import(mapped_metadata, settings_dict,
+                                             doi)
     if not import_response:
         return Failed(message='Unable to import dataset into Dataverse')
 
     publication_date = jmespath.search(DIST_DATE_QUERY, mapped_metadata)
     if publication_date:
-        pub_date_response = update_publication_date(
+        pub_date_response = await update_publication_date(
             publication_date, doi, settings_dict
         )
         if not pub_date_response:

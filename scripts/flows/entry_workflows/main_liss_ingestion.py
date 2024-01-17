@@ -1,3 +1,5 @@
+import asyncio
+
 import boto3
 import utils
 
@@ -10,7 +12,8 @@ from tasks.harvest_tasks import harvest_metadata
 
 
 @flow
-def liss_ingestion_pipeline(target_url: str = None, target_key: str = None):
+async def liss_ingestion_pipeline(target_url: str = None,
+                                  target_key: str = None):
     """ Ingestion pipeline dedicated to the LISS metadata ingestion.
 
     :param target_url: Optional target dataverse url.
@@ -43,7 +46,7 @@ def liss_ingestion_pipeline(target_url: str = None, target_key: str = None):
         "start_liss_harvest"
     )
 
-    utils.workflow_executor(
+    await utils.workflow_executor(
         liss_metadata_ingestion,
         version,
         settings_dict,

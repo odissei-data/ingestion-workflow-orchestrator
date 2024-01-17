@@ -10,7 +10,7 @@ from tasks.base_tasks import dataverse_mapper, \
 
 
 @flow
-def cid_metadata_ingestion(json_metadata, version, settings_dict):
+async def cid_metadata_ingestion(json_metadata, version, settings_dict):
     """
     Ingestion flow for metadata from CID.
 
@@ -22,9 +22,8 @@ def cid_metadata_ingestion(json_metadata, version, settings_dict):
     logger = get_run_logger()
 
     decoded_json = json.loads(json_metadata.decode())
-    logger.info(decoded_json)
     doi = f"doi:10.73575/{decoded_json['name']}"
-    mapped_metadata = dataverse_mapper(
+    mapped_metadata = await dataverse_mapper(
         decoded_json,
         settings_dict.MAPPING_FILE_PATH,
         settings_dict.TEMPLATE_FILE_PATH,
@@ -33,21 +32,21 @@ def cid_metadata_ingestion(json_metadata, version, settings_dict):
 
     if not mapped_metadata:
         return Failed(message='Unable to map metadata')
-    logger.info(mapped_metadata)
-    mapped_metadata = refine_metadata(mapped_metadata, settings_dict)
+    mapped_metadata = await refine_metadata(mapped_metadata, settings_dict)
     if not mapped_metadata:
         return Failed(message='Unable to refine metadata.')
 
     mapped_metadata = add_workflow_versioning_url(mapped_metadata, version)
     if not mapped_metadata:
         return Failed(message='Unable to store workflow version.')
-    import_response = dataverse_import(mapped_metadata, settings_dict, doi)
+    import_response = await dataverse_import(mapped_metadata, settings_dict,
+                                             doi)
     if not import_response:
         return Failed(message='Unable to import dataset into Dataverse')
 
     publication_date = jmespath.search(DIST_DATE_QUERY, mapped_metadata)
     if publication_date:
-        pub_date_response = update_publication_date(
+        pub_date_response = await update_publication_date(
             publication_date, doi, settings_dict
         )
         if not pub_date_response:

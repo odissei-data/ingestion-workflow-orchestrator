@@ -9,7 +9,8 @@ from flows.workflow_versioning.workflow_versioner import \
 
 
 @flow
-def cbs_ingestion_pipeline(target_url: str = None, target_key: str = None):
+async def cbs_ingestion_pipeline(target_url: str = None,
+                                 target_key: str = None):
     """ Ingestion pipeline dedicated to the CBS metadata ingestion.
 
     :param target_url: Optional target dataverse url.
@@ -41,7 +42,7 @@ def cbs_ingestion_pipeline(target_url: str = None, target_key: str = None):
         aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
     )
 
-    utils.workflow_executor(
+    await utils.workflow_executor(
         cbs_metadata_ingestion,
         version,
         settings_dict,
