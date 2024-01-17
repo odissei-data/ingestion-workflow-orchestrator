@@ -29,7 +29,12 @@ def run_ingestion():
                         help='Target URL')
     parser.add_argument('--target_key', type=str, default=None,
                         help='Target key')
+    parser.add_argument('--do_harvest', type=bool, default=True,
+                        help='Bool that states if the metadata will'
+                             ' be harvested.')
     args = parser.parse_args()
+
+    print(f"args: {args}")
 
     provider_mapping = {
         'CBS': cbs_ingestion_pipeline,
@@ -49,7 +54,7 @@ def run_ingestion():
         if not prompt_for_confirmation(target_url):
             print("Aborted")
         else:
-            ingestion_function(target_url, args.target_key)
+            ingestion_function(target_url, args.target_key, args.do_harvest)
 
     else:
         settings_dict = getattr(settings, args.data_provider)
@@ -58,7 +63,7 @@ def run_ingestion():
             print("Aborted")
         else:
             dataverse_ingestion_pipeline(args.data_provider, target_url,
-                                         args.target_key)
+                                         args.target_key, args.do_harvest)
 
 
 def prompt_for_confirmation(target_url):
