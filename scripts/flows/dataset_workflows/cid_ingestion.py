@@ -1,20 +1,21 @@
 import json
 import jmespath
+
 from prefect import flow, get_run_logger
 from prefect.server.schemas.states import Completed, Failed
-
 from queries import DIST_DATE_QUERY
 from tasks.base_tasks import dataverse_mapper, \
     dataverse_import, update_publication_date, add_workflow_versioning_url, \
     refine_metadata
-from utils import generate_flow_run_name
+from utils import generate_flow_run_name, failed_ingestion_hook
 
 
-@flow(flow_run_name=generate_flow_run_name)
+@flow(flow_run_name=generate_flow_run_name, on_failure=[failed_ingestion_hook])
 def cid_metadata_ingestion(json_metadata, version, settings_dict, file_name):
     """
     Ingestion flow for metadata from CID.
 
+    :param file_name: Used in the workflow name and for the on flow fail hook.
     :param json_metadata: json_metadata of the data provider.
     :param version: dict, contains all version info of the workflow.
     :param settings_dict: dict, contains settings for the current workflow.
