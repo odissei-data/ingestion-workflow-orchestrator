@@ -1,4 +1,3 @@
-import boto3
 import utils
 
 from configuration.config import settings
@@ -10,9 +9,12 @@ from tasks.harvest_tasks import harvest_metadata
 
 
 @flow
-def liss_ingestion_pipeline(target_url: str = None, target_key: str = None):
+def liss_ingestion_pipeline(target_url: str = None, target_key: str = None,
+                            do_harvest: bool = True):
     """ Ingestion pipeline dedicated to the LISS metadata ingestion.
 
+    :param do_harvest: Boolean stating if the dataset metadata should be
+     harvested before ingestion.
     :param target_url: Optional target dataverse url.
     :param target_key: API key of the optional target dataverse.
     """
@@ -31,21 +33,17 @@ def liss_ingestion_pipeline(target_url: str = None, target_key: str = None):
         updater=True
     )
 
-    minio_client = boto3.client(
-        's3',
-        endpoint_url=settings.MINIO_SERVER_URL,
-        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
-    )
+    s3_client = utils.create_s3_client()
 
-    harvest_metadata(
-        settings_dict.BUCKET_NAME,
-        "start_liss_harvest"
-    )
+    if do_harvest:
+        harvest_metadata(
+            settings_dict.BUCKET_NAME,
+            "start_liss_harvest"
+        )
 
     utils.workflow_executor(
         liss_metadata_ingestion,
         version,
         settings_dict,
-        minio_client
+        s3_client
     )

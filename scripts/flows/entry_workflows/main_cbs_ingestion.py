@@ -1,4 +1,3 @@
-import boto3
 import utils
 
 from configuration.config import settings
@@ -34,16 +33,11 @@ def cbs_ingestion_pipeline(target_url: str = None, target_key: str = None):
         settings=settings.CBS
     )
 
-    minio_client = boto3.client(
-        's3',
-        endpoint_url=settings.MINIO_SERVER_URL,
-        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
-    )
+    s3_client = utils.create_s3_client()
 
     utils.workflow_executor(
         cbs_metadata_ingestion,
         version,
         settings_dict,
-        minio_client
+        s3_client
     )
