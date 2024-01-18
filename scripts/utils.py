@@ -152,6 +152,10 @@ def identifier_list_workflow_executor(
 
 
 def generate_flow_run_name():
+    """ Generate a unique name for a flow run based on flow name and file name.
+
+    :return: A formatted string representing the flow run name.
+    """
     flow_name = runtime_flow_run.flow_name
 
     parameters = runtime_flow_run.parameters
@@ -161,6 +165,11 @@ def generate_flow_run_name():
 
 
 def generate_dv_flow_run_name():
+    """ Generate a unique name for a flow run using the flow name
+     and the dataset PID.
+
+    :return: A formatted string representing the flow run name.
+    """
     flow_name = runtime_flow_run.flow_name
 
     parameters = runtime_flow_run.parameters
@@ -170,6 +179,10 @@ def generate_dv_flow_run_name():
 
 
 def create_s3_client():
+    """ Creates and returns an S3 client using the specified configuration.
+
+    :return: botocore.client.S3: An S3 client instance.
+    """
     return boto3.client(
         's3',
         endpoint_url=settings.MINIO_SERVER_URL,
@@ -179,9 +192,20 @@ def create_s3_client():
 
 
 def failed_ingestion_hook(flow, flow_run, state):
-    logger = get_run_logger()
-    logger.info(runtime_flow_run.id)
+    """ Handles failed dataset ingestion workflows.
 
+    Handles the ingestion failure by logging information, creating a bucket
+    for failed flows, and copying the failed dataset file to the bucket.
+
+    The runtime_flow_run in this hook is the parent workflow (entry_workflow).
+    The parameters of this function all belong to the sub flow that the
+    parent workflow spawned (dataset_workflow).
+
+    :param flow: The sub flow describing the dataset ingestion.
+    :param flow_run: The current run of the flow for a specific dataset.
+    :param state: The state of the current flow run.
+    """
+    logger = get_run_logger()
     settings_dict = flow_run.parameters["settings_dict"]
     file_name = flow_run.parameters["file_name"]
 
@@ -199,6 +223,19 @@ def failed_ingestion_hook(flow, flow_run, state):
 
 
 def create_failed_flows_bucket(bucket_name, s3_client: BaseClient):
+    """ Creates a new S3 bucket for failed flows if it does not exist.
+
+    This function is called by the failed workflow hook to create a bucket
+    that stores the dataset files of all the failed sub flows of the current
+    parent flow.
+
+    This bucket creation is only done for the first failed sub flow.
+    Consequent hooks will have the same bucket_name and therefore throw
+    an exception on the head_bucket function that checks if the bucket exists.
+
+    :param bucket_name: The name of the bucket to be created.
+    :param s3_client: The S3 client instance.
+    """
     logger = get_run_logger()
     try:
         s3_client.head_bucket(Bucket=bucket_name)
