@@ -46,8 +46,7 @@ on the metadata provided by the data provider.
 | Metadata Enhancer        | Enriches JSON metadata.                                                                                                           | https://metadata-refiner.labs.dansdemo.nl/docs                                                        | [GitHub](https://github.com/odissei-data/metadata-enhancer)                               |
 | Email Sanitizer          | Removes all emails from the metadata.                                                                                             | https://emailsanitizer.labs.dansdemo.nl/docs                                                          | [GitHub](https://github.com/thomasve-DANS/email-sanitize-microservice)                    |
 | Version Tracker          | Stores JSON containing version information.                                                                                       | https://version-tracker.labs.dansdemo.nl/docs                                                         | [GitHub](https://github.com/odissei-data/version-tracker)                                 |
-| DOI Minter               | Mints a DOI for a dataset. Should be used with **
-CAUTION** since if used with production settings this will mint a permanent DOI. | https://dataciteminter.labs.dansdemo.nl/docs                                                          | [GitHub](https://github.com/ekoi/submitmd2dc-service/tree/using-dans-transformer-service) |
+| DOI Minter               | Mints a DOI for a dataset. Should be used with **CAUTION** since if used with production settings this will mint a permanent DOI. | https://dataciteminter.labs.dansdemo.nl/docs                                                          | [GitHub](https://github.com/ekoi/submitmd2dc-service/tree/using-dans-transformer-service) |
 | Semantic Enrichment      | Enriches the SOLR index with ELSST translations of the keywords from the [ELSST skosmos](https://thesauri.cessda.eu/elsst-3/en/). |                                                                                                        | [GitHub](https://github.com/Dans-labs/semantic-enrichment)                                |
 | OAI-PMH Harvester        | Harvester service to harvest the metadata from data providers using OAI-PMH.                                                      |                                                                                                        | [GitHub](https://github.com/odissei-data/odissei-harvester)                               |
 
@@ -63,9 +62,10 @@ Here is a set list of make command that can be used for easy setup:
 - `make down`: Down the running project.
 - `make dev-build`: Build and start the development setup.
 - `make dev-down`: Down the ingest services in development mode.
-- `make ingest`: Run a specific ingest flow in Prefect with optional arguments
-  for the target.
 - `make deploy`: Deploy all ingestion workflows to the Prefect server.
+- `make ingest`: Run a specific ingest flow in Prefect with optional arguments
+  for the target. It is also possible to specify if the metadata should be 
+  harvested. If not specified the metadata will be harvested.
 
 ## Project setup 
 ### Development setup
@@ -116,17 +116,58 @@ Subverses of dataverse.nl:
 
 ### Running an ingestion via the command line
 
-1. `make ingest data_provider=CBS TARGET_URL=https://portal.example.odissei.nl TARGET_KEY=abcde123-11aa-22bb-3c4d-098765432abc`
+1. `make ingest data_provider=CBS TARGET_URL=https://portal.example.odissei.nl TARGET_KEY=abcde123-11aa-22bb-3c4d-098765432abc DO_HARVEST=False`
 2. A prompt will show confirming the target
 3. Type yes to continue or anything else to abort.
 
 The `make ingest` command allows you to specify the url and API key of a
 specific target Dataverse. If you do not provide them, it will use the target
-in the settings in odissei_settings.toml and the key in .secrets.toml.
+in the settings in odissei_settings.toml and the key in .secrets.toml. It also
+allows you to specify if the pipeline should first harvest the metadata.
+This is useful for quick dev'ing after the metadata was already harvested or
+to rerun the bucket with metadata files from failed dataset workflows.
 
 This is the list of data providers that can be used in the `make ingest` command:
 
 `'TWENTE'`, `'DELFT'`, `'AVANS'`, `'FONTYS'`, `'GRONINGEN'`, `'HANZE'`, `'HR'`, `'LEIDEN'`, `'MAASTRICHT'`, `'TILBURG'`, `'TRIMBOS'`, `'UMCU'`, `'UTRECHT'`, `'VU'`, `'DANS'`, `'CBS'`, `'LISS'`, `'HSN'`, `'CID'`
+
+
+## Debugging, logging and failed workflows
+### Debugging services
+To debug the services noted in the services table, use the development project
+setup. After, remove the service that you want to debug.
+This can be done in your docker interface or by using `docker-compose stop <container_name>`
+and replacing <container_name> with the name of the service you want to stop.
+After, go to the GitHub repository specified in the table for the service.
+Clone it and follow the instructions in the readme. Add the service to the
+ingest network with `make network-add network_name=ingest container_name=<container_name>`.
+Use a deployed flow or use `make ingest` to test any changes made to the service.
+
+### Logging
+When running a flow the flow will produce logging information that can be viewed in the prefect UI. If the flow is ran from the command line it will also show the logs in the terminal.
+If you want to add logging, first use `logger = get_run_logger()` in the context of a running flow or task and use `logger.info()` to log any  information.
+
+### Failed workflows
+If an ingestion pipeline workflow is run for a specific data provider, 
+it will create a sub flow all dataset metadata files retrieved from s3 storage.
+One sub flow ingests a single metadata file.
+
+In the case that a sub flow fails, a bucket will be created using the data provider's 
+name and the parent workflow (the ingestion pipeline workflow's) id.
+The metadata file that sub flow was ingesting will be stored in the bucket.
+Any other failed sub flows after that will also store their metadata file in this bucket.
+
+This is done for two reasons:
+- Isolation of the failed metadata files for easier investigation.
+- Possibility to rerun only the metadata files of the failed dataset sub flows.
+
+The second point requires the user to change the data provider's bucket name in the settings.
+These settings can be found in scripts/configuration/odissei_settings.toml.
+
+Follow these steps to run the failed metadata ingest:
+- Find the bucket created for the failed metadata in the logs.
+- Change the `<data provider>_BUCKET_NAME` to that bucket name, where <data provider> is the data provider you ran the ingestion for.
+- run `make ingest DO_HARVEST=False`, so that you don't harvest the metadata from the data provider into the specified bucket.
 
 
 ## Minio file storage

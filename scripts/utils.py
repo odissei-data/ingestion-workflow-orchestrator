@@ -1,9 +1,14 @@
 import re
 import json
 
+import boto3
+from botocore.client import BaseClient
 from botocore.exceptions import ClientError
 from prefect import get_run_logger
+from prefect.runtime import flow_run as runtime_flow_run
 from prefect.states import Failed
+
+from configuration.config import settings
 
 
 def retrieve_license_name(license_string):
@@ -85,18 +90,20 @@ def workflow_executor(
 
     for page in pages:
         for obj in page["Contents"]:
+            file_name = obj['Key']
             object_data = minio_client.get_object(
                 Bucket=bucket,
-                Key=obj['Key']
+                Key=file_name
             )
             metadata = object_data['Body'].read()
             logger.info(
-                f"Retrieved file: {obj['Key']}, Size: {len(metadata)}"
+                f"Retrieved file: {file_name}, Size: {len(metadata)}"
             )
             data_provider_workflow(
                 metadata,
                 version,
                 settings_dict,
+                file_name,
                 return_state=True
             )
 
@@ -114,11 +121,11 @@ def identifier_list_workflow_executor(
     If not return FAILED, if it does execute the data_provider_workflow
     for every pid in the list.
 
-    :param data_provider_workflow: A function representing the data provider workflow
-    :param version: The version of the workflow to be executed
-    :param settings_dict: A dictionary containing the settings including the BUCKET_NAME
-    :param s3_client: An object representing the Boto3 S3 client to access the bucket
-    :return: 'SUCCESS' if the workflow is executed successfully, 'FAILED' otherwise
+    :param data_provider_workflow: A function representing the data provider workflow.
+    :param version: The version of the workflow to be executed.
+    :param settings_dict: A dictionary containing the settings including the BUCKET_NAME.
+    :param s3_client: An object representing the Boto3 S3 client to access the bucket.
+    :return: 'SUCCESS' if the workflow is executed successfully, 'FAILED' otherwise.
     """
 
     try:
@@ -142,3 +149,104 @@ def identifier_list_workflow_executor(
                     f" does not have a list as value.")
     for pid in identifiers_dict['pids']:
         data_provider_workflow(pid, version, settings_dict, return_state=True)
+
+
+def generate_flow_run_name():
+    """ Generate a unique name for a flow run based on flow name and file name.
+
+    :return: A formatted string representing the flow run name.
+    """
+    flow_name = runtime_flow_run.flow_name
+
+    parameters = runtime_flow_run.parameters
+    file_name = parameters["file_name"]
+
+    return f"{flow_name}-{file_name}"
+
+
+def generate_dv_flow_run_name():
+    """ Generate a unique name for a flow run using the flow name
+     and the dataset PID.
+
+    :return: A formatted string representing the flow run name.
+    """
+    flow_name = runtime_flow_run.flow_name
+
+    parameters = runtime_flow_run.parameters
+    pid = parameters["pid"]
+
+    return f"{flow_name}-{pid}"
+
+
+def create_s3_client():
+    """ Creates and returns an S3 client using the specified configuration.
+
+    :return: botocore.client.S3: An S3 client instance.
+    """
+    return boto3.client(
+        's3',
+        endpoint_url=settings.MINIO_SERVER_URL,
+        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
+    )
+
+
+def failed_ingestion_hook(flow, flow_run, state):
+    """ Handles failed dataset ingestion workflows.
+
+    Handles the ingestion failure by logging information, creating a bucket
+    for failed flows, and copying the failed dataset file to the bucket.
+
+    The runtime_flow_run in this hook is the parent workflow (entry_workflow).
+    The parameters of this function all belong to the sub flow that the
+    parent workflow spawned (dataset_workflow).
+
+    :param flow: The sub flow describing the dataset ingestion.
+    :param flow_run: The current run of the flow for a specific dataset.
+    :param state: The state of the current flow run.
+    """
+    logger = get_run_logger()
+    settings_dict = flow_run.parameters["settings_dict"]
+    file_name = flow_run.parameters["file_name"]
+
+    s3_client = create_s3_client()
+    bucket_name = f"{settings_dict['ALIAS']}-{runtime_flow_run.id}".replace(
+        "_", "")
+    logger.info(f"bucket name: {bucket_name}")
+    create_failed_flows_bucket(bucket_name, s3_client)
+
+    s3_client.copy_object(
+        Bucket=bucket_name,
+        CopySource={'Bucket': settings_dict["BUCKET_NAME"], 'Key': file_name},
+        Key=file_name
+    )
+
+
+def create_failed_flows_bucket(bucket_name, s3_client: BaseClient):
+    """ Creates a new S3 bucket for failed flows if it does not exist.
+
+    This function is called by the failed workflow hook to create a bucket
+    that stores the dataset files of all the failed sub flows of the current
+    parent flow.
+
+    This bucket creation is only done for the first failed sub flow.
+    Consequent hooks will have the same bucket_name and therefore throw
+    an exception on the head_bucket function that checks if the bucket exists.
+
+    :param bucket_name: The name of the bucket to be created.
+    :param s3_client: The S3 client instance.
+    """
+    logger = get_run_logger()
+    try:
+        s3_client.head_bucket(Bucket=bucket_name)
+    except ClientError as e:
+        error_code = e.response.get("Error", {}).get("Code")
+        if error_code == "404":
+            try:
+                s3_client.create_bucket(Bucket=bucket_name)
+                logger.info(f'Bucket created with name: {bucket_name}.')
+            except Exception as e:
+                logger.info(e)
+        else:
+            logger.info(e)
+            raise

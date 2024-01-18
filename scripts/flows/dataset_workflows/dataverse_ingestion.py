@@ -1,11 +1,12 @@
-from prefect import flow, get_run_logger
+from prefect import flow
 from prefect.server.schemas.states import Failed, Completed
 
 from tasks.base_tasks import dataverse_metadata_fetcher, dataverse_import, \
     update_publication_date, add_workflow_versioning_url, refine_metadata
+from utils import generate_dv_flow_run_name
 
 
-@flow
+@flow(flow_run_name=generate_dv_flow_run_name)
 def dataverse_metadata_ingestion(pid, version, settings_dict):
     """
     Ingestion flow for Dataverse to dataverse ingestion.
