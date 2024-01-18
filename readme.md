@@ -62,10 +62,10 @@ Here is a set list of make command that can be used for easy setup:
 - `make down`: Down the running project.
 - `make dev-build`: Build and start the development setup.
 - `make dev-down`: Down the ingest services in development mode.
+- `make deploy`: Deploy all ingestion workflows to the Prefect server.
 - `make ingest`: Run a specific ingest flow in Prefect with optional arguments
   for the target. It is also possible to specify if the metadata should be 
-harvested. If not specified the metadata will be harvested.
-- `make deploy`: Deploy all ingestion workflows to the Prefect server.
+  harvested. If not specified the metadata will be harvested.
 
 ## Project setup 
 ### Development setup
@@ -158,8 +158,8 @@ The metadata file that sub flow was ingesting will be stored in the bucket.
 Any other failed sub flows after that will also store their metadata file in this bucket.
 
 This is done for two reasons:
-- Isolation of the failed metadata files for easier investigation
-- Possibility to rerun only the metadata files of the failed dataset sub flows
+- Isolation of the failed metadata files for easier investigation.
+- Possibility to rerun only the metadata files of the failed dataset sub flows.
 
 The second point requires the user to change the data provider's bucket name in the settings.
 These settings can be found in scripts/configuration/odissei_settings.toml.
