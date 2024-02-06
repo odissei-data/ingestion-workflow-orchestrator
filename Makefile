@@ -5,7 +5,7 @@ PROJECT_NAME = prefect_docker
 PROJECT_SRV = ${PROJECT_NAME}
 TARGET_URL ?=
 TARGET_KEY ?=
-DO_HARVEST ?=
+DO_HARVEST ?= True
 
 .PHONY = help
 .DEFAULT:
