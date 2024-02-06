@@ -429,7 +429,7 @@ def enrich_metadata(metadata: dict, endpoint: str) -> dict:
     """
     logger = get_run_logger()
 
-    url = f"{settings.METADATA_ENHANCER_URL}/{endpoint}"
+    url = f"{settings.METADATA_ENHANCER_URL}/enrich/{endpoint}"
 
     headers = {
         'accept': 'application/json',
