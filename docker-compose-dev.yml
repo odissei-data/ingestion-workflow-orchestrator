@@ -38,7 +38,7 @@ services:
       - ingest
 
   metadata-enhancer:
-    image: fjodorvr/metadata-enhancer:2.2.0
+    image: fjodorvr/metadata-enhancer:2.2.1
     container_name: metadata-enhancer
     command: [ "uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "7070" ]
     env_file:
