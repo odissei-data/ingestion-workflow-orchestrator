@@ -67,7 +67,7 @@ def cbs_metadata_ingestion(xml_metadata, version, settings_dict, file_name):
     mapped_metadata = enrich_metadata(mapped_metadata, 'cbs-taxonomy')
     if not mapped_metadata:
         return Failed(
-message='Unable to enrich metadata using CBS taxonomy enrichment.')
+            message='Unable to enrich metadata using CBS taxonomy enrichment.')
 
     mapped_metadata = enrich_metadata(mapped_metadata, 'cbs-concepts')
     if not mapped_metadata:
