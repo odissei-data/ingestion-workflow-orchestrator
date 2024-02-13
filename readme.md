@@ -74,10 +74,11 @@ to run the services described above locally. This is possible by following the
 steps:
 
 1. `cp dot_env_example .env`
-2. `cp scripts/configuration/secrets_example.toml scripts/configuration/.secrets.toml`
-3. Add the necessary API tokens and credentials to the .secrets.toml
-4. set `ENV_FOR_DYNACONF` in the .env to `development`
-5. `make dev-build`
+2. `cp dot_env_development_example .env.development`
+3. `cp scripts/configuration/secrets_example.toml scripts/configuration/.secrets.toml`
+4. Add the necessary API tokens and credentials to the .secrets.toml
+5. set `ENV_FOR_DYNACONF` in the .env to `development`
+6. `make dev-build`
    This should set up the prefect container and the services used during the
    ingestion workflows.
 

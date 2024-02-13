@@ -1,0 +1,7 @@
+# URL'S
+ELSST_FUSEKI_URL='https://fuseki.devstack.odissei.nl/skosmos/sparql'
+VARIABLE_FUSEKI_URL='https://fuseki.devstack.odissei.nl/skosmos/sparql'
+GITHUB_RAW_URL="https://raw.githubusercontent.com/Dans-labs/semantic-enrichment/master/static/alle-beschikbare-catalogus-bestanden.tsv"
+
+CBS_VOCAB_URL=https://vocabs.cbs.nl
+ELSST_VOCAB_URL=https://thesauri.cessda.eu

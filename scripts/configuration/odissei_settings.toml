@@ -52,7 +52,7 @@ TRIMBOS_BUCKET_NAME="dataverse.nl-trimbos"
 UMCU_BUCKET_NAME="dataverse.nl-umc"
 UTRECHT_BUCKET_NAME="dataverse.nl-utrecht"
 VU_BUCKET_NAME="dataverse.nl-vu"
-CBS_BUCKET_NAME="cbs-metadata-03072023"
+CBS_BUCKET_NAME="cbs-metadata-20240131"
 DANS_BUCKET_NAME="ssh-social-metadata"
 LISS_BUCKET_NAME="liss-metadata"
 HSN_BUCKET_NAME="hsn-metadata"
@@ -78,7 +78,7 @@ CID_MAPPING_FILE_PATH="/resources/mappings/cid-mapping.json"
 ODISSEI_URL="http://dataverse:8080"
 
 [staging]
-ODISSEI_URL="https://portal.alpha.odissei.nl"
+ODISSEI_URL="https://portal.devstack.odissei.nl"
 
 [production]
 ODISSEI_URL="https://portal.odissei.nl"

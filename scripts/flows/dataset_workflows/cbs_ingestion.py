@@ -36,7 +36,6 @@ def cbs_metadata_ingestion(xml_metadata, version, settings_dict, file_name):
         settings_dict.TEMPLATE_FILE_PATH,
         False
     )
-
     if not mapped_metadata:
         return Failed(message='Unable to map metadata.')
 
@@ -55,29 +54,27 @@ def cbs_metadata_ingestion(xml_metadata, version, settings_dict, file_name):
     # if not doi:
     #     return Failed(message='Failed to mint or update DOI with Datacite API')
 
-    mapped_metadata = enrich_metadata(
-        mapped_metadata,
-        'dataverse-variable-enhancer'
-    )
-
+    mapped_metadata = enrich_metadata(mapped_metadata, 'variable')
     if not mapped_metadata:
         return Failed(
             message='Unable to enrich metadata using variable enrichment.')
 
-    mapped_metadata = enrich_metadata(
-        mapped_metadata,
-        'dataverse-ELSST-enhancer'
-    )
-
+    mapped_metadata = enrich_metadata(mapped_metadata, 'elsst/nl')
     if not mapped_metadata:
         return Failed(
             message='Unable to enrich metadata using ELSST enrichment.')
 
-    mapped_metadata = enrich_metadata(
-        mapped_metadata,
-        'dataverse-frequency-enhancer'
-    )
+    mapped_metadata = enrich_metadata(mapped_metadata, 'cbs-taxonomy')
+    if not mapped_metadata:
+        return Failed(
+            message='Unable to enrich metadata using CBS taxonomy enrichment.')
 
+    mapped_metadata = enrich_metadata(mapped_metadata, 'cbs-concepts')
+    if not mapped_metadata:
+        return Failed(
+            message='Unable to enrich metadata using CBS vocab enrichment.')
+
+    mapped_metadata = enrich_metadata(mapped_metadata, 'frequency')
     if not mapped_metadata:
         return Failed(
             message='Unable to enrich metadata with frequency of use data.')
