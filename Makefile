@@ -44,7 +44,13 @@ network: ## Creates the ingest network.
         echo "Network ${network_name} already exists."; \
     fi
 network-add: ## Add a container to the ingest network.
-	@docker network connect ${network_name} ${container_name}
+	@if [ $$(docker network inspect -f '{{range .Containers}}{{.Name}} {{end}}' ${network_name} | grep -w ${container_name}) ]; then \
+		echo "Container ${container_name} is already connected to network ${network_name}."; \
+	else \
+		docker network connect ${network_name} ${container_name}; \
+		echo "Container ${container_name} connected to network ${network_name}."; \
+	fi
+
 shell-be: ## Enter system shell in backend container
 	@docker compose exec prefect bash
 python-shell-be: ## Enter into IPython shell in backend container
