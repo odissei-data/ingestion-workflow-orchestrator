@@ -3,11 +3,12 @@ from prefect.server.schemas.states import Failed, Completed
 
 from tasks.base_tasks import dataverse_metadata_fetcher, dataverse_import, \
     update_publication_date, add_workflow_versioning_url, refine_metadata, \
-    enrich_metadata
-from utils import generate_dv_flow_run_name
+    enrich_metadata, dataverse_mapper
+from utils import generate_dv_flow_run_name, failed_dataverse_ingestion_hook
 
 
-@flow(flow_run_name=generate_dv_flow_run_name)
+@flow(flow_run_name=generate_dv_flow_run_name,
+      on_failure=[failed_dataverse_ingestion_hook])
 def dataverse_metadata_ingestion(pid, version, settings_dict):
     """
     Ingestion flow for Dataverse to dataverse ingestion.
@@ -22,6 +23,15 @@ def dataverse_metadata_ingestion(pid, version, settings_dict):
     )
     if not dataverse_json:
         return Failed(message='Could not fetch dataverse metadata.')
+
+    if settings_dict["MAPPING_FILE_PATH"]:
+        dataverse_json = dataverse_mapper(
+            dataverse_json,
+            settings_dict.MAPPING_FILE_PATH,
+            settings_dict.TEMPLATE_FILE_PATH
+        )
+        if not dataverse_json:
+            return Failed(message='Unable to map metadata.')
 
     dataverse_json = refine_metadata(dataverse_json, settings_dict)
     if not dataverse_json:
