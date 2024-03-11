@@ -15,8 +15,8 @@ DO_HARVEST ?= True
 help: ## Show this help.
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$|^[a-zA-Z_-]+:.*$$' Makefile | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 build: ## Build and start project.
-	@docker compose up --build --detach
 	make submodules
+	@docker compose up --build --detach
 start: ## Start project running in a non-detached mode.
 	@docker compose up
 startbg: ## Start project running in detached mode - background.
@@ -57,7 +57,9 @@ python-shell-be: ## Enter into IPython shell in backend container
 	@docker compose exec prefect python -m IPython
 submodules: ## Sets up the submodules and checks out their main branch.
 	git submodule init
-	git submodule foreach git checkout main	
+	git submodule update --remote
+	git submodule foreach git checkout main
+	git submodule foreach git pull origin main
 ingest: ## Runs the ingest workflow for a specified data provider. The url and key of the target can be optionally added. eg: make ingest data_provider=CBS TARGET_URL=https://portal.example.odissei.nl TARGET_KEY=abcde123-11aa-22bb-3c4d-098765432abc
 	@docker exec -it ${PROJECT_CONTAINER_NAME} python run_ingestion.py --data_provider=$(data_provider) --target_url=$(TARGET_URL) --target_key=$(TARGET_KEY) --do_harvest=$(DO_HARVEST)
 deploy: ## Deploys all ingestion workflows to the prefect server.
