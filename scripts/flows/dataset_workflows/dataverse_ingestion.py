@@ -24,7 +24,7 @@ def dataverse_metadata_ingestion(pid, version, settings_dict):
     if not dataverse_json:
         return Failed(message='Could not fetch dataverse metadata.')
 
-    if settings_dict["MAPPING_FILE_PATH"]:
+    if hasattr(settings_dict, 'MAPPING_FILE_PATH'):
         dataverse_json = dataverse_mapper(
             dataverse_json,
             settings_dict.MAPPING_FILE_PATH,
