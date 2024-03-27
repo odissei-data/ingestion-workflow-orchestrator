@@ -58,10 +58,10 @@ LISS_BUCKET_NAME="liss-metadata"
 HSN_BUCKET_NAME="hsn-metadata"
 CID_BUCKET_NAME="cid-metadata"
 
-DATAVERSE_NL_REFINER_ENDPOINT="/metadata-refinement/dataverse-nl"
+DATAVERSE_NL_REFINER_ENDPOINT="/metadata-refinement/datastation"
 CBS_REFINER_ENDPOINT="/metadata-refinement/cbs"
 DATASTATION_REFINER_ENDPOINT="/metadata-refinement/datastation"
-HSN_REFINER_ENDPOINT="/metadata-refinement/dataverse-nl"
+HSN_REFINER_ENDPOINT="/metadata-refinement/datastation"
 CID_REFINER_ENDPOINT="/metadata-refinement/cid"
 
 SSH_TEMPLATE_FILE_PATH="/resources/templates/ssh_dataverse_template.json"
