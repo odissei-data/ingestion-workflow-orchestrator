@@ -18,7 +18,7 @@ HARVESTER_URL="http://oai-harvester:7890"
 
 [staging]
 debug = false
-DOI_MINTER_URL = "https://dataciteminter.labs.dansdemo.nl/submit-to-datacite/draft"
+DOI_MINTER_URL = "https://dataciteminter.labs.dans.knaw.nl/submit-to-datacite/register"
 DATAVERSE_IMPORTER_URL="https://dataverse-importer.labs.dansdemo.nl"
 PUBLICATION_DATA_UPDATER_URL="https://dataverse-date-updater.labs.dansdemo.nl"
 METADATA_FETCHER_URL="https://dataverse-fetcher.labs.dansdemo.nl"
@@ -32,7 +32,7 @@ HARVESTER_URL="https://oai-harvester.labs.dansdemo.nl"
 
 [production]
 debug = false
-DOI_MINTER_URL = "https://dataciteminter.labs.dansdemo.nl/submit-to-datacite/register"
+DOI_MINTER_URL = "https://dataciteminter.labs.dans.knaw.nl/submit-to-datacite/register"
 DATAVERSE_IMPORTER_URL="https://dataverse-importer.labs.dansdemo.nl"
 PUBLICATION_DATA_UPDATER_URL="https://dataverse-date-updater.labs.dansdemo.nl"
 METADATA_FETCHER_URL="https://dataverse-fetcher.labs.dansdemo.nl"
