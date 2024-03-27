@@ -127,10 +127,16 @@ def identifier_list_workflow_executor(
     :param s3_client: An object representing the Boto3 S3 client to access the bucket.
     :return: 'SUCCESS' if the workflow is executed successfully, 'FAILED' otherwise.
     """
+    bucket_name = settings_dict.BUCKET_NAME
+    identifiers_dict = retrieve_identifiers_from_bucket(s3_client, bucket_name)
+    for pid in identifiers_dict['pids']:
+        data_provider_workflow(pid, version, settings_dict, return_state=True)
 
+
+def retrieve_identifiers_from_bucket(s3_client, bucket_name):
     try:
         file_data = s3_client.get_object(
-            Bucket=settings_dict.BUCKET_NAME,
+            Bucket=bucket_name,
             Key='identifiers.json')['Body'].read()
         identifiers_dict = json.loads(file_data)
     except ClientError as e:
@@ -147,8 +153,7 @@ def identifier_list_workflow_executor(
         return Failed(
             message=f"identifiers.json does not contain the pids key or it"
                     f" does not have a list as value.")
-    for pid in identifiers_dict['pids']:
-        data_provider_workflow(pid, version, settings_dict, return_state=True)
+    return identifiers_dict
 
 
 def generate_flow_run_name():
@@ -211,7 +216,7 @@ def failed_ingestion_hook(flow, flow_run, state):
 
     s3_client = create_s3_client()
     bucket_name = f"{settings_dict['ALIAS']}-{runtime_flow_run.id}".replace(
-        "_", "")
+        "_", "").lower()
     logger.info(f"bucket name: {bucket_name}")
     create_failed_flows_bucket(bucket_name, s3_client)
 
@@ -220,6 +225,46 @@ def failed_ingestion_hook(flow, flow_run, state):
         CopySource={'Bucket': settings_dict["BUCKET_NAME"], 'Key': file_name},
         Key=file_name
     )
+
+
+def failed_dataverse_ingestion_hook(flow, flow_run, state):
+    logger = get_run_logger()
+    settings_dict = flow_run.parameters["settings_dict"]
+    pid = flow_run.parameters["pid"]
+
+    s3_client = create_s3_client()
+    bucket_name = f"{settings_dict['ALIAS']}-{runtime_flow_run.id}".replace(
+        "_", "").lower()
+    logger.info(f"bucket name: {bucket_name}")
+    create_failed_flows_bucket(bucket_name, s3_client)
+
+    update_identifiers_json(bucket_name, "identifiers.json", pid)
+
+
+def update_identifiers_json(bucket_name, object_name, failed_pid):
+    s3_client = create_s3_client()
+    create_identifiers_json(s3_client, bucket_name, object_name)
+    identifiers_dict = retrieve_identifiers_from_bucket(s3_client, bucket_name)
+    identifiers_dict['pids'].append(failed_pid)
+
+    updated_data = json.dumps(identifiers_dict).encode('utf-8')
+    s3_client.put_object(Bucket=bucket_name, Key=object_name,
+                         Body=updated_data, ContentType='application/json')
+
+
+def create_identifiers_json(s3_client, bucket_name, object_name):
+    try:
+        s3_client.head_object(Bucket=bucket_name, Key=object_name)
+    except ClientError as e:
+        error_code = e.response.get("Error", {}).get("Code")
+        if error_code == "404":
+            # If identifiers.json does not exist, create it with an empty list
+            empty_identifiers = {'pids': []}
+            s3_client.put_object(Bucket=bucket_name, Key=object_name,
+                                 Body=json.dumps(empty_identifiers),
+                                 ContentType='application/json')
+        else:
+            raise
 
 
 def create_failed_flows_bucket(bucket_name, s3_client: BaseClient):
@@ -236,6 +281,7 @@ def create_failed_flows_bucket(bucket_name, s3_client: BaseClient):
     :param bucket_name: The name of the bucket to be created.
     :param s3_client: The S3 client instance.
     """
+    bucket_name = bucket_name
     logger = get_run_logger()
     try:
         s3_client.head_bucket(Bucket=bucket_name)
