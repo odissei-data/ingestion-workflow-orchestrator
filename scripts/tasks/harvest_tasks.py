@@ -8,7 +8,7 @@ from configuration.config import settings
 
 @task(timeout_seconds=300, retries=1)
 def oai_harvest_metadata(metadata_prefix, oai_endpoint, bucket_name, verb,
-                         harvester_endpoint, oai_set=None):
+                         harvester_endpoint, timestamp=None, oai_set=None):
     """ A task that harvests metadata using the oai-harvester service.
 
     This tasks harvests a list of records or identifiers and places the
@@ -19,6 +19,7 @@ def oai_harvest_metadata(metadata_prefix, oai_endpoint, bucket_name, verb,
     :param bucket_name: The bucket the harvested data will be stored in.
     :param verb: The type of harvest. (ListRecords or ListIdentifiers).
     :param harvester_endpoint: The API of the harvester service.
+    :param timestamp: Timestamp from which to start harvesting.
     :param oai_set: A specific set of data that will be harvested.
     """
     headers = {
@@ -36,6 +37,9 @@ def oai_harvest_metadata(metadata_prefix, oai_endpoint, bucket_name, verb,
 
     if oai_set is not None:
         data['oai_set'] = oai_set
+
+    if timestamp is not None:
+        data['timestamp'] = timestamp
 
     url = f"{settings.HARVESTER_URL}/{harvester_endpoint}"
 

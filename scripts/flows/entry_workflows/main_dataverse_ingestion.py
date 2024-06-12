@@ -42,6 +42,8 @@ def dataverse_ingestion_pipeline(settings_dict_name: str,
 
     minio_client = utils.create_s3_client()
 
+    timestamp = utils.get_most_recent_publication_date(settings_dict)
+
     if hasattr(settings_dict,
                'OAI_SET') and settings_dict.OAI_SET and do_harvest:
         oai_harvest_metadata(
@@ -50,6 +52,7 @@ def dataverse_ingestion_pipeline(settings_dict_name: str,
             settings_dict.BUCKET_NAME,
             'ListIdentifiers',
             'start_harvest',
+            timestamp,
             settings_dict.OAI_SET
         )
 
@@ -59,7 +62,8 @@ def dataverse_ingestion_pipeline(settings_dict_name: str,
             f'{settings_dict.SOURCE_DATAVERSE_URL}/oai',
             settings_dict.BUCKET_NAME,
             'ListIdentifiers',
-            'start_harvest'
+            'start_harvest',
+            timestamp
         )
 
     utils.identifier_list_workflow_executor(

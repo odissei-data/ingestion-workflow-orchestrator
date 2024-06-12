@@ -2,6 +2,7 @@ import re
 import json
 
 import boto3
+import requests
 from botocore.client import BaseClient
 from botocore.exceptions import ClientError
 from prefect import get_run_logger
@@ -296,3 +297,33 @@ def create_failed_flows_bucket(bucket_name, s3_client: BaseClient):
         else:
             logger.info(e)
             raise
+
+
+def get_most_recent_publication_date(settings_dict):
+    logger = get_run_logger()
+
+    api_endpoint = f"{settings_dict.DESTINATION_DATAVERSE_URL}/api/search"
+    headers = {"X-Dataverse-key": settings_dict.DESTINATION_DATAVERSE_API_KEY,
+               'Content-Type': 'application/json'}
+    params = {
+        'q': '*',
+        'type': 'dataset',
+        'subtree': f'{settings_dict.ALIAS}',
+        'sort': 'date',
+        'per_page': 1
+    }
+
+    response = requests.get(api_endpoint, headers=headers, params=params)
+
+    if not response.ok:
+        raise Exception(
+            f'Request failed with status code {response.status_code}:'
+            f' {response.text}')
+
+    else:
+        search_results = response.json()
+        if search_results['data']['total_count'] > 0:
+            return search_results['data']['items'][0]['published_at']
+        else:
+            logger.info("No datasets found in this subverse.")
+            return None
