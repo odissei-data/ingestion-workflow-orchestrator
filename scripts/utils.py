@@ -235,7 +235,7 @@ def failed_dataverse_ingestion_hook(flow, flow_run, state):
     s3_client = create_s3_client()
     bucket_name = f"{settings_dict['ALIAS']}-{runtime_flow_run.id}".replace(
         "_", "").lower()
-    logger.info(f"bucket name: {bucket_name}")
+    logger.error(f"bucket name: {bucket_name}")
     create_failed_flows_bucket(bucket_name, s3_client)
 
     update_identifiers_json(bucket_name, "identifiers.json", pid)
@@ -290,9 +290,9 @@ def create_failed_flows_bucket(bucket_name, s3_client: BaseClient):
         if error_code == "404":
             try:
                 s3_client.create_bucket(Bucket=bucket_name)
-                logger.info(f'Bucket created with name: {bucket_name}.')
+                logger.error(f'Bucket created with name: {bucket_name}.')
             except Exception as e:
-                logger.info(e)
+                logger.error(e)
         else:
-            logger.info(e)
+            logger.error(e)
             raise
