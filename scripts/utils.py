@@ -110,9 +110,10 @@ def workflow_executor(
 
 def identifier_list_workflow_executor(
         data_provider_workflow,
-        version,
         settings_dict,
-        s3_client
+        s3_client,
+        object_name,
+        version = None,
 ):
     """
     Grabs a file called identifiers.json from the bucket
@@ -128,25 +129,28 @@ def identifier_list_workflow_executor(
     :return: 'SUCCESS' if the workflow is executed successfully, 'FAILED' otherwise.
     """
     bucket_name = settings_dict.BUCKET_NAME
-    identifiers_dict = retrieve_identifiers_from_bucket(s3_client, bucket_name)
+    identifiers_dict = retrieve_identifiers_from_bucket(s3_client, bucket_name, object_name)
     for pid in identifiers_dict['pids']:
-        data_provider_workflow(pid, version, settings_dict, return_state=True)
+        if version:
+            data_provider_workflow(pid, settings_dict, version, return_state=True)
+        else:
+            data_provider_workflow(pid, settings_dict, return_state=True)
 
 
-def retrieve_identifiers_from_bucket(s3_client, bucket_name):
+def retrieve_identifiers_from_bucket(s3_client, bucket_name, key):
     try:
         file_data = s3_client.get_object(
             Bucket=bucket_name,
-            Key='identifiers.json')['Body'].read()
+            Key=key)['Body'].read()
         identifiers_dict = json.loads(file_data)
     except ClientError as e:
         if e.response['Error']['Code'] == 'NoSuchKey':
-            return Failed(message="identifiers.json not found in the bucket.")
+            return Failed(message=f" {key} not found in the bucket.")
         else:
             return Failed(
-                message="Error accessing identifiers.json from the bucket.")
+                message=f"Error accessing {key} from the bucket.")
     except json.JSONDecodeError as e:
-        return Failed(message="identifiers.json is not in valid JSON format.")
+        return Failed(message=f"{key} is not in valid JSON format.")
 
     if 'pids' not in identifiers_dict or not isinstance(
             identifiers_dict['pids'], list):
@@ -240,11 +244,24 @@ def failed_dataverse_ingestion_hook(flow, flow_run, state):
 
     update_identifiers_json(bucket_name, "identifiers.json", pid)
 
+def failed_dataverse_deletion_hook(flow, flow_run, state):
+    logger = get_run_logger()
+    settings_dict = flow_run.parameters["settings_dict"]
+    pid = flow_run.parameters["pid"]
+
+    s3_client = create_s3_client()
+    bucket_name = f"{settings_dict['ALIAS']}-{runtime_flow_run.id}".replace(
+        "_", "").lower()
+    logger.error(f"bucket name: {bucket_name}")
+    create_failed_flows_bucket(bucket_name, s3_client)
+
+    update_identifiers_json(bucket_name, "identifiers-deleted.json", pid)
+
 
 def update_identifiers_json(bucket_name, object_name, failed_pid):
     s3_client = create_s3_client()
     create_identifiers_json(s3_client, bucket_name, object_name)
-    identifiers_dict = retrieve_identifiers_from_bucket(s3_client, bucket_name)
+    identifiers_dict = retrieve_identifiers_from_bucket(s3_client, bucket_name, object_name)
     identifiers_dict['pids'].append(failed_pid)
 
     updated_data = json.dumps(identifiers_dict).encode('utf-8')
