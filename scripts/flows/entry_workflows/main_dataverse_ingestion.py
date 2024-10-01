@@ -9,7 +9,7 @@ from flows.workflow_versioning.workflow_versioner import \
 from tasks.harvest_tasks import oai_harvest_metadata
 
 
-@flow
+@flow(name="Dataverse Ingestion Pipeline")
 def dataverse_ingestion_pipeline(settings_dict_name: str,
                                  target_url: str = "",
                                  target_key: str = "",
@@ -64,7 +64,8 @@ def dataverse_ingestion_pipeline(settings_dict_name: str,
 
     utils.identifier_list_workflow_executor(
         dataverse_metadata_ingestion,
-        version,
         settings_dict,
-        minio_client
+        minio_client,
+    "identifiers.json",
+        version
     )
