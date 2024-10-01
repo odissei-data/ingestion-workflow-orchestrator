@@ -1,7 +1,6 @@
 import json
 from datetime import timedelta
 
-from pyDataverse.api import NativeApi
 from configuration.config import settings
 from prefect import task, get_run_logger
 import requests
@@ -202,6 +201,63 @@ def dataverse_metadata_fetcher(metadata_format, doi, settings_dict):
         logger.info(response.text)
         return None
     return response.json()
+
+@task(name="Dataverse dataset check status", timeout_seconds=300, retries=1, cache_expiration=timedelta(minutes=10))
+def dataverse_dataset_check_status(doi, dataverse_url):
+    """
+    Checks the status of a dataset in Dataverse.
+
+    This function sends a GET request to the Dataverse API to check the status
+    of a dataset identified by its DOI. The status codes returned by the API
+    indicate the following:
+    - 200: Dataset exists
+    - 404: Dataset does not exist
+    - 403: Dataset is deaccessioned
+
+    :param doi: The DOI of the dataset to check.
+    :param dataverse_url: The base URL of the Dataverse instance.
+    :return: The status code (200, 403, 404) or None on failure.
+    """
+    logger = get_run_logger()
+
+    url = f"{dataverse_url}/api/datasets/export?exporter=dcterms&persistentId={doi}"
+    response = requests.get(url)
+
+    # Dataset exists: 200
+    # Dataset does not exist: 404
+    # Dataset deaccession: 403
+    if response.status_code in (200, 403, 404):
+        return response.status_code
+
+    logger.info(f'response.text: {response.text}')
+    return None
+
+@task(name="Deleting dataset", timeout_seconds=300, retries=1, cache_expiration=timedelta(minutes=10))
+def delete_dataset(pid, settings_dict):
+    """
+    Deletes a dataset from Dataverse.
+
+    This function sends a DELETE request to the Dataverse API to delete a dataset
+    identified by its persistent identifier (PID).
+
+    :param pid: The persistent identifier of the dataset to delete.
+    :param settings_dict: A dictionary containing settings for the current task,
+                          including the Dataverse API key and URL.
+    :return: The response object if the deletion is successful, otherwise None.
+    """
+    headers = {
+        "X-Dataverse-key": settings_dict.DESTINATION_DATAVERSE_API_KEY
+    }
+
+    logger = get_run_logger()
+    url = f"{settings_dict.DESTINATION_DATAVERSE_URL}/api/datasets/:persistentId/destroy/?persistentId={pid}"
+    response = requests.delete(url, headers=headers)
+
+    if response and response.status_code == 200:
+        return response
+
+    logger.info(f'response.text: {response.text}')
+    return None
 
 
 @task(timeout_seconds=300, retries=1, cache_expiration=timedelta(minutes=10))
