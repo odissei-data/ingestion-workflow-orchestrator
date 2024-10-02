@@ -1,3 +1,3 @@
-prefect config set PREFECT_SERVER_API_HOST="0.0.0.0"
-prefect config set PREFECT_API_HOST="https://prefect.dansdemo.nl/api"
+prefect config set PREFECT_API_DATABASE_CONNECTION_URL="postgresql+asyncpg://postgres:lolgres@db/prefect"
+prefect config set PREFECT_API_URL="http://0.0.0.0:4200/api"
 prefect server start
