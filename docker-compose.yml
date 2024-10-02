@@ -1,21 +1,40 @@
 version: '3.7'
 
 services:
-  prefect:
+  prefect-houston:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: 'prefect'
+    container_name: 'prefect-houston'
+    image: thomasve/prefect3:latest
     volumes:
       - "/tmp:/tmp"
     ports:
       # Local development only
-      - "4200:4200"
+      - 4200:4200
     env_file: .env
     depends_on:
       - db
     networks:
       - prefect
+
+  prefect-agent-1:
+    container_name: 'prefect-agent-1'
+    image: thomasve/prefect3:latest
+    depends_on:
+      - prefect-houston
+    networks:
+      - prefect
+    entrypoint: ["/usr/local/bin/entrypoint-agent.sh"]
+
+  prefect-agent-2:
+    container_name: 'prefect-agent-2'
+    image: thomasve/prefect3:latest
+    depends_on:
+      - prefect-houston
+    networks:
+      - prefect
+    entrypoint: ["/usr/local/bin/entrypoint-agent.sh"]
 
   db:
     image: postgres:latest
