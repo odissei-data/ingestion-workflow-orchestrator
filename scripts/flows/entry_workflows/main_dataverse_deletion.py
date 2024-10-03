@@ -39,7 +39,8 @@ def dataverse_deletion_pipeline(settings_dict_name: str,
             settings_dict.BUCKET_NAME,
             'ListIdentifiers',
             'start_harvest',
-            settings_dict.OAI_SET
+            settings_dict.OAI_SET,
+            settings_dict.FROM
         )
 
     elif do_harvest:
