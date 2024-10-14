@@ -49,6 +49,8 @@ on the metadata provided by the data provider.
 | DOI Minter               | Mints a DOI for a dataset. Should be used with **CAUTION** since if used with production settings this will mint a permanent DOI. | https://dataciteminter.labs.dansdemo.nl/docs                                                          | [GitHub](https://github.com/ekoi/submitmd2dc-service/tree/using-dans-transformer-service) |
 | Semantic Enrichment      | Enriches the SOLR index with ELSST translations of the keywords from the [ELSST skosmos](https://thesauri.cessda.eu/elsst-3/en/). |                                                                                                        | [GitHub](https://github.com/Dans-labs/semantic-enrichment)                                |
 | OAI-PMH Harvester        | Harvester service to harvest the metadata from data providers using OAI-PMH.                                                      |                                                                                                        | [GitHub](https://github.com/odissei-data/odissei-harvester)                               |
+| OAI Enricher Service          | Enrich Dataverse OAI-PMH responses with additional data.          |                                                                     |https://oai-service.labs.dansdemo.nl/docs                               
+| [GitHub](https://github.com/ekoi/oai-enricher-service)                  |
 
 # Development
 
