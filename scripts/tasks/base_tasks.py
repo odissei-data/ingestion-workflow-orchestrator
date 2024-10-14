@@ -208,7 +208,7 @@ def dataverse_metadata_fetcher(metadata_format, doi, settings_dict):
 def get_doi_from_dv_json(dataverse_json):
     """ Retrieves the DOI of a dataset from mapped Dataverse JSON
 
-    For mapped metadata the DOI will be mapped to the "datasetPersistentId"
+    For mapped metadata the DOI will be mapped to the "persistentUrl"
     field in the metadata.
 
     :param dataverse_json: JSON metadata formatted for the Native API.
