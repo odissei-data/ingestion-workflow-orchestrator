@@ -6,7 +6,7 @@ from prefect.server.schemas.states import Completed, Failed
 from queries import DIST_DATE_QUERY
 from tasks.base_tasks import dataverse_mapper, \
     dataverse_import, update_publication_date, get_doi_from_dv_json, \
-    add_workflow_versioning_url, enrich_metadata
+    add_workflow_versioning_url, enrich_metadata, refine_metadata
 from utils import is_lower_level_liss_study, generate_flow_run_name, \
     failed_ingestion_hook
 
@@ -40,6 +40,10 @@ def liss_metadata_ingestion(json_metadata, version, settings_dict, file_name):
     doi = get_doi_from_dv_json(mapped_metadata)
     if not doi:
         return Failed(message='Missing DOI in mapped metadata.')
+
+    mapped_metadata = refine_metadata(mapped_metadata, settings_dict)
+    if not mapped_metadata:
+        return Failed(message='Unable to refine metadata.')
 
     mapped_metadata = add_workflow_versioning_url(mapped_metadata, version)
     if not mapped_metadata:
