@@ -45,6 +45,19 @@ def dataverse_metadata_ingestion(pid, version, settings_dict):
     if not dataverse_json:
         return Failed(message='Unable to enrich metadata using ELSST.')
 
+    dv_response_status = dataverse_dataset_check_status(pid, settings_dict.DESTINATION_DATAVERSE_URL)
+    # The result of dv_response status will be 200 (Dataset exists)  or  404 (Dataset does not exist)
+    # 403 (deaccession) should never be found in the odissei dataverse
+
+    if not dv_response_status:
+        return Failed(message=f'No response from {pid}.')
+    if dv_response_status == 200:
+        # task_update_dataset(dataverse_json)  # don't update version, but update metadata with new dataverse_json.
+        # It means that the dataset must be deleted and reingested.
+        deleted_response = delete_dataset(pid, settings_dict)
+        if not deleted_response:
+            return Failed(message=f'Unable to delete dataset: {pid}.')
+
     import_response = dataverse_import(dataverse_json, settings_dict, pid)
     if not import_response:
         return Failed(message='Unable to import dataset into Dataverse')
