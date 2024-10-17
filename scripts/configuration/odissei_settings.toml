@@ -65,20 +65,20 @@ HSN_REFINER_ENDPOINT="/metadata-refinement/datastation"
 CID_REFINER_ENDPOINT="/metadata-refinement/cid"
 LISS_REFINER_ENDPOINT="/metadata-refinement/liss"
 
-SSH_TEMPLATE_FILE_PATH="/resources/templates/ssh_dataverse_template.json"
-SSH_MAPPING_FILE_PATH="/resources/mappings/ssh-mapping.json"
+SSH_TEMPLATE_FILE_PATH="/app/resources/templates/ssh_dataverse_template.json"
+SSH_MAPPING_FILE_PATH="/app/resources/mappings/ssh-mapping.json"
 
-CBS_TEMPLATE_FILE_PATH="/resources/templates/cbs_dataverse_template.json"
-CBS_MAPPING_FILE_PATH="/resources/mappings/cbs-mapping.json"
+CBS_TEMPLATE_FILE_PATH="/app/resources/templates/cbs_dataverse_template.json"
+CBS_MAPPING_FILE_PATH="/app/resources/mappings/cbs-mapping.json"
 
-LISS_TEMPLATE_FILE_PATH="/resources/templates/liss_dataverse_template.json"
+LISS_TEMPLATE_FILE_PATH="/app/resources/templates/liss_dataverse_template.json"
 LISS_MAPPING_FILE_PATH="/resources/mappings/liss-mapping.json"
 
-CID_TEMPLATE_FILE_PATH="/resources/templates/cid_dataverse_template.json"
-CID_MAPPING_FILE_PATH="/resources/mappings/cid-mapping.json"
+CID_TEMPLATE_FILE_PATH="/app/resources/templates/cid_dataverse_template.json"
+CID_MAPPING_FILE_PATH="/app/resources/mappings/cid-mapping.json"
 
-DV_TEMPLATE_FILE_PATH="/resources/templates/base_dataverse_template.json"
-DV_MAPPING_FILE_PATH="/resources/mappings/base-mapping.json"
+DV_TEMPLATE_FILE_PATH="/app/resources/templates/base_dataverse_template.json"
+DV_MAPPING_FILE_PATH="/app/resources/mappings/base-mapping.json"
 
 [development]
 ODISSEI_URL="http://dataverse:8080"
