@@ -9,7 +9,7 @@ from tasks.harvest_tasks import harvest_metadata
 
 
 @flow
-def liss_ingestion_pipeline(target_url: str = None, target_key: str = None,
+def liss_ingestion_pipeline(target_url: str = "", target_key: str = "",
                             do_harvest: bool = True):
     """ Ingestion pipeline dedicated to the LISS metadata ingestion.
 
