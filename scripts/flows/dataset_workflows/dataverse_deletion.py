@@ -17,9 +17,6 @@ def dataverse_metadata_deletion(pid, settings_dict):
     :return: prefect.server.schemas.states Failed or Completed.
     """
     dv_response_status = dataverse_dataset_check_status(pid, settings_dict)
-    # Dataset exists: 200
-    # Dataset does not exist: 404
-    # Dataset deaccession: 403
     if not dv_response_status:
         return Failed(message=f'No response from {pid}.')
 
@@ -30,5 +27,5 @@ def dataverse_metadata_deletion(pid, settings_dict):
 
         return Completed(message=pid + 'deleted successfully.')
 
-    # Dataset is active: 200
+    # If the dataset is active: 200, it will not be deleted.
     return Failed(message=f'{pid} will not deleted. Dataset is active.')

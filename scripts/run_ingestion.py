@@ -35,13 +35,12 @@ def run_ingestion():
                         help='Bool that states if the metadata will'
                              ' be harvested.')
     parser.add_argument('--harvest_from', type=str, default=None,
-                        help='Datestamps used as values of the optional argument from will'
-                             ' be harvested.')
+                        help='Datestamps used as values of the optional '
+                             'argument from will be harvested.')
     args = parser.parse_args()
 
     print(f"args: {args}")
-    # do_harvest = args.do_harvest.lower() == 'true'
-    do_harvest = True
+    do_harvest = args.do_harvest.lower() == 'true'
     provider_mapping = {
         'CBS': cbs_ingestion_pipeline,
         'LISS': liss_ingestion_pipeline,
@@ -54,7 +53,8 @@ def run_ingestion():
         return
 
     if args.harvest_from and not validate_datestamp(args.harvest_from):
-        print(f"Invalid datestamp specified, please use the format YYYY-MM-DD.")
+        print(
+            f"Invalid datestamp specified, please use the format YYYY-MM-DD.")
         return
 
     settings_dict = getattr(settings, args.data_provider)
@@ -68,15 +68,8 @@ def run_ingestion():
 
     else:
         target_url = get_target_url(args.target_url, settings_dict)
-        dataverse_ingestion_pipeline(args.data_provider, target_url, args.target_key, do_harvest)
-
-
-def prompt_for_confirmation(target_url):
-    print("Current target configuration:")
-    print(f"Target URL: {target_url}")
-    confirmation = input(
-        "Do you want to proceed with this configuration? (yes/no): ").lower()
-    return confirmation == 'yes'
+        dataverse_ingestion_pipeline(args.data_provider, target_url,
+                                     args.target_key, do_harvest)
 
 
 def get_target_url(target_url, settings_dict):
@@ -84,6 +77,7 @@ def get_target_url(target_url, settings_dict):
         return settings_dict.DESTINATION_DATAVERSE_URL
     else:
         return target_url
+
 
 def validate_datestamp(datestamp):
     """ Validates a datestamp in the format YYYY-MM-DD.
@@ -100,6 +94,7 @@ def validate_datestamp(datestamp):
         return True
     except ValueError:
         return False
+
 
 if __name__ == "__main__":
     run_ingestion()

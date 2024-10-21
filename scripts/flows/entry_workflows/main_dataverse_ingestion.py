@@ -67,6 +67,6 @@ def dataverse_ingestion_pipeline(settings_dict_name: str,
         dataverse_metadata_ingestion,
         settings_dict,
         minio_client,
-    "identifiers.json",
+        "identifiers.json",
         version
     )
