@@ -72,7 +72,7 @@ CBS_TEMPLATE_FILE_PATH="/app/resources/templates/cbs_dataverse_template.json"
 CBS_MAPPING_FILE_PATH="/app/resources/mappings/cbs-mapping.json"
 
 LISS_TEMPLATE_FILE_PATH="/app/resources/templates/liss_dataverse_template.json"
-LISS_MAPPING_FILE_PATH="/resources/mappings/liss-mapping.json"
+LISS_MAPPING_FILE_PATH="/app/resources/mappings/liss-mapping.json"
 
 CID_TEMPLATE_FILE_PATH="/app/resources/templates/cid_dataverse_template.json"
 CID_MAPPING_FILE_PATH="/app/resources/mappings/cid-mapping.json"

@@ -1,5 +1,5 @@
 from prefect import flow
-from prefect.server.schemas.states import Failed, Completed
+from prefect.states import Failed, Completed
 
 from tasks.base_tasks import dataverse_metadata_fetcher, dataverse_import, \
     update_publication_date, add_workflow_versioning_url, refine_metadata, \

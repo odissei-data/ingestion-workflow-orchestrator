@@ -2,7 +2,7 @@ import json
 import jmespath
 
 from prefect import flow
-from prefect.server.schemas.states import Completed, Failed
+from prefect.states import Completed, Failed
 from queries import DIST_DATE_QUERY
 from tasks.base_tasks import dataverse_mapper, \
     dataverse_import, update_publication_date, get_doi_from_dv_json, \

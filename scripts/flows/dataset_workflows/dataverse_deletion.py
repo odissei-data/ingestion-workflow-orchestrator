@@ -1,5 +1,5 @@
 from prefect import flow
-from prefect.server.schemas.states import Failed, Completed
+from prefect.states import Failed, Completed
 
 from tasks.base_tasks import dataverse_dataset_check_status, \
     delete_dataset

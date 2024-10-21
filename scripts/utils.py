@@ -113,7 +113,7 @@ def identifier_list_workflow_executor(
         settings_dict,
         s3_client,
         object_name,
-        version = None,
+        version=None,
 ):
     """
     Grabs a file called identifiers.json from the bucket
@@ -122,17 +122,20 @@ def identifier_list_workflow_executor(
     If not return FAILED, if it does execute the data_provider_workflow
     for every pid in the list.
 
-    :param data_provider_workflow: A function representing the data provider workflow.
+    :param object_name: Can be identifiers.json or identifiers-deleted.json
+    :param data_provider_workflow: A function representing the workflow.
     :param version: The version of the workflow to be executed.
-    :param settings_dict: A dictionary containing the settings including the BUCKET_NAME.
-    :param s3_client: An object representing the Boto3 S3 client to access the bucket.
-    :return: 'SUCCESS' if the workflow is executed successfully, 'FAILED' otherwise.
+    :param settings_dict: The settings including the BUCKET_NAME.
+    :param s3_client: An object representing the Boto3 S3 client.
+    :return: 'SUCCESS' if the workflow succeeds, 'FAILED' otherwise.
     """
     bucket_name = settings_dict.BUCKET_NAME
-    identifiers_dict = retrieve_identifiers_from_bucket(s3_client, bucket_name, object_name)
+    identifiers_dict = retrieve_identifiers_from_bucket(s3_client, bucket_name,
+                                                        object_name)
     for pid in identifiers_dict['pids']:
         if version:
-            data_provider_workflow(pid, settings_dict, version, return_state=True)
+            data_provider_workflow(pid, version, settings_dict,
+                                   return_state=True)
         else:
             data_provider_workflow(pid, settings_dict, return_state=True)
 
@@ -244,6 +247,7 @@ def failed_dataverse_ingestion_hook(flow, flow_run, state):
 
     update_identifiers_json(bucket_name, "identifiers.json", pid)
 
+
 def failed_dataverse_deletion_hook(flow, flow_run, state):
     logger = get_run_logger()
     settings_dict = flow_run.parameters["settings_dict"]
@@ -261,7 +265,8 @@ def failed_dataverse_deletion_hook(flow, flow_run, state):
 def update_identifiers_json(bucket_name, object_name, failed_pid):
     s3_client = create_s3_client()
     create_identifiers_json(s3_client, bucket_name, object_name)
-    identifiers_dict = retrieve_identifiers_from_bucket(s3_client, bucket_name, object_name)
+    identifiers_dict = retrieve_identifiers_from_bucket(s3_client, bucket_name,
+                                                        object_name)
     identifiers_dict['pids'].append(failed_pid)
 
     updated_data = json.dumps(identifiers_dict).encode('utf-8')
