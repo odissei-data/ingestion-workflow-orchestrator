@@ -11,8 +11,8 @@ from tasks.harvest_tasks import oai_harvest_metadata
 
 @flow
 def dataverse_ingestion_pipeline(settings_dict_name: str,
-                                 target_url: str = None,
-                                 target_key: str = None,
+                                 target_url: str = "",
+                                 target_key: str = "",
                                  do_harvest: bool = True
                                  ):
     """ Ingestion pipeline dedicated to the Dataverse to Dataverse workflow.
