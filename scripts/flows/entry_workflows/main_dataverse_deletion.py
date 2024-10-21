@@ -1,21 +1,18 @@
-import utils
-
 from prefect import flow
+
+import utils
 from configuration.config import settings
-from flows.dataset_workflows.dataverse_ingestion import \
-    dataverse_metadata_ingestion
-from flows.workflow_versioning.workflow_versioner import \
-    create_ingestion_workflow_versioning
+from flows.dataset_workflows.dataverse_deletion import dataverse_metadata_deletion
 from tasks.harvest_tasks import oai_harvest_metadata
 
 
-@flow(name="Dataverse Ingestion Pipeline")
-def dataverse_ingestion_pipeline(settings_dict_name: str,
-                                 target_url: str = "",
-                                 target_key: str = "",
-                                 do_harvest: bool = True
-                                 ):
-    """ Ingestion pipeline dedicated to the Dataverse to Dataverse workflow.
+@flow(name="Dataverse Deleted Pipeline")
+def dataverse_deletion_pipeline(settings_dict_name: str,
+                                target_url: str = None,
+                                target_key: str = None,
+                                do_harvest: bool = True
+                                ):
+    """ Deletion pipeline dedicated to the Dataverse to Dataverse workflow.
 
     :param do_harvest: Boolean stating if the dataset metadata should be
      harvested before ingestion.
@@ -31,14 +28,6 @@ def dataverse_ingestion_pipeline(settings_dict_name: str,
     if target_key:
         settings_dict.DESTINATION_DATAVERSE_API_KEY = target_key
 
-    version = create_ingestion_workflow_versioning(
-        transformer=True,
-        fetcher=True,
-        refiner=True,
-        importer=True,
-        updater=True,
-        settings=settings_dict
-    )
 
     minio_client = utils.create_s3_client()
 
@@ -62,11 +51,9 @@ def dataverse_ingestion_pipeline(settings_dict_name: str,
             'ListIdentifiers',
             'start_harvest'
         )
-
     utils.identifier_list_workflow_executor(
-        dataverse_metadata_ingestion,
+        dataverse_metadata_deletion,
         settings_dict,
         minio_client,
-        "identifiers.json",
-        version
+        "identifiers-deleted.json",
     )
