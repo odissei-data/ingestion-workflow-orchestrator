@@ -38,7 +38,8 @@ def liss_ingestion_pipeline(target_url: str = None, target_key: str = None,
     if do_harvest:
         harvest_metadata(
             settings_dict.BUCKET_NAME,
-            "start_liss_harvest"
+            "start_liss_harvest",
+            settings_dict.FROM
         )
 
     utils.workflow_executor(

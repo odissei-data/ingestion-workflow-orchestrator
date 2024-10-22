@@ -20,7 +20,6 @@ def oai_harvest_metadata(metadata_prefix, oai_endpoint, bucket_name, verb,
     :param verb: The type of harvest. (ListRecords or ListIdentifiers).
     :param harvester_endpoint: The API of the harvester service.
     :param oai_set: A specific set of data that will be harvested.
-    :param timestamp: The timestamp from which to start harvesting.
     """
     headers = {
         'Content-Type': 'application/json',
@@ -32,8 +31,8 @@ def oai_harvest_metadata(metadata_prefix, oai_endpoint, bucket_name, verb,
         "metadata_prefix": metadata_prefix,
         "oai_endpoint": oai_endpoint,
         "bucket_name": bucket_name,
-        "verb": verb,
-        "from": timestamp
+        "from": timestamp,
+        "verb": verb
     }
 
     if oai_set is not None:
@@ -52,7 +51,7 @@ def oai_harvest_metadata(metadata_prefix, oai_endpoint, bucket_name, verb,
 
 
 @task(timeout_seconds=300, retries=1)
-def harvest_metadata(bucket_name, endpoint):
+def harvest_metadata(bucket_name, endpoint, timestamp=None):
     """ A task that harvests the LISS dataset metadata.
 
     The LISS server where we harvest metadata has a different
@@ -61,6 +60,7 @@ def harvest_metadata(bucket_name, endpoint):
 
     :param endpoint: The harvester endpoint to call.
     :param bucket_name: The bucket the LISS metadata will be stored in.
+    :param timestamp: The timestamp from which to start harvesting (optional).
     """
     headers = {
         'Content-Type': 'application/json',
@@ -71,6 +71,9 @@ def harvest_metadata(bucket_name, endpoint):
     data = {
         "bucket_name": bucket_name,
     }
+
+    if timestamp is not None:
+        data["timestamp"] = timestamp
 
     url = f"{settings.HARVESTER_URL}/{endpoint}"
     response = requests.post(
