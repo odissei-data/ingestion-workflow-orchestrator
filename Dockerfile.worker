@@ -18,8 +18,8 @@ RUN pip install poetry \
     && poetry config virtualenvs.create false \
     && poetry install --no-root
 
-COPY entrypoint-agent.sh /app/
-RUN chmod +x  /app/entrypoint-agent.sh
+COPY entrypoint-worker.sh /app/
+RUN chmod +x  /app/entrypoint-worker.sh
 
 COPY scripts ./scripts
 COPY resources ./resources
@@ -29,4 +29,4 @@ RUN chown -R prefect:prefect /app
 WORKDIR /app/scripts
 USER prefect
 
-ENTRYPOINT ["/app/entrypoint-agent.sh"]
+ENTRYPOINT ["/app/entrypoint-worker.sh"]
