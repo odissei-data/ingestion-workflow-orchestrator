@@ -1,7 +1,7 @@
 import jmespath
 
 from prefect import flow
-from prefect.server.schemas.states import Completed, Failed
+from prefect.states import Completed, Failed
 from queries import DIST_DATE_QUERY, CBS_ID_QUERY
 from tasks.base_tasks import xml2json, dataverse_mapper, \
     dataverse_import, update_publication_date, add_workflow_versioning_url, \

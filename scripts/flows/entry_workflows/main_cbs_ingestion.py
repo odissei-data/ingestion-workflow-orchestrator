@@ -8,7 +8,7 @@ from flows.workflow_versioning.workflow_versioner import \
 
 
 @flow
-def cbs_ingestion_pipeline(target_url: str = None, target_key: str = None,
+def cbs_ingestion_pipeline(target_url: str = "", target_key: str = "",
                            do_harvest: bool=False):
     """ Ingestion pipeline dedicated to the CBS metadata ingestion.
 

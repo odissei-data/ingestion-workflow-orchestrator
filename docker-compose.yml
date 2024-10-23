@@ -1,10 +1,8 @@
-version: '3.7'
-
 services:
   prefect:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.server
     container_name: 'prefect'
     volumes:
       - "/tmp:/tmp"
@@ -16,12 +14,29 @@ services:
       - db
     networks:
       - prefect
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:4200/api/health" ]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+
+  prefect-worker:
+    container_name: 'prefect-worker'
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    env_file: .env
+    depends_on:
+      prefect:
+        condition: service_healthy
+    networks:
+      - prefect
 
   db:
     image: postgres:latest
     container_name: db
     volumes:
-      - ./db:/var/lib/postgresql/data
+      - prefectdb:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=lolgres
@@ -31,3 +46,6 @@ services:
 
 networks:
   prefect:
+
+volumes:
+  prefectdb:

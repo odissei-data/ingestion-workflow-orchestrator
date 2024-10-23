@@ -1,16 +1,15 @@
 HOSTNAME="localhost"
 PROJECT_CONTAINER_NAME="prefect"
 # This python path is added to avoid having to do relative imports.
-PYTHONPATH="/scripts/"
+PYTHONPATH="/app/scripts/"
 GITHUB_USERNAME="odissei-data"
 DOCKERHUB_USERNAME="fjodorvr"
-VERSION="v2.4.3"
+VERSION="v3.0.1"
 ENV_FOR_DYNACONF=development
 PREFECT_SERVER_API_HOST='0.0.0.0'
 PREFECT_API_DATABASE_CONNECTION_URL="postgresql+asyncpg://username:password@db:5432/prefect"
-
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 POSTGRES_DB=prefect
 POSTGRES_PORT=5432
-POSTGRES_DB_URL=postgresql://postgres:postgres@database:5432/prefect
+API_URL=http://0.0.0.0:4200/api
