@@ -20,8 +20,8 @@ services:
       timeout: 10s
       retries: 5
 
-  prefect-agent:
-    container_name: 'prefect-agent'
+  prefect-worker:
+    container_name: 'prefect-worker'
     build:
       context: .
       dockerfile: Dockerfile.worker
