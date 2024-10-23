@@ -1,0 +1,193 @@
+prefect-version: 3.0.10
+name: dataverse-deployments
+
+pull:
+  - prefect.deployments.steps.set_working_directory:
+      directory: /app/scripts/
+
+definitions:
+  work_pools:
+    default_workpool: &default_workpool
+      name: default
+      work_queue_name: default
+  schedules:
+    every_day: &every_day
+      cron: "0 0 * * *"
+      timezone: "Europe/Amsterdam"
+
+deployments:
+  - name: hsn-ingest
+    entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
+    tags: [ "d2d", "hsn" ]
+    description: "Ingests metadata from IISG into the HSN subverse."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "HSN"
+
+    work_pool: *default_workpool
+
+  - name: twente-ingest
+    entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
+    tags: [ "d2d", "dataversenl" ]
+    description: "Ingests metadata from twente from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "TWENTE"
+
+    work_pool: *default_workpool
+
+  - name: delft-ingest
+    entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
+    tags: [ "d2d", "dataversenl" ]
+    description: "Ingests metadata from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "DELFT"
+
+    work_pool: *default_workpool
+
+  - name: avans-ingest
+    entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
+    tags: [ "d2d", "dataversenl" ]
+    description: "Ingests metadata from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "AVANS"
+
+    work_pool: *default_workpool
+
+  - name: fontys-ingest
+    entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
+    tags: [ "d2d", "dataversenl" ]
+    description: "Ingests metadata from fontys from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "FONTYS"
+
+    work_pool: *default_workpool
+
+  - name: groningen-ingest
+    entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
+    tags: [ "d2d", "dataversenl" ]
+    description: "Ingests metadata from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "GRONINGEN"
+
+    work_pool: *default_workpool
+
+  - name: hanze-ingest
+    entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
+    tags: [ "d2d", "dataversenl" ]
+    description: "Ingests metadata from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "HANZE"
+
+    work_pool: *default_workpool
+
+  - name: hr-ingest
+    entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
+    tags: [ "d2d", "dataversenl" ]
+    description: "Ingests metadata from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "HR"
+
+    work_pool: *default_workpool
+
+  - name: leiden-ingest
+    entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
+    tags: [ "d2d", "dataversenl" ]
+    description: "Ingests metadata from leiden from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "LEIDEN"
+
+    work_pool: *default_workpool
+
+  - name: maastricht-ingest
+    entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
+    tags: [ "d2d", "dataversenl" ]
+    description: "Ingests metadata from maastricht from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "MAASTRICHT"
+
+    work_pool: *default_workpool
+
+  - name: tilburg-ingest
+    entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
+    tags: [ "d2d", "dataversenl" ]
+    description: "Ingests metadata from tilburg from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "TILBURG"
+
+    work_pool: *default_workpool
+
+  - name: trimbos-ingest
+    entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
+    tags: [ "d2d", "dataversenl" ]
+    description: "Ingests metadata from trimbos from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "TRIMBOS"
+
+    work_pool: *default_workpool
+
+  - name: umcu-ingest
+    entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
+    tags: [ "d2d", "dataversenl" ]
+    description: "Ingests metadata from umcu from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "UMCU"
+
+    work_pool: *default_workpool
+
+  - name: utrecht-ingest
+    entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
+    tags: [ "d2d", "dataversenl" ]
+    description: "Ingests metadata from utrecht from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "UTRECHT"
+
+    work_pool: *default_workpool
+
+  - name: vu-ingest
+    entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
+    tags: [ "d2d", "dataversenl" ]
+    description: "Ingests metadata from vu from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "VU"
+
+    work_pool: *default_workpool
+
+  - name: dans-ingest
+    entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
+    tags: [ "d2d", "dataversenl" ]
+    description: "Ingests metadata from dans from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "DANS"
+
+    work_pool: *default_workpool
