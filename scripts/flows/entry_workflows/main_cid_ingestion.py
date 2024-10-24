@@ -36,7 +36,8 @@ def cid_ingestion_pipeline(target_url: str = "", target_key: str = "",
     if do_harvest:
         harvest_metadata(
             settings_dict.BUCKET_NAME,
-            "start_cid_harvest"
+            "start_cid_harvest",
+            settings_dict.FROM if hasattr(settings_dict, 'FROM') else None
         )
 
     s3_client = utils.create_s3_client()
