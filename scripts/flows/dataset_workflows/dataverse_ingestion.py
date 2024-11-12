@@ -75,4 +75,4 @@ def dataverse_metadata_ingestion(pid, version, settings_dict):
         if not pub_date_response:
             return Failed(message='Unable to update publication date.')
 
-    return Completed(message=pid + 'ingested successfully.')
+    return Completed(message=pid + ' ingested successfully.')

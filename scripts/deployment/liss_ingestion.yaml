@@ -1,0 +1,25 @@
+prefect-version: 3.0.10
+name: liss-deployment
+
+pull:
+  - prefect.deployments.steps.set_working_directory:
+      directory: /app/scripts/
+
+definitions:
+  work_pools:
+    default_workpool: &default_workpool
+      name: default
+      work_queue_name: default
+  schedules:
+    every_day: &every_day
+      cron: "0 1 * * *"
+      timezone: "Europe/Amsterdam"
+
+deployments:
+  - name: liss-ingest
+    entrypoint: flows/entry_workflows/main_liss_ingestion.py:liss_ingestion_pipeline
+    tags: [ "liss", "ingest"]
+    description: "Ingests metadata from LISS."
+    schedule: *every_day
+
+    work_pool: *default_workpool

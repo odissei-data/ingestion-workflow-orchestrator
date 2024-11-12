@@ -1,5 +1,5 @@
 prefect-version: 3.0.10
-name: dataverse-deployments
+name: dataverse-ingestion-deployments
 
 pull:
   - prefect.deployments.steps.set_working_directory:
@@ -18,7 +18,7 @@ definitions:
 deployments:
   - name: hsn-ingest
     entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
-    tags: [ "d2d", "hsn" ]
+    tags: [ "d2d", "hsn", "ingestion" ]
     description: "Ingests metadata from IISG into the HSN subverse."
     schedule: *every_day
 
@@ -29,7 +29,7 @@ deployments:
 
   - name: twente-ingest
     entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
-    tags: [ "d2d", "dataversenl" ]
+    tags: [ "d2d", "dataversenl", "ingestion" ]
     description: "Ingests metadata from twente from dataversenl."
     schedule: *every_day
 
@@ -40,7 +40,7 @@ deployments:
 
   - name: delft-ingest
     entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
-    tags: [ "d2d", "dataversenl" ]
+    tags: [ "d2d", "dataversenl", "ingestion" ]
     description: "Ingests metadata from dataversenl."
     schedule: *every_day
 
@@ -51,7 +51,7 @@ deployments:
 
   - name: avans-ingest
     entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
-    tags: [ "d2d", "dataversenl" ]
+    tags: [ "d2d", "dataversenl", "ingestion" ]
     description: "Ingests metadata from dataversenl."
     schedule: *every_day
 
@@ -62,7 +62,7 @@ deployments:
 
   - name: fontys-ingest
     entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
-    tags: [ "d2d", "dataversenl" ]
+    tags: [ "d2d", "dataversenl", "ingestion" ]
     description: "Ingests metadata from fontys from dataversenl."
     schedule: *every_day
 
@@ -73,7 +73,7 @@ deployments:
 
   - name: groningen-ingest
     entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
-    tags: [ "d2d", "dataversenl" ]
+    tags: [ "d2d", "dataversenl", "ingestion" ]
     description: "Ingests metadata from dataversenl."
     schedule: *every_day
 
@@ -84,7 +84,7 @@ deployments:
 
   - name: hanze-ingest
     entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
-    tags: [ "d2d", "dataversenl" ]
+    tags: [ "d2d", "dataversenl", "ingestion" ]
     description: "Ingests metadata from dataversenl."
     schedule: *every_day
 
@@ -95,7 +95,7 @@ deployments:
 
   - name: hr-ingest
     entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
-    tags: [ "d2d", "dataversenl" ]
+    tags: [ "d2d", "dataversenl", "ingestion" ]
     description: "Ingests metadata from dataversenl."
     schedule: *every_day
 
@@ -106,7 +106,7 @@ deployments:
 
   - name: leiden-ingest
     entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
-    tags: [ "d2d", "dataversenl" ]
+    tags: [ "d2d", "dataversenl", "ingestion" ]
     description: "Ingests metadata from leiden from dataversenl."
     schedule: *every_day
 
@@ -117,7 +117,7 @@ deployments:
 
   - name: maastricht-ingest
     entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
-    tags: [ "d2d", "dataversenl" ]
+    tags: [ "d2d", "dataversenl", "ingestion" ]
     description: "Ingests metadata from maastricht from dataversenl."
     schedule: *every_day
 
@@ -128,7 +128,7 @@ deployments:
 
   - name: tilburg-ingest
     entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
-    tags: [ "d2d", "dataversenl" ]
+    tags: [ "d2d", "dataversenl", "ingestion" ]
     description: "Ingests metadata from tilburg from dataversenl."
     schedule: *every_day
 
@@ -139,7 +139,7 @@ deployments:
 
   - name: trimbos-ingest
     entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
-    tags: [ "d2d", "dataversenl" ]
+    tags: [ "d2d", "dataversenl", "ingestion" ]
     description: "Ingests metadata from trimbos from dataversenl."
     schedule: *every_day
 
@@ -150,7 +150,7 @@ deployments:
 
   - name: umcu-ingest
     entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
-    tags: [ "d2d", "dataversenl" ]
+    tags: [ "d2d", "dataversenl", "ingestion" ]
     description: "Ingests metadata from umcu from dataversenl."
     schedule: *every_day
 
@@ -161,7 +161,7 @@ deployments:
 
   - name: utrecht-ingest
     entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
-    tags: [ "d2d", "dataversenl" ]
+    tags: [ "d2d", "dataversenl", "ingestion" ]
     description: "Ingests metadata from utrecht from dataversenl."
     schedule: *every_day
 
@@ -172,7 +172,7 @@ deployments:
 
   - name: vu-ingest
     entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
-    tags: [ "d2d", "dataversenl" ]
+    tags: [ "d2d", "dataversenl", "ingestion" ]
     description: "Ingests metadata from vu from dataversenl."
     schedule: *every_day
 
@@ -183,7 +183,7 @@ deployments:
 
   - name: dans-ingest
     entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
-    tags: [ "d2d", "dataversenl" ]
+    tags: [ "d2d", "dataversenl", "ingestion" ]
     description: "Ingests metadata from dans from dataversenl."
     schedule: *every_day
 
