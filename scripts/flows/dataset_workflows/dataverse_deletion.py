@@ -6,7 +6,8 @@ from tasks.base_tasks import dataverse_dataset_check_status, \
 from utils import generate_dv_flow_run_name, failed_dataverse_deletion_hook
 
 
-@flow(name="Deleting Dataverse metadata", flow_run_name= generate_dv_flow_run_name,
+@flow(name="Deleting Dataverse metadata",
+      flow_run_name=generate_dv_flow_run_name,
       on_failure=[failed_dataverse_deletion_hook])
 def dataverse_metadata_deletion(pid, settings_dict):
     """
@@ -16,7 +17,10 @@ def dataverse_metadata_deletion(pid, settings_dict):
     :param settings_dict: dict, contains settings for the current workflow.
     :return: prefect.server.schemas.states Failed or Completed.
     """
-    dv_response_status = dataverse_dataset_check_status(pid, settings_dict)
+    dv_response_status = dataverse_dataset_check_status(
+        pid,
+        settings_dict.DESTINATION_DATAVERSE_URL)
+
     if not dv_response_status:
         return Failed(message=f'No response from {pid}.')
 
