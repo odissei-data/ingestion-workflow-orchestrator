@@ -30,7 +30,8 @@ def cid_metadata_ingestion(xml_metadata, version, settings_dict, file_name):
         dv_json = json.loads(json_metadata)
     except json.JSONDecodeError as e:
         return Failed(message='Not valid json metadata')
-    doi = dv_json["datasetVersion"]["datasetPersistentId"]
+
+    doi = f'doi:{dv_json["datasetVersion"]["datasetPersistentId"]}'
     if not doi:
         return Failed(message='Unable to retrieve dataset doi.')
 
@@ -51,11 +52,11 @@ def cid_metadata_ingestion(xml_metadata, version, settings_dict, file_name):
 
     if not mapped_metadata:
         return Failed(message='Unable to store workflow version.')
-    import_response = dataverse_import(mapped_metadata, settings_dict, f'doi:{doi}' )
+    import_response = dataverse_import(mapped_metadata, settings_dict, doi)
     if not import_response:
         return Failed(message='Unable to import dataset into Dataverse')
 
-    publication_date = jmespath.search(DIST_DATE_QUERY, mapped_metadata)
+    publication_date = dv_json.get('datasetVersion', {}).get('publicationDate', None)
     if publication_date:
         pub_date_response = update_publication_date(
             publication_date, doi, settings_dict
