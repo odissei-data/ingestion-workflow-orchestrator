@@ -22,7 +22,7 @@ def xml2json(xml_metadata):
 
     headers = {
         'Content-Type': 'application/xml',
-        'Authorization': settings.XML2JSON_API_TOKEN,
+        'Authorization': f'Bearer {settings.XML2JSON_API_TOKEN}',
     }
 
     url = f"{settings.DANS_TRANSFORMER_SERVICE}/transform-xml-to-json/true"
@@ -37,6 +37,7 @@ def xml2json(xml_metadata):
 
     return response.json()
 
+
 @task(timeout_seconds=300, retries=1, cache_expiration=timedelta(minutes=10))
 def xml2dvjson(xml_metadata):
     """ Sends XML to the transformer server, receives JSON with same hierarchy.
@@ -48,13 +49,13 @@ def xml2dvjson(xml_metadata):
     :return: Plain JSON metadata | None on failure.
     """
     logger = get_run_logger()
-
     headers = {
         'Content-Type': 'application/xml',
-        'Authorization': settings.XML2JSON_API_TOKEN,
+        'Authorization': f'Bearer {settings.XML2JSON_API_TOKEN}',
     }
 
-    url = f"{settings.DANS_TRANSFORMER_SERVICE}/transform/{settings.XSLT_TRANSFORMER_NAME}"
+    url = f"{settings.DANS_TRANSFORMER_SERVICE}/transform/" \
+        f"{settings.XSLT_TRANSFORMER_NAME}"
     response = requests.post(
         url,
         headers=headers, data=xml_metadata
@@ -65,6 +66,7 @@ def xml2dvjson(xml_metadata):
         return None
 
     return response.json()['result']
+
 
 @task(timeout_seconds=300, retries=1, cache_expiration=timedelta(minutes=10))
 def dataverse_mapper(json_metadata, mapping_file_path, template_file_path,
