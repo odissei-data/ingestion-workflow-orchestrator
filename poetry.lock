@@ -185,17 +185,17 @@ tests-mypy = ["mypy (>=1.11.1)", "pytest-mypy-plugins"]
 
 [[package]]
 name = "boto3"
-version = "1.35.59"
+version = "1.35.65"
 description = "The AWS SDK for Python"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "boto3-1.35.59-py3-none-any.whl", hash = "sha256:8f8ff97cb9cb2e1ec7374209d0c09c1926b75604d6464c34bafaffd6d6cf0529"},
-    {file = "boto3-1.35.59.tar.gz", hash = "sha256:81f4d8d6eff3e26b82cabd42eda816cfac9482821fdef353f18d2ba2f6e75f2d"},
+    {file = "boto3-1.35.65-py3-none-any.whl", hash = "sha256:acbca38322b66516450f959c7874826267d431becdc2b080e331e56c2ebbe507"},
+    {file = "boto3-1.35.65.tar.gz", hash = "sha256:f6c266b4124b92b1603727bf1ed1917e0b74a899bd0e326f151d80c3eaed27a1"},
 ]
 
 [package.dependencies]
-botocore = ">=1.35.59,<1.36.0"
+botocore = ">=1.35.65,<1.36.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.10.0,<0.11.0"
 
@@ -204,13 +204,13 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.35.59"
+version = "1.35.65"
 description = "Low-level, data-driven core of boto 3."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "botocore-1.35.59-py3-none-any.whl", hash = "sha256:bcd66d7f55c8d1b6020eb86f2d87893fe591fb4be6a7d2a689c18be586452334"},
-    {file = "botocore-1.35.59.tar.gz", hash = "sha256:de0ce655fedfc02c87869dfaa3b622488a17ff37da316ef8106cbe1573b83c98"},
+    {file = "botocore-1.35.65-py3-none-any.whl", hash = "sha256:8fcaa82ab2338f412e1494449c4c57f9ca785623fb0303f6be5b279c4d27522c"},
+    {file = "botocore-1.35.65.tar.gz", hash = "sha256:46652f732f2b2fb395fffcc33cacb288d05ea283047c9a996fb59d6849464919"},
 ]
 
 [package.dependencies]
@@ -485,13 +485,13 @@ files = [
 
 [[package]]
 name = "croniter"
-version = "4.0.0"
+version = "5.0.1"
 description = "croniter provides iteration for datetime object with cron like format"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,>=2.6"
 files = [
-    {file = "croniter-4.0.0-py2.py3-none-any.whl", hash = "sha256:312717b8017ad6052817934af563f6754b1f25cb942dcca1e617240aca4aa254"},
-    {file = "croniter-4.0.0.tar.gz", hash = "sha256:3df735b70d005b68414d80728987ecba4d71054a1bb1b011f6d475bdefdbeddd"},
+    {file = "croniter-5.0.1-py2.py3-none-any.whl", hash = "sha256:eb28439742291f6c10b181df1a5ecf421208b1fc62ef44501daec1780a0b09e9"},
+    {file = "croniter-5.0.1.tar.gz", hash = "sha256:7d9b1ef25b10eece48fdf29d8ac52f9b6252abff983ac614ade4f3276294019e"},
 ]
 
 [package.dependencies]
@@ -571,20 +571,20 @@ langdetect = ["langdetect"]
 
 [[package]]
 name = "deprecated"
-version = "1.2.14"
+version = "1.2.15"
 description = "Python @deprecated decorator to deprecate old python classes, functions or methods."
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,>=2.7"
 files = [
-    {file = "Deprecated-1.2.14-py2.py3-none-any.whl", hash = "sha256:6fac8b097794a90302bdbb17b9b815e732d3c4720583ff1b198499d78470466c"},
-    {file = "Deprecated-1.2.14.tar.gz", hash = "sha256:e5323eb936458dccc2582dc6f9c322c852a775a27065ff2b0c4970b9d53d01b3"},
+    {file = "Deprecated-1.2.15-py2.py3-none-any.whl", hash = "sha256:353bc4a8ac4bfc96800ddab349d89c25dec1079f65fd53acdcc1e0b975b21320"},
+    {file = "deprecated-1.2.15.tar.gz", hash = "sha256:683e561a90de76239796e6b6feac66b99030d2dd3fcf61ef996330f14bbb9b0d"},
 ]
 
 [package.dependencies]
 wrapt = ">=1.10,<2"
 
 [package.extras]
-dev = ["PyTest", "PyTest-Cov", "bump2version (<1)", "sphinx (<2)", "tox"]
+dev = ["PyTest", "PyTest-Cov", "bump2version (<1)", "jinja2 (>=3.0.3,<3.1.0)", "setuptools", "sphinx (<2)", "tox"]
 
 [[package]]
 name = "docker"
@@ -857,13 +857,13 @@ files = [
 
 [[package]]
 name = "httpcore"
-version = "1.0.6"
+version = "1.0.7"
 description = "A minimal low-level HTTP client."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "httpcore-1.0.6-py3-none-any.whl", hash = "sha256:27b59625743b85577a8c0e10e55b50b5368a4f2cfe8cc7bcfa9cf00829c2682f"},
-    {file = "httpcore-1.0.6.tar.gz", hash = "sha256:73f6dbd6eb8c21bbf7ef8efad555481853f5f6acdeaff1edb0694289269ee17f"},
+    {file = "httpcore-1.0.7-py3-none-any.whl", hash = "sha256:a3fff8f43dc260d5bd363d9f9cf1830fa3a458b332856f34282de498ed420edd"},
+    {file = "httpcore-1.0.7.tar.gz", hash = "sha256:8551cb62a169ec7162ac7be8d4817d561f60e08eaa485234898414bb5a8a0b4c"},
 ]
 
 [package.dependencies]
@@ -1224,13 +1224,13 @@ signedtoken = ["cryptography (>=3.0.0)", "pyjwt (>=2.0.0,<3)"]
 
 [[package]]
 name = "opentelemetry-api"
-version = "1.28.1"
+version = "1.28.2"
 description = "OpenTelemetry Python API"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "opentelemetry_api-1.28.1-py3-none-any.whl", hash = "sha256:bfe86c95576cf19a914497f439fd79c9553a38de0adbdc26f7cfc46b0c00b16c"},
-    {file = "opentelemetry_api-1.28.1.tar.gz", hash = "sha256:6fa7295a12c707f5aebef82da3d9ec5afe6992f3e42bfe7bec0339a44b3518e7"},
+    {file = "opentelemetry_api-1.28.2-py3-none-any.whl", hash = "sha256:6fcec89e265beb258fe6b1acaaa3c8c705a934bd977b9f534a2b7c0d2d4275a6"},
+    {file = "opentelemetry_api-1.28.2.tar.gz", hash = "sha256:ecdc70c7139f17f9b0cf3742d57d7020e3e8315d6cffcdf1a12a905d45b19cc0"},
 ]
 
 [package.dependencies]
@@ -1427,13 +1427,13 @@ test = ["time-machine (>=2.6.0)"]
 
 [[package]]
 name = "prefect"
-version = "3.1.2"
+version = "3.1.3"
 description = "Workflow orchestration and management."
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "prefect-3.1.2-py3-none-any.whl", hash = "sha256:2d4c3e6769cc7eafb9a4d074775af40fd152d59d6ad05acb377f26691f283752"},
-    {file = "prefect-3.1.2.tar.gz", hash = "sha256:0f5f6e3396dd37cbb7b152022a37191d50f39c0cd4ee0149087ad2b752b607ea"},
+    {file = "prefect-3.1.3-py3-none-any.whl", hash = "sha256:1f9a826a0fea32f20f789033bc891cf184ec95e01de502d37a21444b18057f4d"},
+    {file = "prefect-3.1.3.tar.gz", hash = "sha256:1b026a8fdc2b54c42d31bab68e0f9cf6491155eec1c6888a67b540b522f4fa41"},
 ]
 
 [package.dependencies]
@@ -1447,7 +1447,7 @@ cachetools = ">=5.3,<6.0"
 click = ">=8.0,<8.2"
 cloudpickle = ">=2.0,<4.0"
 coolname = ">=1.0.4,<3.0.0"
-croniter = ">=1.0.12,<5.0.0"
+croniter = ">=1.0.12,<6.0.0"
 cryptography = ">=36.0.1"
 dateparser = ">=1.1.1,<2.0.0"
 docker = ">=4.0,<8.0"
@@ -1491,26 +1491,26 @@ uvicorn = ">=0.14.0,<0.29.0 || >0.29.0"
 websockets = ">=10.4,<14.0"
 
 [package.extras]
-aws = ["prefect-aws (>=0.5.0rc1)"]
-azure = ["prefect-azure (>=0.4.0rc1)"]
-bitbucket = ["prefect-bitbucket (>=0.3.0rc1)"]
-dask = ["prefect-dask (>=0.3.0rc1)"]
-databricks = ["prefect-databricks (>=0.3.0rc1)"]
-dbt = ["prefect-dbt (>=0.6.0rc1)"]
+aws = ["prefect-aws (>=0.5.0)"]
+azure = ["prefect-azure (>=0.4.0)"]
+bitbucket = ["prefect-bitbucket (>=0.3.0)"]
+dask = ["prefect-dask (>=0.3.0)"]
+databricks = ["prefect-databricks (>=0.3.0)"]
+dbt = ["prefect-dbt (>=0.6.0)"]
 dev = ["cairosvg", "codespell (>=2.2.6)", "ipython", "jinja2", "mkdocs", "mkdocs-gen-files", "mkdocs-material", "mkdocstrings[python]", "moto (>=5)", "mypy (>=1.9.0)", "numpy", "opentelemetry-distro (>=0.48b0,<1.0.0)", "opentelemetry-exporter-otlp (>=1.27.0,<2.0.0)", "opentelemetry-instrumentation (>=0.48b0,<1.0.0)", "opentelemetry-instrumentation-logging (>=0.48b0,<1.0.0)", "opentelemetry-test-utils (>=0.48b0,<1.0.0)", "pillow", "pluggy (>=1.4.0)", "pre-commit", "pytest (>=8.3)", "pytest-asyncio (>=0.24)", "pytest-benchmark", "pytest-cov", "pytest-env", "pytest-flakefinder", "pytest-timeout", "pytest-xdist (>=3.6.1)", "pyyaml", "redis (>=5.0.1)", "respx", "ruff", "setuptools", "types-PyYAML", "types-cachetools", "uv (>=0.4.5)", "vale", "vermin", "virtualenv", "watchfiles"]
-docker = ["prefect-docker (>=0.6.0rc1)"]
-email = ["prefect-email (>=0.4.0rc1)"]
-gcp = ["prefect-gcp (>=0.6.0rc1)"]
-github = ["prefect-github (>=0.3.0rc1)"]
-gitlab = ["prefect-gitlab (>=0.3.0rc1)"]
-kubernetes = ["prefect-kubernetes (>=0.4.0rc1)"]
+docker = ["prefect-docker (>=0.6.0)"]
+email = ["prefect-email (>=0.4.0)"]
+gcp = ["prefect-gcp (>=0.6.0)"]
+github = ["prefect-github (>=0.3.0)"]
+gitlab = ["prefect-gitlab (>=0.3.0)"]
+kubernetes = ["prefect-kubernetes (>=0.4.0)"]
 otel = ["opentelemetry-distro (>=0.48b0,<1.0.0)", "opentelemetry-exporter-otlp (>=1.27.0,<2.0.0)", "opentelemetry-instrumentation (>=0.48b0,<1.0.0)", "opentelemetry-instrumentation-logging (>=0.48b0,<1.0.0)"]
-ray = ["prefect-ray (>=0.4.0rc1)"]
+ray = ["prefect-ray (>=0.4.0)"]
 redis = ["prefect-redis (>=0.2.0)"]
-shell = ["prefect-shell (>=0.3.0rc1)"]
-slack = ["prefect-slack (>=0.3.0rc1)"]
-snowflake = ["prefect-snowflake (>=0.28.0rc1)"]
-sqlalchemy = ["prefect-sqlalchemy (>=0.5.0rc1)"]
+shell = ["prefect-shell (>=0.3.0)"]
+slack = ["prefect-slack (>=0.3.0)"]
+snowflake = ["prefect-snowflake (>=0.28.0)"]
+sqlalchemy = ["prefect-sqlalchemy (>=0.5.0)"]
 
 [[package]]
 name = "prometheus-client"
@@ -2392,13 +2392,13 @@ sqlcipher = ["sqlcipher3_binary"]
 
 [[package]]
 name = "starlette"
-version = "0.41.2"
+version = "0.41.3"
 description = "The little ASGI library that shines."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "starlette-0.41.2-py3-none-any.whl", hash = "sha256:fbc189474b4731cf30fcef52f18a8d070e3f3b46c6a04c97579e85e6ffca942d"},
-    {file = "starlette-0.41.2.tar.gz", hash = "sha256:9834fd799d1a87fd346deb76158668cfa0b0d56f85caefe8268e2d97c3468b62"},
+    {file = "starlette-0.41.3-py3-none-any.whl", hash = "sha256:44cedb2b7c77a9de33a8b74b2b90e9f50d11fcf25d8270ea525ad71a25374ff7"},
+    {file = "starlette-0.41.3.tar.gz", hash = "sha256:0e4ab3d16522a255be6b28260b938eae2482f98ce5cc934cb08dce8dc3ba5835"},
 ]
 
 [package.dependencies]
@@ -2431,13 +2431,13 @@ files = [
 
 [[package]]
 name = "typer"
-version = "0.13.0"
+version = "0.13.1"
 description = "Typer, build great CLIs. Easy to code. Based on Python type hints."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "typer-0.13.0-py3-none-any.whl", hash = "sha256:d85fe0b777b2517cc99c8055ed735452f2659cd45e451507c76f48ce5c1d00e2"},
-    {file = "typer-0.13.0.tar.gz", hash = "sha256:f1c7198347939361eec90139ffa0fd8b3df3a2259d5852a0f7400e476d95985c"},
+    {file = "typer-0.13.1-py3-none-any.whl", hash = "sha256:5b59580fd925e89463a29d363e0a43245ec02765bde9fb77d39e5d0f29dd7157"},
+    {file = "typer-0.13.1.tar.gz", hash = "sha256:9d444cb96cc268ce6f8b94e13b4335084cef4c079998a9f4851a90229a3bd25c"},
 ]
 
 [package.dependencies]
