@@ -1,6 +1,8 @@
 [default]
 ELSST_SKOSMOS_URL="https://thesauri.cessda.eu"
 METADATA_PREFIX="oai_dc"
+CID_METADATA_PREFIX="oai_datacite"
+XSLT_TRANSFORMER_NAME="cid-oaipmh-to-dv-v0.xsl"
 
 [development]
 debug = true
@@ -23,7 +25,7 @@ DATAVERSE_IMPORTER_URL="https://dataverse-importer.labs.dansdemo.nl"
 PUBLICATION_DATA_UPDATER_URL="https://dataverse-date-updater.labs.dansdemo.nl"
 METADATA_FETCHER_URL="https://dataverse-fetcher.labs.dansdemo.nl"
 DATAVERSE_MAPPER_URL="https://dataverse-mapper.labs.dansdemo.nl"
-DANS_TRANSFORMER_SERVICE="https://transformer.labs.dans.knaw.nl"
+DANS_TRANSFORMER_SERVICE="https://transformer.labs.dansdemo.nl"
 EMAIL_SANITIZER_URL="https://sls-weur-dev-emailsanitizer-serverless.azurewebsites.net/api/sanitize"
 METADATA_REFINER_URL="https://metadata-refiner.labs.dansdemo.nl"
 METADATA_ENHANCER_URL="https://metadata-enhancer.labs.dansdemo.nl"
