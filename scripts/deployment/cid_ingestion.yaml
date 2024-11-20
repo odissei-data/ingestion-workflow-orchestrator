@@ -1,0 +1,25 @@
+prefect-version: 3.0.10
+name: cid-deployment
+
+pull:
+  - prefect.deployments.steps.set_working_directory:
+      directory: /app/scripts/
+
+definitions:
+  work_pools:
+    default_workpool: &default_workpool
+      name: default
+      work_queue_name: default
+  schedules:
+    every_day: &every_day
+      cron: "25 16 * * *"
+      timezone: "Europe/Amsterdam"
+
+deployments:
+  - name: cid-ingest
+    entrypoint: flows/entry_workflows/main_cid_ingestion.py:cid_ingestion_pipeline
+    tags: [ "cid", "ingest"]
+    description: "Ingests metadata from CID."
+    schedule: *every_day
+
+    work_pool: *default_workpool
