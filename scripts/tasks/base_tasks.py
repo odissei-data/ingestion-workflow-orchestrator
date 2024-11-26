@@ -1,6 +1,8 @@
 import json
 from datetime import timedelta
 
+from pyDataverse.api import NativeApi
+
 from configuration.config import settings
 from prefect import task, get_run_logger
 import requests
