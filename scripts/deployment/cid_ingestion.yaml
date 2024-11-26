@@ -12,7 +12,7 @@ definitions:
       work_queue_name: default
   schedules:
     every_day: &every_day
-      cron: "25 16 * * *"
+      cron: "0 0 * * *"
       timezone: "Europe/Amsterdam"
 
 deployments:

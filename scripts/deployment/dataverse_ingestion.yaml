@@ -12,7 +12,7 @@ definitions:
       work_queue_name: default
   schedules:
     every_day: &every_day
-      cron: "0 0 * * *"
+      cron: "0 3 * * *"
       timezone: "Europe/Amsterdam"
 
 deployments:
@@ -181,10 +181,21 @@ deployments:
 
     work_pool: *default_workpool
 
-  - name: dans-ingest
+  - name: odissei-ingest
     entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
     tags: [ "d2d", "dataversenl", "ingestion" ]
-    description: "Ingests metadata from dans from dataversenl."
+    description: "Ingests metadata from vu from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "VU"
+
+    work_pool: *default_workpool
+
+  - name: dans-ingest
+    entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
+    tags: [ "d2d", "ingestion" ]
+    description: "Ingests metadata from datastation ssh from dataversenl."
     schedule: *every_day
 
     parameters:
