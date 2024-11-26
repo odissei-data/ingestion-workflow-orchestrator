@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "prefect_docker"
-version = "3.0.5"
+version = "3.0.6"
 description = "Workflow for metadata ingestion into Dataverse"
 authors = ["Fjodor van Rijsselberg"]
 
