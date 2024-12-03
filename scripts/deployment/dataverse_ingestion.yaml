@@ -188,7 +188,7 @@ deployments:
     schedule: *every_day
 
     parameters:
-      settings_dict_name: "VU"
+      settings_dict_name: "DVNL_ODISSEI"
 
     work_pool: *default_workpool
 
