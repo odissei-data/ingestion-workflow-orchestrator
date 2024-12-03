@@ -1,0 +1,193 @@
+prefect-version: 3.0.10
+name: dataverse-deletion-deployments
+
+pull:
+  - prefect.deployments.steps.set_working_directory:
+      directory: /app/scripts/
+
+definitions:
+  work_pools:
+    default_workpool: &default_workpool
+      name: default
+      work_queue_name: default
+  schedules:
+    every_day: &every_day
+      cron: "0 4 * * *"
+      timezone: "Europe/Amsterdam"
+
+deployments:
+  - name: hsn-deletion
+    entrypoint: flows/entry_workflows/main_dataverse_deletion.py:dataverse_deletion_pipeline
+    tags: [ "d2d", "hsn", "deletion" ]
+    description: "Deletes metadata from IISG into the HSN subverse."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "HSN"
+
+    work_pool: *default_workpool
+
+  - name: twente-deletion
+    entrypoint: flows/entry_workflows/main_dataverse_deletion.py:dataverse_deletion_pipeline
+    tags: [ "d2d", "dataversenl", "deletion" ]
+    description: "Deletes metadata from twente from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "TWENTE"
+
+    work_pool: *default_workpool
+
+  - name: delft-deletion
+    entrypoint: flows/entry_workflows/main_dataverse_deletion.py:dataverse_deletion_pipeline
+    tags: [ "d2d", "dataversenl", "deletion" ]
+    description: "Deletes metadata from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "DELFT"
+
+    work_pool: *default_workpool
+
+  - name: avans-deletion
+    entrypoint: flows/entry_workflows/main_dataverse_deletion.py:dataverse_deletion_pipeline
+    tags: [ "d2d", "dataversenl", "deletion" ]
+    description: "Deletes metadata from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "AVANS"
+
+    work_pool: *default_workpool
+
+  - name: fontys-deletion
+    entrypoint: flows/entry_workflows/main_dataverse_deletion.py:dataverse_deletion_pipeline
+    tags: [ "d2d", "dataversenl", "deletion" ]
+    description: "Deletes metadata from fontys from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "FONTYS"
+
+    work_pool: *default_workpool
+
+  - name: groningen-deletion
+    entrypoint: flows/entry_workflows/main_dataverse_deletion.py:dataverse_deletion_pipeline
+    tags: [ "d2d", "dataversenl", "deletion" ]
+    description: "Deletes metadata from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "GRONINGEN"
+
+    work_pool: *default_workpool
+
+  - name: hanze-deletion
+    entrypoint: flows/entry_workflows/main_dataverse_deletion.py:dataverse_deletion_pipeline
+    tags: [ "d2d", "dataversenl", "deletion" ]
+    description: "Deletes metadata from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "HANZE"
+
+    work_pool: *default_workpool
+
+  - name: hr-deletion
+    entrypoint: flows/entry_workflows/main_dataverse_deletion.py:dataverse_deletion_pipeline
+    tags: [ "d2d", "dataversenl", "deletion" ]
+    description: "Deletes metadata from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "HR"
+
+    work_pool: *default_workpool
+
+  - name: leiden-deletion
+    entrypoint: flows/entry_workflows/main_dataverse_deletion.py:dataverse_deletion_pipeline
+    tags: [ "d2d", "dataversenl", "deletion" ]
+    description: "Deletes metadata from leiden from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "LEIDEN"
+
+    work_pool: *default_workpool
+
+  - name: maastricht-deletion
+    entrypoint: flows/entry_workflows/main_dataverse_deletion.py:dataverse_deletion_pipeline
+    tags: [ "d2d", "dataversenl", "deletion" ]
+    description: "Deletes metadata from maastricht from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "MAASTRICHT"
+
+    work_pool: *default_workpool
+
+  - name: tilburg-deletion
+    entrypoint: flows/entry_workflows/main_dataverse_deletion.py:dataverse_deletion_pipeline
+    tags: [ "d2d", "dataversenl", "deletion" ]
+    description: "Deletes metadata from tilburg from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "TILBURG"
+
+    work_pool: *default_workpool
+
+  - name: trimbos-deletion
+    entrypoint: flows/entry_workflows/main_dataverse_deletion.py:dataverse_deletion_pipeline
+    tags: [ "d2d", "dataversenl", "deletion" ]
+    description: "Deletes metadata from trimbos from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "TRIMBOS"
+
+    work_pool: *default_workpool
+
+  - name: umcu-deletion
+    entrypoint: flows/entry_workflows/main_dataverse_deletion.py:dataverse_deletion_pipeline
+    tags: [ "d2d", "dataversenl", "deletion" ]
+    description: "Deletes metadata from umcu from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "UMCU"
+
+    work_pool: *default_workpool
+
+  - name: utrecht-deletion
+    entrypoint: flows/entry_workflows/main_dataverse_deletion.py:dataverse_deletion_pipeline
+    tags: [ "d2d", "dataversenl", "deletion" ]
+    description: "Deletes metadata from utrecht from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "UTRECHT"
+
+    work_pool: *default_workpool
+
+  - name: vu-deletion
+    entrypoint: flows/entry_workflows/main_dataverse_deletion.py:dataverse_deletion_pipeline
+    tags: [ "d2d", "dataversenl", "deletion" ]
+    description: "Deletes metadata from vu from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "VU"
+
+    work_pool: *default_workpool
+
+  - name: dans-deletion
+    entrypoint: flows/entry_workflows/main_dataverse_deletion.py:dataverse_deletion_pipeline
+    tags: [ "d2d", "dataversenl", "deletion" ]
+    description: "Deletes metadata from dans from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "DANS"
+
+    work_pool: *default_workpool

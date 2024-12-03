@@ -5,11 +5,12 @@ from prefect import flow
 from flows.dataset_workflows.liss_ingestion import liss_metadata_ingestion
 from flows.workflow_versioning.workflow_versioner import \
     create_ingestion_workflow_versioning
-from tasks.harvest_tasks import harvest_metadata
+from tasks.harvest_tasks import harvest_metadata, \
+    get_most_recent_publication_date
 
 
 @flow
-def liss_ingestion_pipeline(target_url: str = None, target_key: str = None,
+def liss_ingestion_pipeline(target_url: str = "", target_key: str = "",
                             do_harvest: bool = True):
     """ Ingestion pipeline dedicated to the LISS metadata ingestion.
 
@@ -36,9 +37,11 @@ def liss_ingestion_pipeline(target_url: str = None, target_key: str = None,
     s3_client = utils.create_s3_client()
 
     if do_harvest:
+        timestamp = get_most_recent_publication_date(settings_dict)
         harvest_metadata(
             settings_dict.BUCKET_NAME,
-            "start_liss_harvest"
+            "start_liss_harvest",
+            timestamp if timestamp else None
         )
 
     utils.workflow_executor(

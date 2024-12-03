@@ -2,6 +2,7 @@ import json
 from datetime import timedelta
 
 from pyDataverse.api import NativeApi
+
 from configuration.config import settings
 from prefect import task, get_run_logger
 import requests
@@ -23,7 +24,7 @@ def xml2json(xml_metadata):
 
     headers = {
         'Content-Type': 'application/xml',
-        'Authorization': settings.XML2JSON_API_TOKEN,
+        'Authorization': f'Bearer {settings.XML2JSON_API_TOKEN}',
     }
 
     url = f"{settings.DANS_TRANSFORMER_SERVICE}/transform-xml-to-json/true"
@@ -37,6 +38,36 @@ def xml2json(xml_metadata):
         return None
 
     return response.json()
+
+
+@task(timeout_seconds=300, retries=1, cache_expiration=timedelta(minutes=10))
+def xml2dvjson(xml_metadata):
+    """ Sends XML to the transformer server, receives JSON with same hierarchy.
+
+    Sends a request to the transformer endpoint for transformation
+    from xml to json. Needs an authorization token to use the transformer API.
+
+    :param xml_metadata: The XML contents
+    :return: Plain JSON metadata | None on failure.
+    """
+    logger = get_run_logger()
+    headers = {
+        'Content-Type': 'application/xml',
+        'Authorization': f'Bearer {settings.XML2JSON_API_TOKEN}',
+    }
+
+    url = f"{settings.DANS_TRANSFORMER_SERVICE}/transform/" \
+        f"{settings.XSLT_TRANSFORMER_NAME}"
+    response = requests.post(
+        url,
+        headers=headers, data=xml_metadata
+    )
+
+    if not response.ok:
+        logger.info(response.text)
+        return None
+
+    return response.json()['result']
 
 
 @task(timeout_seconds=300, retries=1, cache_expiration=timedelta(minutes=10))
@@ -81,7 +112,7 @@ def dataverse_mapper(json_metadata, mapping_file_path, template_file_path,
 
 
 @task(timeout_seconds=300, retries=1, cache_expiration=timedelta(minutes=10))
-def dataverse_import(mapped_metadata, settings_dict, doi=None):
+def dataverse_import(mapped_metadata, settings_dict, doi):
     """ Sends a request to the import service to import the given metadata.
 
     The dataverse_information field in the data takes three fields:
@@ -97,27 +128,15 @@ def dataverse_import(mapped_metadata, settings_dict, doi=None):
     logger = get_run_logger()
 
     headers = {
-        'accept': 'application/json',
-        'Content-Type': 'application/json'
+        "X-Dataverse-key": settings_dict.DESTINATION_DATAVERSE_API_KEY,
+        "Content-type": "application/json"
     }
 
-    data = {
-        "metadata": mapped_metadata,
-        "dataverse_information": {
-            "base_url": settings_dict.DESTINATION_DATAVERSE_URL,
-            "dt_alias": settings_dict.ALIAS,
-            "api_token": settings_dict.DESTINATION_DATAVERSE_API_KEY
-        }}
+    url = f"{settings_dict.DESTINATION_DATAVERSE_URL}/api/dataverses/" \
+        f"{settings_dict.ALIAS}/datasets/:import?pid={doi}&release=no"
 
-    if doi:
-        data['doi'] = doi
+    response = requests.post(url, headers=headers, json=mapped_metadata)
 
-    url = f"{settings.DATAVERSE_IMPORTER_URL}/importer"
-    response = requests.post(
-        url,
-        headers=headers,
-        data=json.dumps(data)
-    )
     if not response.ok:
         logger.info(response.text)
         return None
@@ -126,11 +145,10 @@ def dataverse_import(mapped_metadata, settings_dict, doi=None):
 
 @task(timeout_seconds=300, retries=1, cache_expiration=timedelta(minutes=10))
 def update_publication_date(publication_date, pid, settings_dict):
-    """ Sends a request to the publication date updater to update the pub date.
+    """ Sends a request to the dataverse target to update the publication date.
 
-    The dataverse_information field in the data takes two fields:
-    base_url: The Dataverse instance URL.
-    api_token: The token specific to this DV instance to allow use of the API.
+    This task updates the publication date of a given pid in the destination
+    dataverse. It uses the experimental dataverse API to achieve this.
 
     :param publication_date: The original date of publication.
     :param pid: The DOI of the dataset in question.
@@ -140,25 +158,19 @@ def update_publication_date(publication_date, pid, settings_dict):
     logger = get_run_logger()
 
     headers = {
-        'accept': 'application/json',
-        'Content-Type': 'application/json'
-    }
+        "X-Dataverse-key": settings_dict.DESTINATION_DATAVERSE_API_KEY,
+        'Content-Type': 'application/ld+json'}
 
-    data = {
-        'pid': pid,
-        'publication_date': publication_date,
-        "dataverse_information": {
-            "base_url": settings_dict.DESTINATION_DATAVERSE_URL,
-            "api_token": settings_dict.DESTINATION_DATAVERSE_API_KEY
-        }
-    }
+    url = f'{settings_dict.DESTINATION_DATAVERSE_URL}/api/datasets/' \
+        f':persistentId/actions/:releasemigrated?persistentId={pid}'
 
-    url = f"{settings.PUBLICATION_DATA_UPDATER_URL}/publication-date-updater"
-    response = requests.post(
-        url,
-        headers=headers,
-        data=json.dumps(data)
-    )
+    publication_date = {
+        "schema:datePublished": f'{publication_date}',
+        "@context": {"schema": "http://schema.org/"}}
+
+    response = requests.post(url, data=json.dumps(publication_date),
+                             headers=headers)
+
     if not response.ok:
         logger.info(response.text)
         return None
@@ -180,23 +192,10 @@ def dataverse_metadata_fetcher(metadata_format, doi, settings_dict):
     """
     logger = get_run_logger()
 
-    headers = {
-        'accept': 'application/json',
-        'Content-Type': 'application/json'
-    }
+    url = f'{settings_dict.SOURCE_DATAVERSE_URL}/api/datasets/export?' \
+        f'exporter={metadata_format}&persistentId={doi}'
 
-    data = {
-        'doi': doi,
-        'metadata_format': metadata_format,
-        "base_url": settings_dict.SOURCE_DATAVERSE_URL,
-    }
-
-    url = f"{settings.METADATA_FETCHER_URL}/dataverse-metadata-fetcher"
-    response = requests.post(
-        url,
-        headers=headers,
-        data=json.dumps(data)
-    )
+    response = requests.get(url)
 
     if not response.ok:
         logger.info(response.text)
@@ -204,11 +203,71 @@ def dataverse_metadata_fetcher(metadata_format, doi, settings_dict):
     return response.json()
 
 
+@task(name="Dataverse dataset check status", timeout_seconds=300, retries=1,
+      cache_expiration=timedelta(minutes=10))
+def dataverse_dataset_check_status(doi, dataverse_url):
+    """
+    Checks the status of a dataset in Dataverse.
+
+    This function sends a GET request to the Dataverse API to check the status
+    of a dataset identified by its DOI. The status codes returned by the API
+    indicate the following:
+    - 200: Dataset exists
+    - 404: Dataset does not exist
+    - 403: Dataset is deaccessioned
+
+    :param doi: The DOI of the dataset to check.
+    :param dataverse_url: The base URL of the Dataverse instance.
+    :return: The status code (200, 403, 404) or None on failure.
+    """
+    logger = get_run_logger()
+
+    url = f"{dataverse_url}/api/datasets/export?exporter=dcterms&" \
+        f"persistentId={doi}"
+    response = requests.get(url)
+
+    if response.status_code in (200, 403, 404):
+        return response.status_code
+
+    logger.info(f'response.text: {response.text}')
+    return None
+
+
+@task(name="Deleting dataset", timeout_seconds=300, retries=1,
+      cache_expiration=timedelta(minutes=10))
+def delete_dataset(pid, settings_dict):
+    """
+    Deletes a dataset from Dataverse.
+
+    This function sends a DELETE request to the Dataverse API to delete
+     a dataset identified by its persistent identifier (PID).
+
+    :param pid: The persistent identifier of the dataset to delete.
+    :param settings_dict: A dictionary containing settings for current task,
+                          including the Dataverse API key and URL.
+    :return: The response object if the deletion is successful, otherwise None.
+    """
+    headers = {
+        "X-Dataverse-key": settings_dict.DESTINATION_DATAVERSE_API_KEY
+    }
+
+    logger = get_run_logger()
+    url = f"{settings_dict.DESTINATION_DATAVERSE_URL}/api/datasets/" \
+        f":persistentId/destroy/?persistentId={pid}"
+    response = requests.delete(url, headers=headers)
+
+    if response and response.status_code == 200:
+        return response
+
+    logger.info(f'response.text: {response.text}')
+    return None
+
+
 @task(timeout_seconds=300, retries=1, cache_expiration=timedelta(minutes=10))
 def get_doi_from_dv_json(dataverse_json):
     """ Retrieves the DOI of a dataset from mapped Dataverse JSON
 
-    For mapped metadata the DOI will be mapped to the "datasetPersistentId"
+    For mapped metadata the DOI will be mapped to the "persistentUrl"
     field in the metadata.
 
     :param dataverse_json: JSON metadata formatted for the Native API.

@@ -1,6 +1,8 @@
 [default]
 ELSST_SKOSMOS_URL="https://thesauri.cessda.eu"
 METADATA_PREFIX="oai_dc"
+CID_METADATA_PREFIX="oai_datacite"
+XSLT_TRANSFORMER_NAME="cid-oaipmh-to-dv-v1.xsl"
 
 [development]
 debug = true

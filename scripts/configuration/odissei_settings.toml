@@ -1,6 +1,7 @@
 [default]
 DATAVERSE_NL_URL="https://dataverse.nl"
 SSH_DATASTATION_URL="https://ssh.datastations.nl"
+CID_URL="https://data.individualdevelopment.nl"
 
 TWENTE={"ALIAS"="twente", "OAI_SET"="@format {this.TWENTE_OAI_SET}", "BUCKET_NAME"="@format {this.TWENTE_BUCKET_NAME}", "SOURCE_DATAVERSE_URL"="@format {this.DATAVERSE_NL_URL}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}", "REFINER_ENDPOINT"="@format {this.DATAVERSE_NL_REFINER_ENDPOINT}", "TEMPLATE_FILE_PATH"="@format {this.DV_TEMPLATE_FILE_PATH}", "MAPPING_FILE_PATH"="@format {this.DV_MAPPING_FILE_PATH}"}
 DELFT={"ALIAS"="delft", "OAI_SET"="@format {this.DELFT_OAI_SET}", "BUCKET_NAME"="@format {this.DELFT_BUCKET_NAME}", "SOURCE_DATAVERSE_URL"="@format {this.DATAVERSE_NL_URL}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}", "REFINER_ENDPOINT"="@format {this.DATAVERSE_NL_REFINER_ENDPOINT}", "TEMPLATE_FILE_PATH"="@format {this.DV_TEMPLATE_FILE_PATH}", "MAPPING_FILE_PATH"="@format {this.DV_MAPPING_FILE_PATH}"}
@@ -16,11 +17,12 @@ TRIMBOS={"ALIAS"="trimbos", "OAI_SET"="@format {this.TRIMBOS_OAI_SET}", "BUCKET_
 UMCU={"ALIAS"="UMCU", "OAI_SET"="@format {this.UMCU_OAI_SET}", "BUCKET_NAME"="@format {this.UMCU_BUCKET_NAME}", "SOURCE_DATAVERSE_URL"="@format {this.DATAVERSE_NL_URL}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}", "REFINER_ENDPOINT"="@format {this.DATAVERSE_NL_REFINER_ENDPOINT}", "TEMPLATE_FILE_PATH"="@format {this.DV_TEMPLATE_FILE_PATH}", "MAPPING_FILE_PATH"="@format {this.DV_MAPPING_FILE_PATH}"}
 UTRECHT={"ALIAS"="UU", "OAI_SET"="@format {this.UTRECHT_OAI_SET}", "BUCKET_NAME"="@format {this.UTRECHT_BUCKET_NAME}", "SOURCE_DATAVERSE_URL"="@format {this.DATAVERSE_NL_URL}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}", "REFINER_ENDPOINT"="@format {this.DATAVERSE_NL_REFINER_ENDPOINT}", "TEMPLATE_FILE_PATH"="@format {this.DV_TEMPLATE_FILE_PATH}", "MAPPING_FILE_PATH"="@format {this.DV_MAPPING_FILE_PATH}"}
 VU={"ALIAS"="vuamsterdam", "OAI_SET"="@format {this.VU_OAI_SET}", "BUCKET_NAME"="@format {this.VU_BUCKET_NAME}", "SOURCE_DATAVERSE_URL"="@format {this.DATAVERSE_NL_URL}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}", "REFINER_ENDPOINT"="@format {this.DATAVERSE_NL_REFINER_ENDPOINT}", "TEMPLATE_FILE_PATH"="@format {this.DV_TEMPLATE_FILE_PATH}", "MAPPING_FILE_PATH"="@format {this.DV_MAPPING_FILE_PATH}"}
+DVNL_ODISSEI={"ALIAS"="odissei", "OAI_SET"="@format {this.DVNL_ODISSEI_OAI_SET}", "BUCKET_NAME"="@format {this.DVNL_ODISSEI_BUCKET_NAME}", "SOURCE_DATAVERSE_URL"="@format {this.DATAVERSE_NL_URL}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}", "REFINER_ENDPOINT"="@format {this.DATAVERSE_NL_REFINER_ENDPOINT}", "TEMPLATE_FILE_PATH"="@format {this.DV_TEMPLATE_FILE_PATH}", "MAPPING_FILE_PATH"="@format {this.DV_MAPPING_FILE_PATH}"}
 DANS={"ALIAS"="dans", "OAI_SET"="@format {this.DANS_OAI_SET}", "BUCKET_NAME"="@format {this.DANS_BUCKET_NAME}", "TEMPLATE_FILE_PATH"="@format {this.SSH_TEMPLATE_FILE_PATH}", "MAPPING_FILE_PATH"="@format {this.SSH_MAPPING_FILE_PATH}", "SOURCE_DATAVERSE_URL"="@format {this.SSH_DATASTATION_URL}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}", "REFINER_ENDPOINT"="@format {this.DATASTATION_REFINER_ENDPOINT}"}
 CBS={"ALIAS"="cbs", "BUCKET_NAME"="@format {this.CBS_BUCKET_NAME}", "TEMPLATE_FILE_PATH"="@format {this.CBS_TEMPLATE_FILE_PATH}", "MAPPING_FILE_PATH"="@format {this.CBS_MAPPING_FILE_PATH}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}", "REFINER_ENDPOINT"="@format {this.CBS_REFINER_ENDPOINT}"}
-LISS={"ALIAS"="liss", "BUCKET_NAME"="@format {this.LISS_BUCKET_NAME}", "TEMPLATE_FILE_PATH"="@format {this.LISS_TEMPLATE_FILE_PATH}", "MAPPING_FILE_PATH"="@format {this.LISS_MAPPING_FILE_PATH}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}"}
+LISS={"ALIAS"="liss", "BUCKET_NAME"="@format {this.LISS_BUCKET_NAME}", "TEMPLATE_FILE_PATH"="@format {this.LISS_TEMPLATE_FILE_PATH}", "MAPPING_FILE_PATH"="@format {this.LISS_MAPPING_FILE_PATH}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}", "REFINER_ENDPOINT"="@format {this.LISS_REFINER_ENDPOINT}"}
 HSN={"ALIAS"="HSN_NL", "BUCKET_NAME"="@format {this.HSN_BUCKET_NAME}", "SOURCE_DATAVERSE_URL"="@format {this.IISG_URL}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}", "REFINER_ENDPOINT"="@format {this.DATAVERSE_NL_REFINER_ENDPOINT}", "TEMPLATE_FILE_PATH"="@format {this.DV_TEMPLATE_FILE_PATH}", "MAPPING_FILE_PATH"="@format {this.DV_MAPPING_FILE_PATH}"}
-CID={"ALIAS"="cid", "BUCKET_NAME"="@format {this.CID_BUCKET_NAME}", "TEMPLATE_FILE_PATH"="@format {this.CID_TEMPLATE_FILE_PATH}", "MAPPING_FILE_PATH"="@format {this.CID_MAPPING_FILE_PATH}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}", "REFINER_ENDPOINT"="@format {this.CID_REFINER_ENDPOINT}"}
+CID={"ALIAS"="cid", "BUCKET_NAME"="@format {this.CID_BUCKET_NAME}", "SOURCE_DATAVERSE_URL"="@format {this.CID_URL}", "TEMPLATE_FILE_PATH"="@format {this.CID_TEMPLATE_FILE_PATH}", "MAPPING_FILE_PATH"="@format {this.CID_MAPPING_FILE_PATH}", "DESTINATION_DATAVERSE_URL"="@format {this.ODISSEI_URL}", "DESTINATION_DATAVERSE_API_KEY"="@format {this.ODISSEI_API_KEY}", "REFINER_ENDPOINT"="@format {this.CID_REFINER_ENDPOINT}"}
 
 TWENTE_OAI_SET = "Twente_Social_Sciences"
 DELFT_OAI_SET = "TUDelft_Social_Sciences"
@@ -36,6 +38,7 @@ TRIMBOS_OAI_SET = "Trimbos_Social_Sciences"
 UMCU_OAI_SET = "UMCU_Social_Sciences"
 UTRECHT_OAI_SET = "UU_Social_Sciences"
 VU_OAI_SET = "VU_Social_Sciences"
+DVNL_ODISSEI_OAI_SET = "ODISSEI_Social_Sciences"
 DANS_OAI_SET = "social_sciences"
 
 TWENTE_BUCKET_NAME="dataverse.nl-twente"
@@ -52,7 +55,8 @@ TRIMBOS_BUCKET_NAME="dataverse.nl-trimbos"
 UMCU_BUCKET_NAME="dataverse.nl-umc"
 UTRECHT_BUCKET_NAME="dataverse.nl-utrecht"
 VU_BUCKET_NAME="dataverse.nl-vu"
-CBS_BUCKET_NAME="cbs-metadata-20240131"
+DVNL_ODISSEI_BUCKET_NAME="dataverse.nl-odissei"
+CBS_BUCKET_NAME="cbs-metadata-20240819"
 DANS_BUCKET_NAME="ssh-social-metadata"
 LISS_BUCKET_NAME="liss-metadata"
 HSN_BUCKET_NAME="hsn-metadata"
@@ -63,21 +67,22 @@ CBS_REFINER_ENDPOINT="/metadata-refinement/cbs"
 DATASTATION_REFINER_ENDPOINT="/metadata-refinement/datastation"
 HSN_REFINER_ENDPOINT="/metadata-refinement/datastation"
 CID_REFINER_ENDPOINT="/metadata-refinement/cid"
+LISS_REFINER_ENDPOINT="/metadata-refinement/liss"
 
-SSH_TEMPLATE_FILE_PATH="/resources/templates/ssh_dataverse_template.json"
-SSH_MAPPING_FILE_PATH="/resources/mappings/ssh-mapping.json"
+SSH_TEMPLATE_FILE_PATH="/app/resources/templates/ssh_dataverse_template.json"
+SSH_MAPPING_FILE_PATH="/app/resources/mappings/ssh-mapping.json"
 
-CBS_TEMPLATE_FILE_PATH="/resources/templates/cbs_dataverse_template.json"
-CBS_MAPPING_FILE_PATH="/resources/mappings/cbs-mapping.json"
+CBS_TEMPLATE_FILE_PATH="/app/resources/templates/cbs_dataverse_template.json"
+CBS_MAPPING_FILE_PATH="/app/resources/mappings/cbs-mapping.json"
 
-LISS_TEMPLATE_FILE_PATH="/resources/templates/liss_dataverse_template.json"
-LISS_MAPPING_FILE_PATH="/resources/mappings/liss-mapping.json"
+LISS_TEMPLATE_FILE_PATH="/app/resources/templates/liss_dataverse_template.json"
+LISS_MAPPING_FILE_PATH="/app/resources/mappings/liss-mapping.json"
 
-CID_TEMPLATE_FILE_PATH="/resources/templates/cid_dataverse_template.json"
-CID_MAPPING_FILE_PATH="/resources/mappings/cid-mapping.json"
+CID_TEMPLATE_FILE_PATH="/app/resources/templates/cid_dataverse_template.json"
+CID_MAPPING_FILE_PATH="/app/resources/mappings/cid-mapping.json"
 
-DV_TEMPLATE_FILE_PATH="/resources/templates/base_dataverse_template.json"
-DV_MAPPING_FILE_PATH="/resources/mappings/base-mapping.json"
+DV_TEMPLATE_FILE_PATH="/app/resources/templates/base_dataverse_template.json"
+DV_MAPPING_FILE_PATH="/app/resources/mappings/base-mapping.json"
 
 [development]
 ODISSEI_URL="http://dataverse:8080"
