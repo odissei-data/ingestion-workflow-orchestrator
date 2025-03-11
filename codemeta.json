@@ -1,0 +1,40 @@
+{
+    "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+    "type": "SoftwareSourceCode",
+    "applicationCategory": "Portal Odissei backend",
+    "author": [
+        {
+            "id": "_:author_1",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "DANS"
+            },
+            "givenName": "Fjodor"
+        }
+    ],
+    "codeRepository": "https://github.com/odissei-data/ingestion-workflow-orchestrator",
+    "contributor": {
+        "id": "https://orcid.org/0000-0002-0079-2533",
+        "type": "Person",
+        "affiliation": {
+            "type": "Organization",
+            "name": "VU Amsterdam"
+        },
+        "email": "a.valdestilhas@vu.nl",
+        "familyName": "Valdestilhas",
+        "givenName": "Andre"
+    },
+    "description": "This containerized application can be used to run workflows used for ingesting dataset metadata into a Dataverse instance. The different flows and tasks used in these workflows are created using Prefect. If you run the container locally they can be monitored and ran from the Prefect Orion UI at http://localhost:4200.\n\nMost flows start with an entry workflow that can be found in the directory entry_workflows. Here the metadata is first harvested using OAI-PMH and uploaded to S3 storage. After, the metadata is fetched from that S3 storage, and a provenance object is created for the ingested metadata. A settings dictionary constructed with DynaConf that is specific to the Data Provider is also constructed here.\n\nNext, For every dataset's metadata it runs a sub-flow to handle the actual ingestion. These flows can be found in the dataset_workflows directory. The dataset workflow uses simple tasks that make an API call to a service. These services often transform, improve or alter the metadata in some way.\n\nIn short, most ingestion workflows take the following steps:\n\n-Harvest metadata and upload it to S3 storage.\n-Fetch dataset metadata from S3 storage.\n-Create version object of all services that will be used for -ingestion.\n-For every dataset's metadata run dataset workflow.\n-Use tasks that make API calls to different services to transform the metadata.",
+    "identifier": "https://github.com/odissei-data/ingestion-workflow-orchestrator",
+    "isPartOf": "https://github.com/odissei-data",
+    "keywords": [
+        "Odissei",
+        "back-end"
+    ],
+    "name": "Orchestrator for all ODISSEI-related ingestion workflows",
+    "programmingLanguage": "Python",
+    "relatedLink": "https://github.com/odissei-data",
+    "version": "1.0",
+    "issueTracker": "https://github.com/odissei-data/ingestion-workflow-orchestrator/issues"
+}
