@@ -4,12 +4,13 @@
     "applicationCategory": "Portal Odissei backend",
     "author": [
         {
-            "id": "_:author_1",
+            "id": "https://orcid.org/0009-0002-8007-5119",
             "type": "Person",
             "affiliation": {
                 "type": "Organization",
                 "name": "DANS"
             },
+            "familyName": "van Rijsselberg",
             "givenName": "Fjodor"
         }
     ],
