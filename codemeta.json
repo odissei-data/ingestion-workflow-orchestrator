@@ -1,13 +1,33 @@
 {
-    "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+    "@context": [
+        "https://w3id.org/codemeta/3.0",
+        "http://schema.org",
+        "https://w3id.org/software-types",
+        "https://w3id.org/software-iodata"
+    ],
     "type": "SoftwareSourceCode",
-    "applicationCategory": "Portal Odissei backend",
+    "applicationCategory": [ 
+        { "@id": "https://w3id.org/nwo-research-fields#CommunicationScience"},
+        { "@id": "https://w3id.org/nwo-research-fields#Demography"},
+        { "@id": "https://w3id.org/nwo-research-fields#Economics"}, 
+        { "@id": "https://w3id.org/nwo-research-fields#LifeSciences"}, 
+        { "@id": "https://w3id.org/nwo-research-fields#Medicine"}, 
+        { "@id": "https://w3id.org/nwo-research-fields#Psychology"}, 
+        { "@id": "https://w3id.org/nwo-research-fields#EducationalSciences"},
+        { "@id": "https://w3id.org/nwo-research-fields#Pedagogics"},
+        { "@id": "https://w3id.org/nwo-research-fields#Law"}, 
+        { "@id": "https://w3id.org/nwo-research-fields#PublicAdministrationAndPoliticalScience"}, 
+        { "@id": "https://w3id.org/nwo-research-fields#GeographyPlanning"}, 
+        { "@id": "https://w3id.org/nwo-research-fields#Sociology"},
+        { "@id": "https://vocabs.dariah.eu/tadirah/disseminating"}
+        ],
     "author": [
         {
             "id": "https://orcid.org/0009-0002-8007-5119",
             "type": "Person",
             "affiliation": {
-                "type": "Organization",
+                "@type": "Organization",
+                "@id": "https://ror.org/008pnp284",
                 "name": "DANS"
             },
             "familyName": "van Rijsselberg",
@@ -15,27 +35,79 @@
         }
     ],
     "codeRepository": "https://github.com/odissei-data/ingestion-workflow-orchestrator",
-    "contributor": {
-        "id": "https://orcid.org/0000-0002-0079-2533",
-        "type": "Person",
-        "affiliation": {
-            "type": "Organization",
-            "name": "VU Amsterdam"
-        },
-        "email": "a.valdestilhas@vu.nl",
-        "familyName": "Valdestilhas",
-        "givenName": "Andre"
-    },
-    "description": "This containerized application can be used to run workflows used for ingesting dataset metadata into a Dataverse instance. The different flows and tasks used in these workflows are created using Prefect. If you run the container locally they can be monitored and ran from the Prefect Orion UI at http://localhost:4200.\n\nMost flows start with an entry workflow that can be found in the directory entry_workflows. Here the metadata is first harvested using OAI-PMH and uploaded to S3 storage. After, the metadata is fetched from that S3 storage, and a provenance object is created for the ingested metadata. A settings dictionary constructed with DynaConf that is specific to the Data Provider is also constructed here.\n\nNext, For every dataset's metadata it runs a sub-flow to handle the actual ingestion. These flows can be found in the dataset_workflows directory. The dataset workflow uses simple tasks that make an API call to a service. These services often transform, improve or alter the metadata in some way.\n\nIn short, most ingestion workflows take the following steps:\n\n-Harvest metadata and upload it to S3 storage.\n-Fetch dataset metadata from S3 storage.\n-Create version object of all services that will be used for -ingestion.\n-For every dataset's metadata run dataset workflow.\n-Use tasks that make API calls to different services to transform the metadata.",
+    "contributor": [
+        {
+            "@id": "https://orcid.org/0000-0002-0079-2533",
+            "@type": "Person",
+            "affiliation": {  
+                "@type": "Organization",
+                "@id": "https://ror.org/008xxew50",
+                "name": "VU Amsterdam"
+            },
+            "email": "a.valdestilhas@vu.nl",
+            "familyName": "Valdestilhas",
+            "givenName": "Andre"
+        }
+    ],
+    "dateCreated": "2022-11-24",
+    "description": "Orchestrator for all ODISSEI-related ingestion workflows.",
+    "funding": 
+    [
+        {
+            "@type": "Grant",
+            "name": "ODISSEI: Better Infrastructure, Better Science, Better Society (NWO Grant 184.035.014)",
+            "funder": {
+                "@type": "Organization",
+                "name": "NWO",
+                "@id": "https://www.nwo.nl"
+                }
+            },
+            {
+                "@type": "Grant",
+                "name": "Building a FAIR Expertise Hub for the social sciences",
+                "funder": {
+                    "@type": "Organization",
+                    "name": "PDI-SSH",
+                    "url": "https://pdi-ssh.nl/nl/2021/11/gehonoreerde-projecten-2021-call/"
+                }
+            },
+            {
+                "@type": "Grant",
+                "name": "Social Science and Humanities Open Cloud for the Netherlands (SSHOC-NL, NWO Grant 184.036.020)",
+                "funder": {
+                    "@type": "Organization",
+                    "name": "NWO",
+                    "@id": "https://www.nwo.nl"
+                    }
+            }
+        ],
     "identifier": "https://github.com/odissei-data/ingestion-workflow-orchestrator",
-    "isPartOf": "https://github.com/odissei-data",
     "keywords": [
         "Odissei",
-        "back-end"
+        "portal"
     ],
-    "name": "Orchestrator for all ODISSEI-related ingestion workflows",
+    "name": "Odissei portal back-end",
+    "readme": "https://github.com/odissei-data/ingestion-workflow-orchestrator/blob/main/README.md",
+    "buildInstructions": "https://github.com/odissei-data/ingestion-workflow-orchestrator/blob/main/README.md",
+    "license": "http://www.apache.org/licenses/LICENSE-2.0",
     "programmingLanguage": "Python",
-    "relatedLink": "https://github.com/odissei-data",
-    "version": "1.0",
-    "issueTracker": "https://github.com/odissei-data/ingestion-workflow-orchestrator/issues"
+    "softwareHelp": [
+        {
+          "@id": "https://github.com/odissei-data/ingestion-workflow-orchestrator",
+          "@type": "Source code",
+          "name": "Odissei portal back-end",
+          "url": "https://github.com/odissei-data/ingestion-workflow-orchestrator"
+        }
+    ],
+    "version": "1.0.1",
+    "contIntegration": "https://github.com/odissei-data/ingestion-workflow-orchestrator",
+    "codemeta:continuousIntegration": {
+        "id": "https://github.com/odissei-data/ingestion-workflow-orchestrator"
+    },
+    "developmentStatus": [ "https://www.repostatus.org/#active", "https://w3id.org/research-technology-readiness-levels#Level8Complete" ],
+    "issueTracker": "https://github.com/odissei-data/ingestion-workflow-orchestrator/issues",
+    "referencePublication": {
+        "@type": "ScholarlyArticle",
+        "id": "https://kg.odissei.nl/odissei/-/stories/ODISSEI-Knowledge-Graph-the-story"
+    }
 }
