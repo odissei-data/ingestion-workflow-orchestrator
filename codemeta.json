@@ -23,8 +23,8 @@
         ],
     "author": [
         {
-            "@id": "https://orcid.org/0009-0007-6621-9696",
-            "@type": "Person",
+            "id": "https://orcid.org/0009-0002-8007-5119",
+            "type": "Person",
             "affiliation": {
                 "@type": "Organization",
                 "@id": "https://ror.org/008pnp284",
