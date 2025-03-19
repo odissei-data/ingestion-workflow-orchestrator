@@ -1,0 +1,113 @@
+{
+    "@context": [
+        "https://w3id.org/codemeta/3.0",
+        "http://schema.org",
+        "https://w3id.org/software-types",
+        "https://w3id.org/software-iodata"
+    ],
+    "type": "SoftwareSourceCode",
+    "applicationCategory": [ 
+        { "@id": "https://w3id.org/nwo-research-fields#CommunicationScience"},
+        { "@id": "https://w3id.org/nwo-research-fields#Demography"},
+        { "@id": "https://w3id.org/nwo-research-fields#Economics"}, 
+        { "@id": "https://w3id.org/nwo-research-fields#LifeSciences"}, 
+        { "@id": "https://w3id.org/nwo-research-fields#Medicine"}, 
+        { "@id": "https://w3id.org/nwo-research-fields#Psychology"}, 
+        { "@id": "https://w3id.org/nwo-research-fields#EducationalSciences"},
+        { "@id": "https://w3id.org/nwo-research-fields#Pedagogics"},
+        { "@id": "https://w3id.org/nwo-research-fields#Law"}, 
+        { "@id": "https://w3id.org/nwo-research-fields#PublicAdministrationAndPoliticalScience"}, 
+        { "@id": "https://w3id.org/nwo-research-fields#GeographyPlanning"}, 
+        { "@id": "https://w3id.org/nwo-research-fields#Sociology"},
+        { "@id": "https://vocabs.dariah.eu/tadirah/disseminating"}
+        ],
+    "author": [
+        {
+            "id": "https://orcid.org/0009-0002-8007-5119",
+            "type": "Person",
+            "affiliation": {
+                "@type": "Organization",
+                "@id": "https://ror.org/008pnp284",
+                "name": "DANS"
+            },
+            "familyName": "van Rijsselberg",
+            "givenName": "Fjodor"
+        }
+    ],
+    "codeRepository": "https://github.com/odissei-data/ingestion-workflow-orchestrator",
+    "contributor": [
+        {
+            "@id": "https://orcid.org/0000-0002-0079-2533",
+            "@type": "Person",
+            "affiliation": {  
+                "@type": "Organization",
+                "@id": "https://ror.org/008xxew50",
+                "name": "VU Amsterdam"
+            },
+            "email": "a.valdestilhas@vu.nl",
+            "familyName": "Valdestilhas",
+            "givenName": "Andre"
+        }
+    ],
+    "dateCreated": "2022-11-24",
+    "description": "Orchestrator for all ODISSEI-related ingestion workflows.",
+    "funding": 
+    [
+        {
+            "@type": "Grant",
+            "name": "ODISSEI: Better Infrastructure, Better Science, Better Society (NWO Grant 184.035.014)",
+            "funder": {
+                "@type": "Organization",
+                "name": "NWO",
+                "@id": "https://www.nwo.nl"
+                }
+            },
+            {
+                "@type": "Grant",
+                "name": "Building a FAIR Expertise Hub for the social sciences",
+                "funder": {
+                    "@type": "Organization",
+                    "name": "PDI-SSH",
+                    "url": "https://pdi-ssh.nl/nl/2021/11/gehonoreerde-projecten-2021-call/"
+                }
+            },
+            {
+                "@type": "Grant",
+                "name": "Social Science and Humanities Open Cloud for the Netherlands (SSHOC-NL, NWO Grant 184.036.020)",
+                "funder": {
+                    "@type": "Organization",
+                    "name": "NWO",
+                    "@id": "https://www.nwo.nl"
+                    }
+            }
+        ],
+    "identifier": "https://github.com/odissei-data/ingestion-workflow-orchestrator",
+    "keywords": [
+        "Odissei",
+        "portal"
+    ],
+    "name": "Odissei portal back-end",
+    "readme": "https://github.com/odissei-data/ingestion-workflow-orchestrator/blob/main/README.md",
+    "buildInstructions": "https://github.com/odissei-data/ingestion-workflow-orchestrator/blob/main/README.md",
+    "license": "http://www.apache.org/licenses/LICENSE-2.0",
+    "programmingLanguage": "Python",
+    "softwareHelp": [
+        {
+          "@id": "https://github.com/odissei-data/ingestion-workflow-orchestrator",
+          "@type": "Source code",
+          "name": "Odissei portal back-end",
+          "url": "https://github.com/odissei-data/ingestion-workflow-orchestrator"
+        }
+    ],
+    "version": "1.0.1",
+    "contIntegration": "https://github.com/odissei-data/ingestion-workflow-orchestrator",
+    "codemeta:continuousIntegration": {
+        "id": "https://github.com/odissei-data/ingestion-workflow-orchestrator"
+    },
+    "developmentStatus": [ "https://www.repostatus.org/#active", "https://w3id.org/research-technology-readiness-levels#Level8Complete" ],
+    "issueTracker": "https://github.com/odissei-data/ingestion-workflow-orchestrator/issues",
+    "referencePublication": {
+        "@type": "ScholarlyArticle",
+        "id": "https://kg.odissei.nl/odissei/-/stories/ODISSEI-Knowledge-Graph-the-story"
+    }
+}
