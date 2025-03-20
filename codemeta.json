@@ -96,7 +96,7 @@
           "@id": "https://github.com/odissei-data/ingestion-workflow-orchestrator",
           "@type": "Source code",
           "name": "Odissei portal back-end",
-          "url": "https://github.com/odissei-data/ingestion-workflow-orchestrator"
+          "url": "https://portal.odissei.nl/"
         }
     ],
     "version": "1.0.1",
