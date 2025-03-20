@@ -4,7 +4,7 @@ import json
 import boto3
 from botocore.client import BaseClient
 from botocore.exceptions import ClientError
-from prefect import get_run_logger
+from prefect import get_run_logger, runtime
 from prefect.runtime import flow_run as runtime_flow_run
 from prefect.states import Failed
 
@@ -222,8 +222,7 @@ def failed_ingestion_hook(flow, flow_run, state):
     file_name = flow_run.parameters["file_name"]
 
     s3_client = create_s3_client()
-    bucket_name = f"{settings_dict['ALIAS']}-{runtime_flow_run.id}".replace(
-        "_", "").lower()
+    bucket_name = f"{settings_dict['ALIAS']}-{runtime.flow_run.get_parent_flow_run_id()}".replace("_", "").lower()
     logger.info(f"bucket name: {bucket_name}")
     create_failed_flows_bucket(bucket_name, s3_client)
 
@@ -240,7 +239,7 @@ def failed_dataverse_ingestion_hook(flow, flow_run, state):
     pid = flow_run.parameters["pid"]
 
     s3_client = create_s3_client()
-    bucket_name = f"{settings_dict['ALIAS']}-{runtime_flow_run.id}".replace(
+    bucket_name = f"{settings_dict['ALIAS']}-{runtime.flow_run.get_parent_flow_run_id()}".replace(
         "_", "").lower()
     logger.error(f"bucket name: {bucket_name}")
     create_failed_flows_bucket(bucket_name, s3_client)
@@ -254,7 +253,7 @@ def failed_dataverse_deletion_hook(flow, flow_run, state):
     pid = flow_run.parameters["pid"]
 
     s3_client = create_s3_client()
-    bucket_name = f"{settings_dict['ALIAS']}-{runtime_flow_run.id}".replace(
+    bucket_name = f"{settings_dict['ALIAS']}-{runtime.flow_run.get_parent_flow_run_id()}".replace(
         "_", "").lower()
     logger.error(f"bucket name: {bucket_name}")
     create_failed_flows_bucket(bucket_name, s3_client)
