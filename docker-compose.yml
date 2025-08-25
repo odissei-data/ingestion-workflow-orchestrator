@@ -18,7 +18,7 @@ services:
       test: [ "CMD", "curl", "-f", "http://localhost:4200/api/health" ]
       interval: 15s
       timeout: 10s
-      retries: 5
+      retries: 10
 
   prefect-worker:
     container_name: 'prefect-worker'

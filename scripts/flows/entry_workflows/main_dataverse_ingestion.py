@@ -14,7 +14,9 @@ from tasks.harvest_tasks import oai_harvest_metadata, \
 def dataverse_ingestion_pipeline(settings_dict_name: str,
                                  target_url: str = "",
                                  target_key: str = "",
-                                 do_harvest: bool = True
+                                 target_bucket: str = "",
+                                 do_harvest: bool = True,
+                                 full_harvest: bool = False
                                  ):
     """ Ingestion pipeline dedicated to the Dataverse to Dataverse workflow.
 
@@ -22,6 +24,8 @@ def dataverse_ingestion_pipeline(settings_dict_name: str,
      harvested before ingestion.
     :param target_url: Optional target dataverse url.
     :param target_key: API key of the optional target dataverse.
+    :param target_bucket: Optional target bucket name for the harvested metadata.
+    If not provided, the bucket name from the settings will be used.
     :param settings_dict_name: string, name of the settings you wish to use
     """
     settings_dict = getattr(settings, settings_dict_name)
@@ -31,6 +35,9 @@ def dataverse_ingestion_pipeline(settings_dict_name: str,
 
     if target_key:
         settings_dict.DESTINATION_DATAVERSE_API_KEY = target_key
+    
+    if target_bucket:
+        settings_dict.BUCKET_NAME = target_bucket
 
     version = create_ingestion_workflow_versioning(
         transformer=True,
@@ -44,7 +51,6 @@ def dataverse_ingestion_pipeline(settings_dict_name: str,
     minio_client = utils.create_s3_client()
 
     if do_harvest:
-        timestamp = get_most_recent_publication_date(settings_dict)
 
         harvest_params = {
             'metadata_prefix': settings.METADATA_PREFIX,
@@ -57,7 +63,8 @@ def dataverse_ingestion_pipeline(settings_dict_name: str,
         if hasattr(settings_dict, 'OAI_SET') and settings_dict.OAI_SET:
             harvest_params['oai_set'] = settings_dict.OAI_SET
 
-        if timestamp:
+        if not full_harvest:
+            timestamp = get_most_recent_publication_date(settings_dict)
             harvest_params['timestamp'] = timestamp
 
         oai_harvest_metadata(**harvest_params)
