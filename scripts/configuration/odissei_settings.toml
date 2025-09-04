@@ -39,7 +39,7 @@ UMCU_OAI_SET = "UMCU_Social_Sciences"
 UTRECHT_OAI_SET = "UU_Social_Sciences"
 VU_OAI_SET = "VU_Social_Sciences"
 DVNL_ODISSEI_OAI_SET = "ODISSEI_Social_Sciences"
-DANS_OAI_SET = "social_sciences"
+DANS_OAI_SET = "Social_Sciences2"
 
 TWENTE_BUCKET_NAME="dataverse.nl-twente"
 DELFT_BUCKET_NAME="dataverse.nl-delft"
