@@ -167,6 +167,10 @@ This is done for two reasons:
 The second point requires the user to change the data provider's bucket name in the settings.
 These settings can be found in scripts/configuration/odissei_settings.toml.
 
+When properly configured, every failed workflow will, besides creating a bucket, also result in a notification sent to a Slack channel. 
+Currently the 'prefect-notifications' channel is on odissei-ingest Slack workspace.  
+
+
 Follow these steps to run the failed metadata ingest:
 - Find the bucket created for the failed metadata in the logs.
 - Change the `<data provider>_BUCKET_NAME` to that bucket name, where <data provider> is the data provider you ran the ingestion for.
