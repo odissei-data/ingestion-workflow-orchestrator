@@ -31,6 +31,8 @@ def run_ingestion():
                         help='Target URL')
     parser.add_argument('--target_key', type=str, default=None,
                         help='Target key')
+    parser.add_argument('--target_bucket', type=str, default=None,
+                        help='Target S3 bucket name')
     parser.add_argument('--do_harvest', type=str, default="",
                         help='Bool that states if the metadata will'
                              ' be harvested.')
@@ -60,6 +62,9 @@ def run_ingestion():
     settings_dict = getattr(settings, args.data_provider)
     if args.harvest_from:
         settings_dict["from"] = args.harvest_from
+
+    if args.target_bucket:
+        settings_dict.BUCKET_NAME = args.target_bucket
 
     if args.data_provider in provider_mapping:
         ingestion_function = provider_mapping[args.data_provider]

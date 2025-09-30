@@ -14,12 +14,14 @@ from tasks.harvest_tasks import oai_harvest_metadata, \
 def dataverse_ingestion_pipeline(settings_dict_name: str,
                                  target_url: str = "",
                                  target_key: str = "",
+                                 target_bucket: str = "",
                                  do_harvest: bool = True
                                  ):
     """ Ingestion pipeline dedicated to the Dataverse to Dataverse workflow.
 
     :param do_harvest: Boolean stating if the dataset metadata should be
      harvested before ingestion.
+    :param target_bucket: Optional target S3 bucket name.
     :param target_url: Optional target dataverse url.
     :param target_key: API key of the optional target dataverse.
     :param settings_dict_name: string, name of the settings you wish to use
@@ -31,6 +33,9 @@ def dataverse_ingestion_pipeline(settings_dict_name: str,
 
     if target_key:
         settings_dict.DESTINATION_DATAVERSE_API_KEY = target_key
+
+    if target_bucket:
+        settings_dict.BUCKET_NAME = target_bucket
 
     version = create_ingestion_workflow_versioning(
         transformer=True,
