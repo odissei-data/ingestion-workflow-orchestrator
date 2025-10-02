@@ -78,8 +78,8 @@ steps:
 1. `cp dot_env_example .env`
 2. `cp dot_env_development_example .env.development`
 3. `cp scripts/configuration/secrets_example.toml scripts/configuration/.secrets.toml`
-4. Add the necessary API tokens and credentials to the .secrets.toml
-5. set `ENV_FOR_DYNACONF` in the .env to `development`
+4. Add the necessary API tokens and credentials to the `.secrets.toml`
+5. set `ENV_FOR_DYNACONF` in the `.env` to `development`
 6. `make dev-build`
    This should set up the prefect container and the services used during the
    ingestion workflows.
@@ -88,20 +88,20 @@ steps:
 1. `cp dot_env_example .env`
 2. `cp scripts/configuration/secrets_example.toml scripts/configuration/.secrets.toml`
 3. Add the necessary API tokens and credentials to the .secrets.toml
-4. set `ENV_FOR_DYNACONF` in the .env to `staging`
+4. set `ENV_FOR_DYNACONF` in the `.env` to `staging`
 5. `make build`
 
 ### Running an ingestion via deploy
 
 1. `make deploy`
 2. Go to localhost:4200/deployments
-3. Click the ellipsis icon of a workflow and select either **custom run** or **
-   quick run**
+3. Click the ellipsis icon of a workflow and select either **custom run** 
+   or **quick run**
 
 If you've selected **custom run** you can optionally fill in a target url and
-key argument to specify a different target Dataverse. If you select **quick
-run** it will use the target in the settings in odissei_settings.toml and the
-key in .secrets.toml.
+key argument to specify a different target Dataverse. 
+If you select **quick run** it will use the target in the settings in 
+`odissei_settings.toml` and the key in `.secrets.toml`.  
 
 For the Dataverse ingestion pipeline, there is also a required argument for
 the `settings_dict_name`. The options for ingesting with Dataverse as both the
@@ -125,10 +125,11 @@ Subverses of dataverse.nl:
 
 The `make ingest` command allows you to specify the url and API key of a
 specific target Dataverse. If you do not provide them, it will use the target
-in the settings in odissei_settings.toml and the key in .secrets.toml. It also
+in the settings in `odissei_settings.toml` and the key in `.secrets.toml`. It also
 allows you to specify if the pipeline should first harvest the metadata.
 This is useful for quick dev'ing after the metadata was already harvested or
 to rerun the bucket with metadata files from failed dataset workflows.
+There is also an option to override the default bucket name by specifying the target bucket. 
 
 This is the list of data providers that can be used in the `make ingest` command:
 
@@ -164,19 +165,24 @@ This is done for two reasons:
 - Isolation of the failed metadata files for easier investigation.
 - Possibility to rerun only the metadata files of the failed dataset sub flows.
 
-The second point requires the user to change the data provider's bucket name in the settings.
-These settings can be found in scripts/configuration/odissei_settings.toml.
+The second point requires the user to change the data provider's bucket name. 
+For this, you can use the option to override the default bucket name by specifying the target bucket for the ingest. 
+It can also be changed via the settings, which can be found in `scripts/configuration/odissei_settings.toml`.
 
 Follow these steps to run the failed metadata ingest:
-- Find the bucket created for the failed metadata in the logs.
-- Change the `<data provider>_BUCKET_NAME` to that bucket name, where <data provider> is the data provider you ran the ingestion for.
-- run `make ingest DO_HARVEST=False`, so that you don't harvest the metadata from the data provider into the specified bucket.
+- Find the bucket created for the failed metadata in the logs (with that workflow id at the end).
+- Use that bucket name in the ingest command. 
+  Less convenient, but possible, is  
+  to temporary change the `<data provider>_BUCKET_NAME` to that bucket name, 
+  where <data provider> is the data provider you ran the ingestion for.
+- run `make ingest TARGET_BUCKET=<bucket with failures> DO_HARVEST=False`, 
+  so that you don't harvest the metadata from the data provider into the specified bucket.
 
 
 ## Minio file storage
 
 The metadata that is used by the workflows is stored in s3 buckets. The key, id
-and url of the server of the s3 storage should be set in the .secrets.toml as
+and url of the server of the s3 storage should be set in the `.secrets.toml` as
 `AWS_SECRET_ACCESS_KEY`, `AWS_ACCESS_KEY_ID` and `MINIO_SERVER_URL`
 respectively.
 
@@ -184,7 +190,7 @@ For a specific data provider a `BUCKET_NAME` should be added for that provider.
 The bucket in s3 storage that contains the metadata for the provider should use
 the same name as the `BUCKET_NAME` for that provider.
 
-example in odissei_settings.toml:
+example in `odissei_settings.toml`:
 
 ```
 HSN_BUCKET_NAME="hsn-metadata"
