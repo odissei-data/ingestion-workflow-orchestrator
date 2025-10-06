@@ -334,7 +334,7 @@ def notify_failed_workflow(bucket_name):
     f"for more information."
     logger.info(message)
     try:
-        slack_webhook_block = SlackWebhook.load("slack-webhook-for-odissei-ingest")
+        slack_webhook_block = SlackWebhook.load(settings.PREFECT_SLACK_WEBHOOK_BLOCK)
         logger.info("Sending notification...")
         slack_webhook_block.notify(message)
         logger.info("Notification sent.")
