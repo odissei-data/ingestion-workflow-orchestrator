@@ -69,20 +69,19 @@ def run_ingestion():
         settings_dict["from"] = args.harvest_from
 
     if args.target_bucket:
-        settings_dict.BUCKET_NAME = args.target_bucket
-    # Note that the target bucket is not passed as parameter, as the
-    # dataverse_ingestion_pipeline function retrieves it from the
-    # settings_dict
+        target_bucket = args.target_bucket
+    else:
+        target_bucket = ""
 
     if args.data_provider in provider_mapping:
         ingestion_function = provider_mapping[args.data_provider]
         target_url = get_target_url(args.target_url, settings_dict)
-        ingestion_function(target_url, args.target_key, "", do_harvest, full_harvest)
+        ingestion_function(target_url, args.target_key, target_bucket, do_harvest, full_harvest)
 
     else:
         target_url = get_target_url(args.target_url, settings_dict)
         dataverse_ingestion_pipeline(args.data_provider, target_url,
-                                     args.target_key, "", do_harvest, full_harvest)
+                                     args.target_key, target_bucket, do_harvest, full_harvest)
 
 
 def get_target_url(target_url, settings_dict):
