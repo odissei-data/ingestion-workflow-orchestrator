@@ -7,6 +7,7 @@ from botocore.exceptions import ClientError
 from prefect import get_run_logger, runtime
 from prefect.runtime import flow_run as runtime_flow_run
 from prefect.states import Failed
+from prefect.blocks.notifications import SlackWebhook
 
 from configuration.config import settings
 
@@ -312,8 +313,30 @@ def create_failed_flows_bucket(bucket_name, s3_client: BaseClient):
             try:
                 s3_client.create_bucket(Bucket=bucket_name)
                 logger.error(f'Bucket created with name: {bucket_name}.')
+                notify_failed_workflow(bucket_name)
             except Exception as e:
                 logger.error(e)
         else:
             logger.error(e)
             raise
+
+def notify_failed_workflow(bucket_name):
+    """
+    Notify (via Slack) that one or more dataset ingestion/deletion workflows have failed.
+    The dataset files of the failed workflows have been copied to a specified bucket.
+
+    :param bucket_name: The name of the bucket where the failed dataset files are stored.
+    """
+    logger = get_run_logger()
+    message = f"{settings.ENV_FOR_DYNACONF.upper()} - One or more dataset ingestion/deletion workflows have failed. " \
+    f"The dataset files of the failed workflows have been copied to the " \
+    f"bucket: {bucket_name} using the API at: {settings.MINIO_SERVER_URL}. Please check the logs of the failed flows " \
+    f"for more information."
+    logger.info(message)
+    try:
+        slack_webhook_block = SlackWebhook.load(settings.PREFECT_SLACK_WEBHOOK_BLOCK)
+        logger.info("Sending notification...")
+        slack_webhook_block.notify(message)
+        logger.info("Notification sent.")
+    except Exception as e:
+        logger.error(f"Failed to send notification for bucket: {bucket_name}: {e}")
