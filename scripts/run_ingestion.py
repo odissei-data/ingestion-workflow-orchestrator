@@ -31,6 +31,8 @@ def run_ingestion():
                         help='Target URL')
     parser.add_argument('--target_key', type=str, default=None,
                         help='Target key')
+    parser.add_argument('--target_bucket', type=str, default=None,
+                        help='Target S3 bucket name')
     parser.add_argument('--do_harvest', type=str, default="",
                         help='Bool that states if the metadata will'
                              ' be harvested.')
@@ -61,15 +63,21 @@ def run_ingestion():
     if args.harvest_from:
         settings_dict["from"] = args.harvest_from
 
+    if args.target_bucket:
+        settings_dict.BUCKET_NAME = args.target_bucket
+    # Note that the target bucket is not passed as parameter, as the
+    # dataverse_ingestion_pipeline function retrieves it from the
+    # settings_dict
+
     if args.data_provider in provider_mapping:
         ingestion_function = provider_mapping[args.data_provider]
         target_url = get_target_url(args.target_url, settings_dict)
-        ingestion_function(target_url, args.target_key, do_harvest)
+        ingestion_function(target_url, args.target_key, "", do_harvest)
 
     else:
         target_url = get_target_url(args.target_url, settings_dict)
         dataverse_ingestion_pipeline(args.data_provider, target_url,
-                                     args.target_key, do_harvest)
+                                     args.target_key, "", do_harvest)
 
 
 def get_target_url(target_url, settings_dict):
