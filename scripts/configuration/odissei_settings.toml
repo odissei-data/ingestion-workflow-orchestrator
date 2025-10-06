@@ -85,7 +85,7 @@ DV_TEMPLATE_FILE_PATH="/app/resources/templates/base_dataverse_template.json"
 DV_MAPPING_FILE_PATH="/app/resources/mappings/base-mapping.json"
 
 [development]
-ODISSEI_URL="http://dataverse:8080"
+ODISSEI_URL="http://dev_dataverse:8080"
 
 [staging]
 ODISSEI_URL="https://portal.staging.odissei.nl"

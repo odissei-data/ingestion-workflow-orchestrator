@@ -169,6 +169,10 @@ The second point requires the user to change the data provider's bucket name.
 For this, you can use the option to override the default bucket name by specifying the target bucket for the ingest. 
 It can also be changed via the settings, which can be found in `scripts/configuration/odissei_settings.toml`.
 
+When properly configured, every failed workflow will, besides creating a bucket, also result in a notification sent to a Slack channel. 
+Currently the 'prefect-notifications' channel is on odissei-ingest Slack workspace.  
+For more details on how notifications handling is setup; see [notifications.md](notifications.md).
+
 Follow these steps to run the failed metadata ingest:
 - Find the bucket created for the failed metadata in the logs (with that workflow id at the end).
 - Use that bucket name in the ingest command. 
@@ -208,6 +212,9 @@ Further explanation on the settings can be found
 in [Settings files section](#settings-files).
 
 ### Dataverse
+
+TODO: describe that we now use tagged images from IQSS dockerhub, and this is handled by `odissei-data/odissei-dataverse-stack`. 
+
 
 A local Dataverse instance makes it easy to deposit via the API.
 
