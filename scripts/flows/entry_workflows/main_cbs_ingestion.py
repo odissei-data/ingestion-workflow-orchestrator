@@ -8,12 +8,15 @@ from flows.workflow_versioning.workflow_versioner import \
 
 
 @flow
-def cbs_ingestion_pipeline(target_url: str = "", target_key: str = "",
+def cbs_ingestion_pipeline(target_url: str = "", 
+                           target_key: str = "",
+                           target_bucket: str = "",
                            do_harvest: bool=False):
     """ Ingestion pipeline dedicated to the CBS metadata ingestion.
 
     :param do_harvest: Boolean stating if the dataset metadata should be
      harvested before ingestion. Not used for CBS yet.
+    :param target_bucket: Optional target S3 bucket name.
     :param target_url: Optional target dataverse url.
     :param target_key: API key of the optional target dataverse.
     """
@@ -24,6 +27,9 @@ def cbs_ingestion_pipeline(target_url: str = "", target_key: str = "",
 
     if target_key:
         settings_dict.DESTINATION_DATAVERSE_API_KEY = target_key
+
+    if target_bucket:
+        settings_dict.BUCKET_NAME = target_bucket
 
     version = create_ingestion_workflow_versioning(
         transformer=True,
