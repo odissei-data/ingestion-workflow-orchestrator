@@ -72,7 +72,7 @@ def run_ingestion():
     if args.data_provider in provider_mapping:
         ingestion_function = provider_mapping[args.data_provider]
         target_url = get_target_url(args.target_url, settings_dict)
-        ingestion_function(target_url, args.target_key, do_harvest)
+        ingestion_function(target_url, args.target_key, "", do_harvest)
 
     else:
         target_url = get_target_url(args.target_url, settings_dict)
