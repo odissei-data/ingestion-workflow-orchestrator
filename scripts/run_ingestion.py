@@ -47,7 +47,9 @@ def run_ingestion():
     print(f"args: {args}")
     do_harvest = args.do_harvest.lower() == 'true'
     full_harvest = args.full_harvest.lower() == 'true' 
-
+    if full_harvest and do_harvest is False:
+        print("WARNING: Note that full_harvest is ignored because do_harvest is False!")
+    
     provider_mapping = {
         'CBS': cbs_ingestion_pipeline,
         'LISS': liss_ingestion_pipeline,
@@ -55,13 +57,13 @@ def run_ingestion():
     }
 
     if args.data_provider not in data_providers:
-        print(f"Invalid data provider specified, please choose from this list:"
+        print(f"ERROR: Invalid data provider specified, please choose from this list:"
               f" {data_providers}")
         return
 
     if args.harvest_from and not validate_datestamp(args.harvest_from):
         print(
-            f"Invalid datestamp specified, please use the format YYYY-MM-DD.")
+            f"ERROR: Invalid datestamp specified, please use the format YYYY-MM-DD.")
         return
 
     settings_dict = getattr(settings, args.data_provider)
