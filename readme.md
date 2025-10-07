@@ -128,7 +128,8 @@ specific target Dataverse. If you do not provide them, it will use the target
 in the settings in `odissei_settings.toml` and the key in `.secrets.toml`. It also
 allows you to specify if the pipeline should first harvest the metadata.
 This is useful for quick dev'ing after the metadata was already harvested or
-to rerun the bucket with metadata files from failed dataset workflows.
+to rerun the bucket with metadata files from failed dataset workflows. 
+Forcing a re-harvesting of all datasets can be accomplished using the `FULL_HARVEST=True` option. 
 There is also an option to override the default bucket name by specifying the target bucket. 
 
 This is the list of data providers that can be used in the `make ingest` command:
