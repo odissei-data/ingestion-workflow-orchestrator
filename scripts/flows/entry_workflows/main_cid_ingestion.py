@@ -13,9 +13,12 @@ from tasks.harvest_tasks import oai_harvest_metadata, \
 def cid_ingestion_pipeline(target_url: str = "", 
                            target_key: str = "",
                            target_bucket: str = "",
-                           do_harvest: bool = True):
+                           do_harvest: bool = True,
+                           full_harvest: bool = False
+                           ):
     """ Ingestion pipeline dedicated to the CID metadata ingestion.
 
+    :param full_harvest: Boolean stating if a full harvest should be performed.
     :param do_harvest: Boolean stating if the dataset metadata should be
      harvested before ingestion.
     :param target_bucket: Optional target S3 bucket name.
@@ -45,7 +48,10 @@ def cid_ingestion_pipeline(target_url: str = "",
     minio_client = utils.create_s3_client()
 
     if do_harvest:
-        timestamp = get_most_recent_publication_date(settings_dict)
+        if full_harvest:
+            timestamp = None
+        else:
+            timestamp = get_most_recent_publication_date(settings_dict)
 
         harvest_params = {
             'metadata_prefix': settings.CID_METADATA_PREFIX,

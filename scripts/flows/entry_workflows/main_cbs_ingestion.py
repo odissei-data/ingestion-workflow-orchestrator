@@ -11,9 +11,13 @@ from flows.workflow_versioning.workflow_versioner import \
 def cbs_ingestion_pipeline(target_url: str = "", 
                            target_key: str = "",
                            target_bucket: str = "",
-                           do_harvest: bool=False):
+                           do_harvest: bool=False,
+                           full_harvest: bool=False
+                           ):
     """ Ingestion pipeline dedicated to the CBS metadata ingestion.
 
+    :param full_harvest: Boolean stating if a full harvest should be performed. 
+     Not used for CBS yet.
     :param do_harvest: Boolean stating if the dataset metadata should be
      harvested before ingestion. Not used for CBS yet.
     :param target_bucket: Optional target S3 bucket name.
