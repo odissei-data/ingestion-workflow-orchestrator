@@ -16,28 +16,6 @@ definitions:
       timezone: "Europe/Amsterdam"
 
 deployments:
-  - name: hsn-ingest
-    entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
-    tags: [ "d2d", "hsn", "ingestion" ]
-    description: "Ingests metadata from IISG into the HSN subverse."
-    schedule: *every_day
-
-    parameters:
-      settings_dict_name: "HSN"
-
-    work_pool: *default_workpool
-
-  - name: twente-ingest
-    entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
-    tags: [ "d2d", "dataversenl", "ingestion" ]
-    description: "Ingests metadata from twente from dataversenl."
-    schedule: *every_day
-
-    parameters:
-      settings_dict_name: "TWENTE"
-
-    work_pool: *default_workpool
-
   - name: delft-ingest
     entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
     tags: [ "d2d", "dataversenl", "ingestion" ]
@@ -134,17 +112,6 @@ deployments:
 
     parameters:
       settings_dict_name: "TILBURG"
-
-    work_pool: *default_workpool
-
-  - name: trimbos-ingest
-    entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
-    tags: [ "d2d", "dataversenl", "ingestion" ]
-    description: "Ingests metadata from trimbos from dataversenl."
-    schedule: *every_day
-
-    parameters:
-      settings_dict_name: "TRIMBOS"
 
     work_pool: *default_workpool
 

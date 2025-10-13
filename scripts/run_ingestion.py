@@ -31,16 +31,25 @@ def run_ingestion():
                         help='Target URL')
     parser.add_argument('--target_key', type=str, default=None,
                         help='Target key')
+    parser.add_argument('--target_bucket', type=str, default=None,
+                        help='Target S3 bucket name')
     parser.add_argument('--do_harvest', type=str, default="",
                         help='Bool that states if the metadata will'
                              ' be harvested.')
     parser.add_argument('--harvest_from', type=str, default=None,
                         help='Datestamps used as values of the optional '
                              'argument from will be harvested.')
+    parser.add_argument('--full_harvest', type=str, default="False",
+                        help='Bool that states if a full harvest should be'
+                             ' performed.')
     args = parser.parse_args()
 
     print(f"args: {args}")
     do_harvest = args.do_harvest.lower() == 'true'
+    full_harvest = args.full_harvest.lower() == 'true' 
+    if full_harvest and do_harvest is False:
+        print("WARNING: Note that full_harvest is ignored because do_harvest is False!")
+    
     provider_mapping = {
         'CBS': cbs_ingestion_pipeline,
         'LISS': liss_ingestion_pipeline,
@@ -48,28 +57,33 @@ def run_ingestion():
     }
 
     if args.data_provider not in data_providers:
-        print(f"Invalid data provider specified, please choose from this list:"
+        print(f"ERROR: Invalid data provider specified, please choose from this list:"
               f" {data_providers}")
         return
 
     if args.harvest_from and not validate_datestamp(args.harvest_from):
         print(
-            f"Invalid datestamp specified, please use the format YYYY-MM-DD.")
+            f"ERROR: Invalid datestamp specified, please use the format YYYY-MM-DD.")
         return
 
     settings_dict = getattr(settings, args.data_provider)
     if args.harvest_from:
         settings_dict["from"] = args.harvest_from
 
+    if args.target_bucket:
+        target_bucket = args.target_bucket
+    else:
+        target_bucket = ""
+
     if args.data_provider in provider_mapping:
         ingestion_function = provider_mapping[args.data_provider]
         target_url = get_target_url(args.target_url, settings_dict)
-        ingestion_function(target_url, args.target_key, do_harvest)
+        ingestion_function(target_url, args.target_key, target_bucket, do_harvest, full_harvest)
 
     else:
         target_url = get_target_url(args.target_url, settings_dict)
         dataverse_ingestion_pipeline(args.data_provider, target_url,
-                                     args.target_key, do_harvest)
+                                     args.target_key, target_bucket, do_harvest, full_harvest)
 
 
 def get_target_url(target_url, settings_dict):

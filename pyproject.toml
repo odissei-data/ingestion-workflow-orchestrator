@@ -1,20 +1,19 @@
 [tool.poetry]
 name = "prefect_docker"
-version = "3.1.5"
+version = "3.2.0"
 description = "Workflow for metadata ingestion into Dataverse"
 authors = ["Fjodor van Rijsselberg"]
 
 [tool.poetry.dependencies]
-python = "^3.11.0"
-prefect = "^3.0.10"
+python = ">=3.13.7,<3.14"
 python-dotenv = "^1.0.1"
 boto3 = "1.35.99"
 dynaconf = "^3.2.6"
 jmespath = "^1.0.1"
 pydantic = "^2.9.2"
 pydataverse = "^0.3.4"
+prefect = "^3.4.19"
 
-[tool.poetry.group.dev.dependencies]
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
