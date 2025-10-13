@@ -37,10 +37,7 @@ services:
     container_name: db
     volumes:
       - prefectdb:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=lolgres
-      - POSTGRES_DB=prefect
+    env_file: .env
     networks:
       - prefect
 
