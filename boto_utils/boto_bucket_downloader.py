@@ -41,5 +41,6 @@ try:
             print(f"No objects found in '{args.bucket_name}'")
     if object_count > 0:
         print(f"Downloading done. Total number of objects downloaded from '{args.bucket_name}': {object_count}")
-except Exception as e:
+    # Note that downloading objects is done per page,
+    # but the list of objects could be extracted first and then we could download them all in one loop.
     print(f"Error downloading objects from bucket '{args.bucket_name}': {e}")
