@@ -5,6 +5,7 @@ from flows.entry_workflows.main_cid_ingestion import cid_ingestion_pipeline
 from flows.entry_workflows.main_liss_ingestion import liss_ingestion_pipeline
 from flows.entry_workflows.main_dataverse_ingestion import \
     dataverse_ingestion_pipeline
+from flows.entry_workflows.main_dataverse_deletion import dataverse_deletion_pipeline
 
 
 def build_deployment(workflow_function, entrypoint_name, name):
@@ -26,4 +27,6 @@ if __name__ == "__main__":
                      "main_dataverse_ingestion.py",
                      "dataverse_ingestion_pipeline")
     build_deployment(liss_ingestion_pipeline, "main_liss_ingestion.py",
-                     "liss_ingestion_pipeline")
+                     "liss_ingestion_pipeline"),
+    build_deployment(dataverse_deletion_pipeline, "main_dataverse_deletion.py",
+                     "dataverse_deletion_pipeline")
