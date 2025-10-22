@@ -35,22 +35,21 @@ In this section the different API services used in the workflows are shown.
 These services can be used in a workflow in different combinations, depending
 on the metadata provided by the data provider.
 
-| Service Name             | Description                                                                                                                       | Deployment URL                                                                                         | GitHub Repo                                                                               |
-|--------------------------|-----------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
+| Service Name             | Description                                                                                                                       | Deployment URL                                                                                       | GitHub Repo                                                                               |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
 | Dataverse Importer       | This service imports metadata into Dataverse.                                                                                     | [https://dataverse-importer.labs.dansdemo.nl/docs](https://dataverse-importer.labs.dansdemo.nl/docs) | [GitHub](https://github.com/odissei-data/dataverse-importer)                              |
-| Publication Date Updater | Corrects the publication date of the imported metadata.                                                                           | https://dataverse-date-updater.labs.dansdemo.nl/docs                                                  | [GitHub](https://github.com/odissei-data/publication-date-updater)                        |
-| Metadata Fetcher         | Fetches the metadata of a dataset from a Dataverse.                                                                               | https://dataverse-fetcher.labs.dansdemo.nl/docs                                                       | [GitHub](https://github.com/odissei-data/dataverse-metadata-fetcher)                      |
-| Dataverse Mapper         | Maps any JSON to Dataverse's JSON format.                                                                                         | https://dataverse-mapper.labs.dansdemo.nl/docs                                                        | [GitHub](https://github.com/odissei-data/dataverse-mapper)                                |
-| Dans Transformer Service | Transforms from XML to JSON (or from/to other formats).                                                                           | https://transformer.labs.dansdemo.nl/docs                                                             | [GitHub](https://github.com/ekoi/dans-transformer-service)                                |
-| Metadata Refiner         | Refines JSON metadata.                                                                                                            | https://metadata-enhancer.labs.dansdemo.nl/docs                                                       | [GitHub](https://github.com/odissei-data/metadata-refiner)                                |
-| Metadata Enhancer        | Enriches JSON metadata.                                                                                                           | https://metadata-refiner.labs.dansdemo.nl/docs                                                        | [GitHub](https://github.com/odissei-data/metadata-enhancer)                               |
-| Email Sanitizer          | Removes all emails from the metadata.                                                                                             | https://emailsanitizer.labs.dansdemo.nl/docs                                                          | [GitHub](https://github.com/thomasve-DANS/email-sanitize-microservice)                    |
-| Version Tracker          | Stores JSON containing version information.                                                                                       | https://version-tracker.labs.dansdemo.nl/docs                                                         | [GitHub](https://github.com/odissei-data/version-tracker)                                 |
-| DOI Minter               | Mints a DOI for a dataset. Should be used with **CAUTION** since if used with production settings this will mint a permanent DOI. | https://dataciteminter.labs.dansdemo.nl/docs                                                          | [GitHub](https://github.com/ekoi/submitmd2dc-service/tree/using-dans-transformer-service) |
-| Semantic Enrichment      | Enriches the SOLR index with ELSST translations of the keywords from the [ELSST skosmos](https://thesauri.cessda.eu/elsst-3/en/). |                                                                                                        | [GitHub](https://github.com/Dans-labs/semantic-enrichment)                                |
-| OAI-PMH Harvester        | Harvester service to harvest the metadata from data providers using OAI-PMH.                                                      |                                                                                                        | [GitHub](https://github.com/odissei-data/odissei-harvester)                               |
-| OAI Enricher Service          | Enrich Dataverse OAI-PMH responses with additional data.          |                                                                     |https://oai-service.labs.dansdemo.nl/docs                               
-| [GitHub](https://github.com/ekoi/oai-enricher-service)                  |
+| Publication Date Updater | Corrects the publication date of the imported metadata.                                                                           | https://dataverse-date-updater.labs.dansdemo.nl/docs                                                 | [GitHub](https://github.com/odissei-data/publication-date-updater)                        |
+| Metadata Fetcher         | Fetches the metadata of a dataset from a Dataverse.                                                                               | https://dataverse-fetcher.labs.dansdemo.nl/docs                                                      | [GitHub](https://github.com/odissei-data/dataverse-metadata-fetcher)                      |
+| Dataverse Mapper         | Maps any JSON to Dataverse's JSON format.                                                                                         | https://dataverse-mapper.labs.dansdemo.nl/docs                                                       | [GitHub](https://github.com/odissei-data/dataverse-mapper)                                |
+| Dans Transformer Service | Transforms from XML to JSON (or from/to other formats).                                                                           | https://transformer.labs.dansdemo.nl/docs                                                            | [GitHub](https://github.com/ekoi/dans-transformer-service)                                |
+| Metadata Refiner         | Refines JSON metadata.                                                                                                            | https://metadata-enhancer.labs.dansdemo.nl/docs                                                      | [GitHub](https://github.com/odissei-data/metadata-refiner)                                |
+| Metadata Enhancer        | Enriches JSON metadata.                                                                                                           | https://metadata-refiner.labs.dansdemo.nl/docs                                                       | [GitHub](https://github.com/odissei-data/metadata-enhancer)                               |
+| Email Sanitizer          | Removes all emails from the metadata.                                                                                             | https://emailsanitizer.labs.dansdemo.nl/docs                                                         | [GitHub](https://github.com/thomasve-DANS/email-sanitize-microservice)                    |
+| Version Tracker          | Stores JSON containing version information.                                                                                       | https://version-tracker.labs.dansdemo.nl/docs                                                        | [GitHub](https://github.com/odissei-data/version-tracker)                                 |
+| DOI Minter               | Mints a DOI for a dataset. Should be used with **CAUTION** since if used with production settings this will mint a permanent DOI. | https://dataciteminter.labs.dansdemo.nl/docs                                                         | [GitHub](https://github.com/ekoi/submitmd2dc-service/tree/using-dans-transformer-service) |
+| Semantic Enrichment      | Enriches the SOLR index with ELSST translations of the keywords from the [ELSST skosmos](https://thesauri.cessda.eu/elsst-3/en/). |                                                                                                      | [GitHub](https://github.com/Dans-labs/semantic-enrichment)                                |
+| OAI-PMH Harvester        | Harvester service to harvest the metadata from data providers using OAI-PMH.                                                      |                                                                                                      | [GitHub](https://github.com/odissei-data/odissei-harvester)                               |
+| OAI Enricher Service     | Enrich Dataverse OAI-PMH responses with additional data.                                                                          | https://oai-service.labs.dansdemo.nl/docs                                                            | [GitHub](https://github.com/ekoi/oai-enricher-service)                                    |
 
 # Development
 
@@ -66,11 +65,13 @@ Here is a set list of make command that can be used for easy setup:
 - `make dev-down`: Down the ingest services in development mode.
 - `make deploy`: Deploy all ingestion workflows to the Prefect server.
 - `make ingest`: Run a specific ingest flow in Prefect with optional arguments
-  for the target. It is also possible to specify if the metadata should be 
+  for the target. It is also possible to specify if the metadata should be
   harvested. If not specified the metadata will be harvested.
 
-## Project setup 
+## Project setup
+
 ### Development setup
+
 If you want to develop new flows for the Ingestion Orchestrator you might want
 to run the services described above locally. This is possible by following the
 steps:
@@ -85,6 +86,7 @@ steps:
    ingestion workflows.
 
 ### Staging setup
+
 1. `cp dot_env_example .env`
 2. `cp scripts/configuration/secrets_example.toml scripts/configuration/.secrets.toml`
 3. Add the necessary API tokens and credentials to the .secrets.toml
@@ -95,13 +97,13 @@ steps:
 
 1. `make deploy`
 2. Go to localhost:4200/deployments
-3. Click the ellipsis icon of a workflow and select either **custom run** 
+3. Click the ellipsis icon of a workflow and select either **custom run**
    or **quick run**
 
 If you've selected **custom run** you can optionally fill in a target url and
-key argument to specify a different target Dataverse. 
-If you select **quick run** it will use the target in the settings in 
-`odissei_settings.toml` and the key in `.secrets.toml`.  
+key argument to specify a different target Dataverse.
+If you select **quick run** it will use the target in the settings in
+`odissei_settings.toml` and the key in `.secrets.toml`.
 
 For the Dataverse ingestion pipeline, there is also a required argument for
 the `settings_dict_name`. The options for ingesting with Dataverse as both the
@@ -128,17 +130,18 @@ specific target Dataverse. If you do not provide them, it will use the target
 in the settings in `odissei_settings.toml` and the key in `.secrets.toml`. It also
 allows you to specify if the pipeline should first harvest the metadata.
 This is useful for quick dev'ing after the metadata was already harvested or
-to rerun the bucket with metadata files from failed dataset workflows. 
-Forcing a re-harvesting of all datasets can be accomplished using the `FULL_HARVEST=True` option. 
-There is also an option to override the default bucket name by specifying the target bucket. 
+to rerun the bucket with metadata files from failed dataset workflows.
+Forcing a re-harvesting of all datasets can be accomplished using the `FULL_HARVEST=True` option.
+There is also an option to override the default bucket name by specifying the target bucket.
 
 This is the list of data providers that can be used in the `make ingest` command:
 
 `'TWENTE'`, `'DELFT'`, `'AVANS'`, `'FONTYS'`, `'GRONINGEN'`, `'HANZE'`, `'HR'`, `'LEIDEN'`, `'MAASTRICHT'`, `'TILBURG'`, `'TRIMBOS'`, `'UMCU'`, `'UTRECHT'`, `'VU'`, `'DANS'`, `'CBS'`, `'LISS'`, `'HSN'`, `'CID'`
 
-
 ## Debugging, logging and failed workflows
+
 ### Debugging services
+
 To debug the services noted in the services table, use the development project
 setup. After, remove the service that you want to debug.
 This can be done in your docker interface or by using `docker-compose stop <container_name>`
@@ -149,40 +152,43 @@ ingest network with `make network-add network_name=ingest container_name=<contai
 Use a deployed flow or use `make ingest` to test any changes made to the service.
 
 ### Logging
+
 When running a flow the flow will produce logging information that can be viewed in the prefect UI. If the flow is ran from the command line it will also show the logs in the terminal.
-If you want to add logging, first use `logger = get_run_logger()` in the context of a running flow or task and use `logger.info()` to log any  information.
+If you want to add logging, first use `logger = get_run_logger()` in the context of a running flow or task and use `logger.info()` to log any information.
 
 ### Failed workflows
-If an ingestion pipeline workflow is run for a specific data provider, 
+
+If an ingestion pipeline workflow is run for a specific data provider,
 it will create a sub flow all dataset metadata files retrieved from s3 storage.
 One sub flow ingests a single metadata file.
 
-In the case that a sub flow fails, a bucket will be created using the data provider's 
+In the case that a sub flow fails, a bucket will be created using the data provider's
 name and the parent workflow (the ingestion pipeline workflow's) id.
 The metadata file that sub flow was ingesting will be stored in the bucket.
 Any other failed sub flows after that will also store their metadata file in this bucket.
 
 This is done for two reasons:
+
 - Isolation of the failed metadata files for easier investigation.
 - Possibility to rerun only the metadata files of the failed dataset sub flows.
 
-The second point requires the user to change the data provider's bucket name. 
-For this, you can use the option to override the default bucket name by specifying the target bucket for the ingest. 
+The second point requires the user to change the data provider's bucket name.
+For this, you can use the option to override the default bucket name by specifying the target bucket for the ingest.
 It can also be changed via the settings, which can be found in `scripts/configuration/odissei_settings.toml`.
 
-When properly configured, every failed workflow will, besides creating a bucket, also result in a notification sent to a Slack channel. 
+When properly configured, every failed workflow will, besides creating a bucket, also result in a notification sent to a Slack channel.
 Currently the 'prefect-notifications' channel is on odissei-ingest Slack workspace.  
 For more details on how notifications handling is setup; see [notifications.md](notifications.md).
 
 Follow these steps to run the failed metadata ingest:
-- Find the bucket created for the failed metadata in the logs (with that workflow id at the end).
-- Use that bucket name in the ingest command. 
-  Less convenient, but possible, is  
-  to temporary change the `<data provider>_BUCKET_NAME` to that bucket name, 
-  where <data provider> is the data provider you ran the ingestion for.
-- run `make ingest TARGET_BUCKET=<bucket with failures> DO_HARVEST=False`, 
-  so that you don't harvest the metadata from the data provider into the specified bucket.
 
+- Find the bucket created for the failed metadata in the logs (with that workflow id at the end).
+- Use that bucket name in the ingest command.
+  Less convenient, but possible, is  
+  to temporary change the `<data provider>_BUCKET_NAME` to that bucket name,
+  where <data provider> is the data provider you ran the ingestion for.
+- run `make ingest TARGET_BUCKET=<bucket with failures> DO_HARVEST=False`,
+  so that you don't harvest the metadata from the data provider into the specified bucket.
 
 ## Minio file storage
 
@@ -214,8 +220,7 @@ in [Settings files section](#settings-files).
 
 ### Dataverse
 
-TODO: describe that we now use tagged images from IQSS dockerhub, and this is handled by `odissei-data/odissei-dataverse-stack`. 
-
+TODO: describe that we now use tagged images from IQSS dockerhub, and this is handled by `odissei-data/odissei-dataverse-stack`.
 
 A local Dataverse instance makes it easy to deposit via the API.
 
@@ -242,6 +247,7 @@ read the docs.
 Use the `.env` file to set the environment to either development, staging or
 production. Be careful that setting the env to production will mean that all
 flows that use the DOI-minter will be minting persistent DOI's.
+
 > ENV_FOR_DYNACONF=development
 
 ## Settings files
@@ -253,7 +259,7 @@ share settings with the same name.
 
 - settings.toml, contains the base settings
 - .secrets.toml, contains all secrets
-- <foo>_settings.toml, datastation specific settings
+- <foo>\_settings.toml, datastation specific settings
 
 Each file is split into multiple sections: default, development, production.
 Default settings are always loaded and usually contain one or more dynamic
