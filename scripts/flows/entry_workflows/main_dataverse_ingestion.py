@@ -43,8 +43,6 @@ def dataverse_ingestion_pipeline(settings_dict_name: str,
         transformer=True,
         fetcher=True,
         refiner=True,
-        importer=True,
-        updater=True,
         settings=settings_dict
     )
 
