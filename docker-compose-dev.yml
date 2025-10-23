@@ -1,14 +1,4 @@
-version: '3.7'
 services:
-  publicationdateupdater:
-      image: fjodorvr/publication-date-updater:0.1.0
-      container_name: publication-date-updater
-      command: ["uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "8081"]
-      ports:
-        - "8081:8081"
-      networks:
-        - ingest
-
   dataversemapper:
     image: fjodorvr/dataverse-mapper:1.2.0
     container_name: dataverse-mapper
@@ -16,15 +6,6 @@ services:
     ports:
       - "8082:8082"
 
-    networks:
-      - ingest
-
-  dataverseimporter:
-    image: fjodorvr/dataverse-importer:0.1.0
-    container_name: dataverse-importer
-    command: [ "uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "8989" ]
-    ports:
-      - "8989:8989"
     networks:
       - ingest
 
