@@ -19,7 +19,7 @@ def dataverse_metadata_deletion(pid, settings_dict):
     """
     dv_response_status = dataverse_dataset_check_status(
         pid,
-        settings_dict.DESTINATION_DATAVERSE_URL)
+        settings_dict.SOURCE_DATAVERSE_URL)
 
     if not dv_response_status:
         return Failed(message=f'No response from {pid}.')
