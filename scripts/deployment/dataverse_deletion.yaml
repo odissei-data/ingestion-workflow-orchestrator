@@ -1,4 +1,4 @@
-prefect-version: 3.0.10
+prefect-version: 3.4.19
 name: dataverse-deletion-deployments
 
 pull:
@@ -12,43 +12,10 @@ definitions:
       work_queue_name: default
   schedules:
     every_day: &every_day
-      cron: "0 4 * * *"
+      cron: "0 1 * * *"
       timezone: "Europe/Amsterdam"
 
 deployments:
-  - name: hsn-deletion
-    entrypoint: flows/entry_workflows/main_dataverse_deletion.py:dataverse_deletion_pipeline
-    tags: [ "d2d", "hsn", "deletion" ]
-    description: "Deletes metadata from IISG into the HSN subverse."
-    schedule: *every_day
-
-    parameters:
-      settings_dict_name: "HSN"
-
-    work_pool: *default_workpool
-
-  - name: twente-deletion
-    entrypoint: flows/entry_workflows/main_dataverse_deletion.py:dataverse_deletion_pipeline
-    tags: [ "d2d", "dataversenl", "deletion" ]
-    description: "Deletes metadata from twente from dataversenl."
-    schedule: *every_day
-
-    parameters:
-      settings_dict_name: "TWENTE"
-
-    work_pool: *default_workpool
-
-  - name: delft-deletion
-    entrypoint: flows/entry_workflows/main_dataverse_deletion.py:dataverse_deletion_pipeline
-    tags: [ "d2d", "dataversenl", "deletion" ]
-    description: "Deletes metadata from dataversenl."
-    schedule: *every_day
-
-    parameters:
-      settings_dict_name: "DELFT"
-
-    work_pool: *default_workpool
-
   - name: avans-deletion
     entrypoint: flows/entry_workflows/main_dataverse_deletion.py:dataverse_deletion_pipeline
     tags: [ "d2d", "dataversenl", "deletion" ]
