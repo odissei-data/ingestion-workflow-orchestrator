@@ -41,8 +41,6 @@ def cbs_ingestion_pipeline(target_url: str = "",
         minter=True,
         refiner=True,
         enhancer=True,
-        importer=True,
-        updater=True,
         settings=settings.CBS
     )
 

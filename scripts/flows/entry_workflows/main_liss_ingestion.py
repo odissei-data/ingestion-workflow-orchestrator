@@ -38,8 +38,6 @@ def liss_ingestion_pipeline(target_url: str = "",
     version = create_ingestion_workflow_versioning(
         transformer=True,
         mapper=True,
-        importer=True,
-        updater=True
     )
 
     s3_client = utils.create_s3_client()
