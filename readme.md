@@ -37,9 +37,6 @@ on the metadata provided by the data provider.
 
 | Service Name             | Description                                                                                                                       | Deployment URL                                                                                       | GitHub Repo                                                                               |
 | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| Dataverse Importer       | This service imports metadata into Dataverse.                                                                                     | [https://dataverse-importer.labs.dansdemo.nl/docs](https://dataverse-importer.labs.dansdemo.nl/docs) | [GitHub](https://github.com/odissei-data/dataverse-importer)                              |
-| Publication Date Updater | Corrects the publication date of the imported metadata.                                                                           | https://dataverse-date-updater.labs.dansdemo.nl/docs                                                 | [GitHub](https://github.com/odissei-data/publication-date-updater)                        |
-| Metadata Fetcher         | Fetches the metadata of a dataset from a Dataverse.                                                                               | https://dataverse-fetcher.labs.dansdemo.nl/docs                                                      | [GitHub](https://github.com/odissei-data/dataverse-metadata-fetcher)                      |
 | Dataverse Mapper         | Maps any JSON to Dataverse's JSON format.                                                                                         | https://dataverse-mapper.labs.dansdemo.nl/docs                                                       | [GitHub](https://github.com/odissei-data/dataverse-mapper)                                |
 | Dans Transformer Service | Transforms from XML to JSON (or from/to other formats).                                                                           | https://transformer.labs.dansdemo.nl/docs                                                            | [GitHub](https://github.com/ekoi/dans-transformer-service)                                |
 | Metadata Refiner         | Refines JSON metadata.                                                                                                            | https://metadata-enhancer.labs.dansdemo.nl/docs                                                      | [GitHub](https://github.com/odissei-data/metadata-refiner)                                |
@@ -47,7 +44,6 @@ on the metadata provided by the data provider.
 | Email Sanitizer          | Removes all emails from the metadata.                                                                                             | https://emailsanitizer.labs.dansdemo.nl/docs                                                         | [GitHub](https://github.com/thomasve-DANS/email-sanitize-microservice)                    |
 | Version Tracker          | Stores JSON containing version information.                                                                                       | https://version-tracker.labs.dansdemo.nl/docs                                                        | [GitHub](https://github.com/odissei-data/version-tracker)                                 |
 | DOI Minter               | Mints a DOI for a dataset. Should be used with **CAUTION** since if used with production settings this will mint a permanent DOI. | https://dataciteminter.labs.dansdemo.nl/docs                                                         | [GitHub](https://github.com/ekoi/submitmd2dc-service/tree/using-dans-transformer-service) |
-| Semantic Enrichment      | Enriches the SOLR index with ELSST translations of the keywords from the [ELSST skosmos](https://thesauri.cessda.eu/elsst-3/en/). |                                                                                                      | [GitHub](https://github.com/Dans-labs/semantic-enrichment)                                |
 | OAI-PMH Harvester        | Harvester service to harvest the metadata from data providers using OAI-PMH.                                                      |                                                                                                      | [GitHub](https://github.com/odissei-data/odissei-harvester)                               |
 | OAI Enricher Service     | Enrich Dataverse OAI-PMH responses with additional data.                                                                          | https://oai-service.labs.dansdemo.nl/docs                                                            | [GitHub](https://github.com/ekoi/oai-enricher-service)                                    |
 
@@ -115,9 +111,16 @@ DANS datastation SSH, subset of only the social science datasets:
 IISG's datasets: `'HSN'`
 
 Subverses of dataverse.nl:
-`'TWENTE'`, `'DELFT'`, `'AVANS'`, `'FONTYS'`, `'GRONINGEN'`, `'HANZE'`, `'HR'`
-, `'LEIDEN'`, `'MAASTRICHT'`, `'TILBURG'`, `'TRIMBOS'`, `'UMCU'`, `'UTRECHT'`
+ `'DELFT'`, `'AVANS'`, `'FONTYS'`, `'GRONINGEN'`, `'HANZE'`, `'HR'`
+, `'LEIDEN'`, `'MAASTRICHT'`, `'TILBURG'`, `'UMCU'`, `'UTRECHT'`
 , `'VU'`
+
+### Setup scheduled deploys using .yaml files
+The dataverse_deletion.yaml and dataverse_ingestion.yaml contain configuration for the deploy of the scheduled workflows. Deploying these yamls will setup the scheduled workflows and they will run automatically. Be **careful** with using this setup if this is not your intent. Deploy these yamls using the following command:
+
+```
+docker exec prefect-worker prefect deploy --prefect-file deployment/dataverse_ingestion.yaml --all
+```
 
 ### Running an ingestion via the command line
 
