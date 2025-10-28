@@ -14,6 +14,8 @@ services:
       - db
     networks:
       - prefect
+      - dataverse
+      - ingest
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:4200/api/health" ]
       interval: 15s
@@ -31,6 +33,8 @@ services:
         condition: service_healthy
     networks:
       - prefect
+      - dataverse
+      - ingest
 
   db:
     image: postgres:latest
@@ -43,6 +47,11 @@ services:
 
 networks:
   prefect:
+  dataverse:
+    name: dataverse_dataverse
+    external: true
+  ingest:
+    external: true
 
 volumes:
   prefectdb:
