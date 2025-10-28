@@ -181,3 +181,10 @@ cython_debug/
 /db
 # Ignore dynaconf secret files
 scripts/configuration/.secrets.toml
+
+# Skosmos vocabulary data and configuration (fetched during dev-build)
+/skosmos-data/
+/skosmos-config/
+
+# ODISSEI Dataverse stack (cloned during dev-full-build)
+/odissei-dataverse-stack/

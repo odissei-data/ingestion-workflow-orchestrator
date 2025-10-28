@@ -35,17 +35,17 @@ In this section the different API services used in the workflows are shown.
 These services can be used in a workflow in different combinations, depending
 on the metadata provided by the data provider.
 
-| Service Name             | Description                                                                                                                       | Deployment URL                                                                                       | GitHub Repo                                                                               |
-| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| Dataverse Mapper         | Maps any JSON to Dataverse's JSON format.                                                                                         | https://dataverse-mapper.labs.dansdemo.nl/docs                                                       | [GitHub](https://github.com/odissei-data/dataverse-mapper)                                |
-| Dans Transformer Service | Transforms from XML to JSON (or from/to other formats).                                                                           | https://transformer.labs.dansdemo.nl/docs                                                            | [GitHub](https://github.com/ekoi/dans-transformer-service)                                |
-| Metadata Refiner         | Refines JSON metadata.                                                                                                            | https://metadata-enhancer.labs.dansdemo.nl/docs                                                      | [GitHub](https://github.com/odissei-data/metadata-refiner)                                |
-| Metadata Enhancer        | Enriches JSON metadata.                                                                                                           | https://metadata-refiner.labs.dansdemo.nl/docs                                                       | [GitHub](https://github.com/odissei-data/metadata-enhancer)                               |
-| Email Sanitizer          | Removes all emails from the metadata.                                                                                             | https://emailsanitizer.labs.dansdemo.nl/docs                                                         | [GitHub](https://github.com/thomasve-DANS/email-sanitize-microservice)                    |
-| Version Tracker          | Stores JSON containing version information.                                                                                       | https://version-tracker.labs.dansdemo.nl/docs                                                        | [GitHub](https://github.com/odissei-data/version-tracker)                                 |
-| DOI Minter               | Mints a DOI for a dataset. Should be used with **CAUTION** since if used with production settings this will mint a permanent DOI. | https://dataciteminter.labs.dansdemo.nl/docs                                                         | [GitHub](https://github.com/ekoi/submitmd2dc-service/tree/using-dans-transformer-service) |
-| OAI-PMH Harvester        | Harvester service to harvest the metadata from data providers using OAI-PMH.                                                      |                                                                                                      | [GitHub](https://github.com/odissei-data/odissei-harvester)                               |
-| OAI Enricher Service     | Enrich Dataverse OAI-PMH responses with additional data.                                                                          | https://oai-service.labs.dansdemo.nl/docs                                                            | [GitHub](https://github.com/ekoi/oai-enricher-service)                                    |
+| Service Name             | Description                                                                                                                       | Deployment URL                                  | GitHub Repo                                                                               |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| Dataverse Mapper         | Maps any JSON to Dataverse's JSON format.                                                                                         | https://dataverse-mapper.labs.dansdemo.nl/docs  | [GitHub](https://github.com/odissei-data/dataverse-mapper)                                |
+| Dans Transformer Service | Transforms from XML to JSON (or from/to other formats).                                                                           | https://transformer.labs.dansdemo.nl/docs       | [GitHub](https://github.com/ekoi/dans-transformer-service)                                |
+| Metadata Refiner         | Refines JSON metadata.                                                                                                            | https://metadata-enhancer.labs.dansdemo.nl/docs | [GitHub](https://github.com/odissei-data/metadata-refiner)                                |
+| Metadata Enhancer        | Enriches JSON metadata.                                                                                                           | https://metadata-refiner.labs.dansdemo.nl/docs  | [GitHub](https://github.com/odissei-data/metadata-enhancer)                               |
+| Email Sanitizer          | Removes all emails from the metadata.                                                                                             | https://emailsanitizer.labs.dansdemo.nl/docs    | [GitHub](https://github.com/thomasve-DANS/email-sanitize-microservice)                    |
+| Version Tracker          | Stores JSON containing version information.                                                                                       | https://version-tracker.labs.dansdemo.nl/docs   | [GitHub](https://github.com/odissei-data/version-tracker)                                 |
+| DOI Minter               | Mints a DOI for a dataset. Should be used with **CAUTION** since if used with production settings this will mint a permanent DOI. | https://dataciteminter.labs.dansdemo.nl/docs    | [GitHub](https://github.com/ekoi/submitmd2dc-service/tree/using-dans-transformer-service) |
+| OAI-PMH Harvester        | Harvester service to harvest the metadata from data providers using OAI-PMH.                                                      |                                                 | [GitHub](https://github.com/odissei-data/odissei-harvester)                               |
+| OAI Enricher Service     | Enrich Dataverse OAI-PMH responses with additional data.                                                                          | https://oai-service.labs.dansdemo.nl/docs       | [GitHub](https://github.com/ekoi/oai-enricher-service)                                    |
 
 # Development
 
@@ -69,17 +69,35 @@ Here is a set list of make command that can be used for easy setup:
 ### Development setup
 
 If you want to develop new flows for the Ingestion Orchestrator you might want
-to run the services described above locally. This is possible by following the
-steps:
+to run the services described above locally. This is possible in two formats.
+
+#### Prefect stack only
+
+For basic development without a full Dataverse portal:
 
 1. `cp dot_env_example .env`
 2. `cp dot_env_development_example .env.development`
-3. `cp scripts/configuration/secrets_example.toml scripts/configuration/.secrets.toml`
-4. Add the necessary API tokens and credentials to the `.secrets.toml`
-5. set `ENV_FOR_DYNACONF` in the `.env` to `development`
-6. `make dev-build`
-   This should set up the prefect container and the services used during the
-   ingestion workflows.
+3. `make dev-build`
+
+This should set up the prefect container and the services used during the ingestion workflows.
+
+#### Full ODISSEI stack
+
+For complete development with a local ODISSEI Dataverse portal:
+
+1. `cp dot_env_example .env`
+2. `cp dot_env_development_example .env.development`
+3. `make dev-full-build`
+
+Should any issues arise with setting up the ODISSEI portal the recommendation is to run `make clean-all` and again running `make dev-full-build`.
+
+Should the extraction of the ODISSEI API key fail then you could manually call `make extract-dataverse-apikey`.
+
+### Development Clean up.
+
+Simply run the make command: `make clean-all`.
+
+**_WARNING_** This will delete volumes, generated files, and networks.
 
 ### Staging setup
 
@@ -111,11 +129,12 @@ DANS datastation SSH, subset of only the social science datasets:
 IISG's datasets: `'HSN'`
 
 Subverses of dataverse.nl:
- `'DELFT'`, `'AVANS'`, `'FONTYS'`, `'GRONINGEN'`, `'HANZE'`, `'HR'`
+`'DELFT'`, `'AVANS'`, `'FONTYS'`, `'GRONINGEN'`, `'HANZE'`, `'HR'`
 , `'LEIDEN'`, `'MAASTRICHT'`, `'TILBURG'`, `'UMCU'`, `'UTRECHT'`
 , `'VU'`
 
 ### Setup scheduled deploys using .yaml files
+
 The dataverse_deletion.yaml and dataverse_ingestion.yaml contain configuration for the deploy of the scheduled workflows. Deploying these yamls will setup the scheduled workflows and they will run automatically. Be **careful** with using this setup if this is not your intent. Deploy these yamls using the following command:
 
 ```
