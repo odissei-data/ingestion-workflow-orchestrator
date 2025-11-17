@@ -37,7 +37,9 @@ jobs:
           context: .
           file: Dockerfile.server
           push: true
-          tags: ${{ env.ORG }}/prefect:${{ github.ref_name }}
+          tags: |
+            ${{ env.ORG }}/prefect:${{ github.ref_name }}
+            ${{ env.ORG }}/prefect:latest
 
       # Build and push the Prefect worker image
       - name: Build and push Prefect Worker Image
@@ -46,4 +48,6 @@ jobs:
           context: .
           file: Dockerfile.worker
           push: true
-          tags: ${{ env.ORG }}/prefect-worker:${{ github.ref_name }}
+          tags: |
+            ${{ env.ORG }}/prefect-worker:${{ github.ref_name }}
+            ${{ env.ORG }}/prefect-worker:latest
