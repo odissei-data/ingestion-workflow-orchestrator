@@ -7,6 +7,7 @@ from tasks.base_tasks import xml2json, dataverse_mapper, \
     dataverse_import, update_publication_date, add_workflow_versioning_url, \
     sanitize_emails, semantic_enrichment, refine_metadata, doi_minter, \
     enrich_metadata, dataverse_dataset_check_status, delete_dataset
+from configuration.config import settings
 from utils import generate_flow_run_name, failed_ingestion_hook
 
 
@@ -47,12 +48,13 @@ def cbs_metadata_ingestion(xml_metadata, version, settings_dict, file_name):
     if not mapped_metadata:
         return Failed(message='Unable to store workflow version.')
 
-    cbs_id = jmespath.search(CBS_ID_QUERY, mapped_metadata)
-    doi = "doi:10.57934/" + cbs_id
-
-    # doi = doi_minter(mapped_metadata)
-    # if not doi:
-    #     return Failed(message='Failed to mint or update DOI with Datacite API')
+    if settings.current_env.upper() == 'PRODUCTION' and settings.MINT_DOIS:
+        doi = doi_minter(mapped_metadata)
+        if not doi:
+            return Failed(message='Failed to mint or update DOI with Datacite API')
+    else:
+        cbs_id = jmespath.search(CBS_ID_QUERY, mapped_metadata)
+        doi = "doi:10.57934/" + cbs_id
 
     mapped_metadata = enrich_metadata(mapped_metadata, 'variable')
     if not mapped_metadata:
@@ -105,8 +107,9 @@ def cbs_metadata_ingestion(xml_metadata, version, settings_dict, file_name):
         if not pub_date_response:
             return Failed(message='Unable to update publication date.')
 
-    # enrichment_response = semantic_enrichment(settings_dict, doi)
-    # if not enrichment_response:
-    #     return Failed(message="Unable to add enrichments.")
+    if settings.SEMANTIC_ENRICHMENT:
+        enrichment_response = semantic_enrichment(settings_dict, doi)
+        if not enrichment_response:
+            return Failed(message="Unable to add enrichments.")
 
     return Completed(message=doi + ' ingested successfully.')
