@@ -20,7 +20,7 @@ def liss_ingestion_pipeline(target_url: str = "",
     :param full_harvest: Boolean stating if a full harvest should be performed.
     :param do_harvest: Boolean stating if the dataset metadata should be
      harvested before ingestion.
-    :param target_bucket: Optional target S3 bucket name.
+    :param target_bucket: Optional target MinIO bucket name.
     :param target_url: Optional target dataverse url.
     :param target_key: API key of the optional target dataverse.
     """
@@ -40,7 +40,7 @@ def liss_ingestion_pipeline(target_url: str = "",
         mapper=True,
     )
 
-    s3_client = utils.create_s3_client()
+    minio_client = utils.create_minio_client()
 
     if do_harvest:
         if full_harvest:
@@ -58,5 +58,5 @@ def liss_ingestion_pipeline(target_url: str = "",
         liss_metadata_ingestion,
         version,
         settings_dict,
-        s3_client
+        minio_client
     )
