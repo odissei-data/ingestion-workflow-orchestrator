@@ -6,7 +6,7 @@ from botocore.client import BaseClient
 from botocore.exceptions import ClientError
 from prefect import get_run_logger, runtime
 from prefect.runtime import flow_run as runtime_flow_run
-from prefect.states import Failed
+from prefect.states import Failed, State
 from prefect.blocks.notifications import SlackWebhook
 
 from configuration.config import settings
@@ -133,6 +133,8 @@ def identifier_list_workflow_executor(
     bucket_name = settings_dict.BUCKET_NAME
     identifiers_dict = retrieve_identifiers_from_bucket(minio_client, bucket_name,
                                                         object_name)
+    if isinstance(identifiers_dict, State):
+        return identifiers_dict
     for pid in identifiers_dict['pids']:
         if version:
             data_provider_workflow(pid, version, settings_dict,
