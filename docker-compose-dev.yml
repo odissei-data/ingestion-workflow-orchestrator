@@ -1,4 +1,21 @@
 services:
+  mts:
+    image: ekoindarto/mts:0.1.7-dev-amd64
+    container_name: mts
+    environment:
+      - DYNACONF_METADATA_TRANSFORMER_SERVICE_API_KEY=local-dev-token
+      - DYNACONF_LOG_FILE=/tmp/mts.log
+      - DYNACONF_LOG_LEVEL=20
+      - "DYNACONF_LOG_FORMAT=%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s"
+      - DYNACONF_SAVED_XSLT_DIR=/home/akmi/mts
+      - DYNACONF_JINJA_AND_PROP_DIR=/home/akmi/mts
+      - DYNACONF_TEMP_TRANSFORM_FILE=/tmp/transform
+      - DYNACONF_OTLP_ENABLE=false
+    ports:
+      - "1745:1745"
+    networks:
+      - ingest
+
   dataversemapper:
     image: fjodorvr/dataverse-mapper:1.2.0
     container_name: dataverse-mapper
