@@ -216,7 +216,7 @@ Follow these steps to run the failed metadata ingest:
 
 The metadata that is used by the workflows is stored in s3 buckets. The key, id
 and url of the server of the s3 storage should be set in the `.secrets.toml` as
-`AWS_SECRET_ACCESS_KEY`, `AWS_ACCESS_KEY_ID` and `MINIO_SERVER_URL`
+`MINIO_SECRET`, `MINIO_KEY` and `MINIO_SERVER_URL`
 respectively.
 
 For a specific data provider a `BUCKET_NAME` should be added for that provider.

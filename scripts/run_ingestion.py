@@ -32,7 +32,7 @@ def run_ingestion():
     parser.add_argument('--target_key', type=str, default=None,
                         help='Target key')
     parser.add_argument('--target_bucket', type=str, default=None,
-                        help='Target S3 bucket name')
+                        help='Target MinIO bucket name')
     parser.add_argument('--do_harvest', type=str, default="",
                         help='Bool that states if the metadata will'
                              ' be harvested.')

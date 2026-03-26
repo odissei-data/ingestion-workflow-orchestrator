@@ -20,7 +20,7 @@ def cbs_ingestion_pipeline(target_url: str = "",
      Not used for CBS yet.
     :param do_harvest: Boolean stating if the dataset metadata should be
      harvested before ingestion. Not used for CBS yet.
-    :param target_bucket: Optional target S3 bucket name.
+    :param target_bucket: Optional target MinIO bucket name.
     :param target_url: Optional target dataverse url.
     :param target_key: API key of the optional target dataverse.
     """
@@ -44,11 +44,11 @@ def cbs_ingestion_pipeline(target_url: str = "",
         settings=settings.CBS
     )
 
-    s3_client = utils.create_s3_client()
+    minio_client = utils.create_minio_client()
 
     utils.workflow_executor(
         cbs_metadata_ingestion,
         version,
         settings_dict,
-        s3_client
+        minio_client
     )

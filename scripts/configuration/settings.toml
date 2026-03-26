@@ -7,9 +7,9 @@ PREFECT_SLACK_WEBHOOK_BLOCK="slack-webhook-for-odissei-ingest"
 MINT_DOIS = false
 SEMANTIC_ENRICHMENT = false
 
-[development]
+[local]
 debug = true
-DOI_MINTER_URL = "http://datacite-minter:9999"
+MINT_DOIS = false
 DATAVERSE_MAPPER_URL="http://dataverse-mapper:8082"
 DANS_TRANSFORMER_SERVICE="https://transformer.labs.dansdemo.nl"
 EMAIL_SANITIZER_URL="http://email-sanitizer:7777/sanitize"
@@ -17,9 +17,19 @@ METADATA_REFINER_URL="http://metadata-refiner:7878"
 METADATA_ENHANCER_URL="http://metadata-enhancer:7070"
 HARVESTER_URL="http://oai-harvester:7890"
 
+[development]
+debug = false
+MINT_DOIS = false
+DATAVERSE_MAPPER_URL="https://dataverse-mapper.labs.dansdemo.nl"
+DANS_TRANSFORMER_SERVICE="https://transformer.labs.dansdemo.nl"
+EMAIL_SANITIZER_URL="https://sls-weur-dev-emailsanitizer-serverless.azurewebsites.net/api/sanitize"
+METADATA_REFINER_URL="https://metadata-refiner.labs.dansdemo.nl"
+METADATA_ENHANCER_URL="https://metadata-enhancer.labs.dansdemo.nl"
+HARVESTER_URL="https://oai-harvester.labs.dansdemo.nl"
+
 [staging]
 debug = false
-DOI_MINTER_URL = "https://dataciteminter.labs.dans.knaw.nl/submit-to-datacite/register"
+MINT_DOIS = false
 DATAVERSE_MAPPER_URL="https://dataverse-mapper.labs.dansdemo.nl"
 DANS_TRANSFORMER_SERVICE="https://transformer.labs.dansdemo.nl"
 EMAIL_SANITIZER_URL="https://sls-weur-dev-emailsanitizer-serverless.azurewebsites.net/api/sanitize"
