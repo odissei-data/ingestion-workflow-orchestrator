@@ -158,6 +158,13 @@ setup-secrets: ## Sets up .secrets.toml from example if it doesn't exist.
 	else \
 		echo ".secrets.toml already exists."; \
 	fi
+	@if [ ! -f ".env.worker" ]; then \
+		echo "Creating .env.worker from dot_env_worker_example..."; \
+		cp dot_env_worker_example .env.worker; \
+		echo ".env.worker created."; \
+	else \
+		echo ".env.worker already exists."; \
+	fi
 setup-skosmos: ## Sets up Skosmos vocabulary data and configuration files.
 	@echo "Setting up Skosmos data and configuration..."
 	@if [ ! -d "skosmos-data" ] || [ -z "$$(ls -A skosmos-data)" ]; then \

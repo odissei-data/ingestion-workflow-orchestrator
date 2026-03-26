@@ -27,7 +27,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.worker
-    env_file: .env
+    env_file:
+      - .env
+      - .env.worker
     depends_on:
       prefect:
         condition: service_healthy
