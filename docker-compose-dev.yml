@@ -42,7 +42,7 @@ services:
     restart: on-failure
 
   metadatarefiner:
-    image: fjodorvr/metadata-refiner:1.3.0
+    image: fjodorvr/metadata-refiner:1.3.5
     container_name: metadata-refiner
     command:
       [
