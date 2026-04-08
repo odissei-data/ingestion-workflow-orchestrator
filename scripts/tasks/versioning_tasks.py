@@ -47,8 +47,12 @@ def get_latest_image_tag_version(docker_username, image_repo):
     """
     logger = get_run_logger()
 
-    response = requests.get('https://registry.hub.docker.com/v2/repositories/'
-                            f'{docker_username}/{image_repo}/tags')
+    try:
+        response = requests.get('https://registry.hub.docker.com/v2/repositories/'
+                                f'{docker_username}/{image_repo}/tags')
+    except Exception as e:
+        logger.info(f"Could not reach Docker Hub: {e}")
+        return None
 
     if not response.ok:
         logger.info(response.text)

@@ -11,6 +11,7 @@ from tasks.harvest_tasks import oai_harvest_metadata, \
 def dataverse_deletion_pipeline(settings_dict_name: str,
                                 target_url: str = "",
                                 target_key: str = "",
+                                target_bucket: str = "",
                                 do_harvest: bool = True
                                 ):
     """ Deletion pipeline dedicated to the Dataverse to Dataverse workflow.
@@ -19,6 +20,7 @@ def dataverse_deletion_pipeline(settings_dict_name: str,
      harvested before ingestion.
     :param target_url: Optional target dataverse url.
     :param target_key: API key of the optional target dataverse.
+    :param target_bucket: Name of the optional target MinIO bucket.
     :param settings_dict_name: string, name of the settings you wish to use
     """
     settings_dict = getattr(settings, settings_dict_name)
@@ -29,8 +31,10 @@ def dataverse_deletion_pipeline(settings_dict_name: str,
     if target_key:
         settings_dict.DESTINATION_DATAVERSE_API_KEY = target_key
 
+    if target_bucket:
+        settings_dict.BUCKET_NAME = target_bucket
 
-    minio_client = utils.create_s3_client()
+    minio_client = utils.create_minio_client()
 
     if do_harvest:
         timestamp = get_most_recent_publication_date(settings_dict)

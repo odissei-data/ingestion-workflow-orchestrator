@@ -82,8 +82,11 @@ CID_MAPPING_FILE_PATH="/app/resources/mappings/cid-mapping.json"
 DV_TEMPLATE_FILE_PATH="/app/resources/templates/base_dataverse_template.json"
 DV_MAPPING_FILE_PATH="/app/resources/mappings/base-mapping.json"
 
-[development]
+[local]
 ODISSEI_URL="http://dev_dataverse:8080"
+
+[development]
+ODISSEI_URL="https://portal.staging.odissei.nl"
 
 [staging]
 ODISSEI_URL="https://portal.staging.odissei.nl"

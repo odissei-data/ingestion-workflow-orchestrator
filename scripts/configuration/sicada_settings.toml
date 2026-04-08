@@ -7,7 +7,7 @@ IISG_BUCKET_NAME="iisg-metadata"
 SSH_BUCKET_NAME="ssh-metadata"
 DVNL_BUCKET_NAME="dvnl-metadata"
 
-[development]
+[local]
 SICADA_URL="https://dataverse.sicada.charminghat.nl" # sicada test bak
 SICADA_REFINER_ENDPOINT="/metadata-refinement/sicada"
 
@@ -15,6 +15,19 @@ IISG_URL="https://datasets.iisg.amsterdam"
 IISG_REFINER_ENDPOINT="@format {this.SICADA_REFINER_ENDPOINT}"
 
 SSH_URL="https://test.ssh.datastations.nl"
+SSH_REFINER_ENDPOINT="@format {this.SICADA_REFINER_ENDPOINT}"
+
+DVNL_URL="https://dataverse.nl/"
+DVNL_REFINER_ENDPOINT="@format {this.SICADA_REFINER_ENDPOINT}"
+
+[development]
+SICADA_URL="https://google.nl"  # TODO set devstack value
+SICADA_REFINER_ENDPOINT="/metadata-refinement/sicada"
+
+IISG_URL="https://datasets.iisg.amsterdam"
+IISG_REFINER_ENDPOINT="@format {this.SICADA_REFINER_ENDPOINT}"
+
+SSH_URL="google.nl" # TODO set devstack value
 SSH_REFINER_ENDPOINT="@format {this.SICADA_REFINER_ENDPOINT}"
 
 DVNL_URL="https://dataverse.nl/"

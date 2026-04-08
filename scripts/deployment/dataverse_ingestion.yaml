@@ -1,4 +1,4 @@
-prefect-version: 3.0.10
+prefect-version: 3.4.19
 name: dataverse-ingestion-deployments
 
 pull:

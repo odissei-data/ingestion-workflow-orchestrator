@@ -1,57 +1,76 @@
-version: '3.7'
 services:
-  publicationdateupdater:
-      image: fjodorvr/publication-date-updater:0.1.0
-      container_name: publication-date-updater
-      command: ["uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "8081"]
-      ports:
-        - "8081:8081"
-      networks:
-        - ingest
+  mts:
+    image: ekoindarto/mts:0.1.7-dev-amd64
+    container_name: mts
+    environment:
+      - DYNACONF_METADATA_TRANSFORMER_SERVICE_API_KEY=local-dev-token
+      - DYNACONF_LOG_FILE=/tmp/mts.log
+      - DYNACONF_LOG_LEVEL=20
+      - "DYNACONF_LOG_FORMAT=%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s"
+      - DYNACONF_SAVED_XSLT_DIR=/home/akmi/mts
+      - DYNACONF_JINJA_AND_PROP_DIR=/home/akmi/mts
+      - DYNACONF_TEMP_TRANSFORM_FILE=/tmp/transform
+      - DYNACONF_OTLP_ENABLE=false
+    ports:
+      - "1745:1745"
+    networks:
+      - ingest
 
   dataversemapper:
     image: fjodorvr/dataverse-mapper:1.2.0
     container_name: dataverse-mapper
-    command: ["uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "8082"]
+    command:
+      [
+        "uvicorn",
+        "main:app",
+        "--proxy-headers",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8082",
+      ]
     ports:
       - "8082:8082"
 
     networks:
       - ingest
 
-  dataverseimporter:
-    image: fjodorvr/dataverse-importer:0.1.0
-    container_name: dataverse-importer
-    command: [ "uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "8989" ]
-    ports:
-      - "8989:8989"
-    networks:
-      - ingest
-
-  metadatafetcher:
-    image: fjodorvr/dataverse-metadata-fetcher:0.1.1
-    container_name: metadata-fetcher
-    command: [ "uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "8092" ]
-    ports:
-      - "8092:8092"
-    networks:
-      - ingest
-
   metadata-enhancer:
     image: fjodorvr/metadata-enhancer:2.2.1
     container_name: metadata-enhancer
-    command: [ "uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "7070" ]
+    command:
+      [
+        "uvicorn",
+        "main:app",
+        "--proxy-headers",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "7070",
+      ]
     env_file:
       - .env.development
     ports:
       - "7070:7070"
     networks:
       - ingest
+    depends_on:
+      - fuseki
+    restart: on-failure
 
   metadatarefiner:
-    image: fjodorvr/metadata-refiner:1.3.0
+    image: fjodorvr/metadata-refiner:1.3.5
     container_name: metadata-refiner
-    command: [ "uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "7878" ]
+    command:
+      [
+        "uvicorn",
+        "main:app",
+        "--proxy-headers",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "7878",
+      ]
     ports:
       - "7878:7878"
     networks:
@@ -59,12 +78,157 @@ services:
 
   emailsanitizer:
     image: thomasve/emailsanitizer:0.1.5
-    container_name: 'email-sanitizer'
-    command: ["uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "7777"]
+    container_name: "email-sanitizer"
+    command:
+      [
+        "uvicorn",
+        "main:app",
+        "--proxy-headers",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "7777",
+      ]
     networks:
       - ingest
     ports:
       - "7777:7777"
+
+  minioS3:
+    image: minio/minio:RELEASE.2025-09-07T16-13-09Z
+    restart: unless-stopped
+    container_name: minioS3
+    networks:
+      - ingest
+    volumes:
+      - /data/minio-data:/data
+    command:
+      - server
+      - /data
+      - --address
+      - ":9002"
+      - --console-address
+      - ":9003"
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+      - MINIO_BROWSER_REDIRECT_URL=http://stash.localhost
+
+  harvester-db:
+    image: postgres:15
+    container_name: harvester-db
+    networks:
+      - ingest
+    environment:
+      - POSTGRES_USER=harvester
+      - POSTGRES_PASSWORD=harvester_password
+      - POSTGRES_DB=harvester_db
+    volumes:
+      - harvester-db-data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+
+  odissei-harvester:
+    image: fjodorvr/oai-harvester:1.2.0
+    container_name: odissei-harvester
+    command:
+      [
+        "uvicorn",
+        "app:server",
+        "--reload",
+        "--proxy-headers",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "7890",
+      ]
+    networks:
+      ingest:
+        aliases:
+          - oai-harvester
+    ports:
+      - "7890:7890"
+    env_file:
+      - .env.development
+    environment:
+      - DATABASE_URL=postgresql://harvester:harvester_password@harvester-db:5432/harvester_db
+      - POSTGRES_DB_URL=postgresql://harvester:harvester_password@harvester-db:5432/harvester_db
+    depends_on:
+      - harvester-db
+      - minioS3
+
+  # Skosmos Stack - Vocabulary management system
+  fuseki:
+    container_name: fuseki
+    hostname: fuseki
+    image: stain/jena-fuseki:5.1.0
+    environment:
+      - ADMIN_PASSWORD=admin
+      - JAVA_OPTIONS=-Xmx2g -Xms1g
+    ports:
+      - "9030:3030"
+    volumes:
+      - fuseki-data:/fuseki
+    networks:
+      - ingest
+    user: "fuseki:fuseki"
+
+  fuseki-cache:
+    hostname: fuseki-cache
+    container_name: fuseki-cache
+    image: varnish
+    ports:
+      - "9031:80"
+    volumes:
+      - type: bind
+        source: ./skosmos-config/varnish-default.vcl
+        target: /etc/varnish/default.vcl
+        read_only: true
+    networks:
+      - ingest
+    depends_on:
+      - fuseki
+
+  skosmos:
+    container_name: skosmos
+    image: ghcr.io/knaw-huc/sd-skosmos:v2.18.1-1.8.0
+    environment:
+      - ADMIN_PASSWORD=admin
+      - SPARQL_ENDPOINT=http://fuseki:3030/skosmos/sparql
+      - DATA=/data
+    networks:
+      - ingest
+    ports:
+      - "9090:80"
+    volumes:
+      - ./skosmos-data:/data
+      - skosmos-configuration:/config
+    depends_on:
+      - fuseki
+      - skosmos-loader
+
+  skosmos-loader:
+    container_name: skosmos-loader
+    image: ghcr.io/knaw-huc/sd-skosmos-loader:v2.18.1-1.8.0
+    environment:
+      - ADMIN_PASSWORD=admin
+      - SPARQL_ENDPOINT=http://fuseki:3030/skosmos/sparql
+      - STORE_BASE=http://fuseki:3030/skosmos
+      - DATA=/data
+      - DATABASE_TYPE=fuseki
+    networks:
+      - ingest
+    volumes:
+      - ./skosmos-data:/data
+      - skosmos-configuration:/config
+    depends_on:
+      - fuseki
+      - fuseki-cache
+
+volumes:
+  harvester-db-data:
+  fuseki-data:
+  skosmos-configuration:
 
 networks:
   ingest:
