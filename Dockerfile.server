@@ -28,4 +28,7 @@ RUN chown -R prefect:prefect /app
 WORKDIR /app/scripts
 USER prefect
 
+LABEL org.opencontainers.image.source="https://github.com/odissei-data/ingestion-workflow-orchestrator"
+LABEL org.opencontainers.image.description="Prefect server for the ODISSEI ingestion workflow orchestrator."
+
 ENTRYPOINT ["/app/entrypoint.sh"]
