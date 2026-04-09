@@ -4,6 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile.server
     container_name: 'prefect'
+    restart: unless-stopped
     volumes:
       - "/tmp:/tmp"
     ports:
@@ -24,6 +25,7 @@ services:
 
   prefect-worker:
     container_name: 'prefect-worker'
+    restart: unless-stopped
     build:
       context: .
       dockerfile: Dockerfile.worker
@@ -41,6 +43,7 @@ services:
   db:
     image: postgres:latest
     container_name: db
+    restart: unless-stopped
     volumes:
       - prefectdb:/var/lib/postgresql/data
     env_file: .env
