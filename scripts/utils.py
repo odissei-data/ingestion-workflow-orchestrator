@@ -41,10 +41,14 @@ def is_lower_level_liss_study(metadata):
         return False, title
     if square_bracket_amount == 1:
         liss_match = re.search(r'L[iI]SS [Pp]anel', title)
+        archive_match = re.search(r'L[iI]SS Data Archive', title)
         immigrant_match = re.search(r'Immigrant [Pp]anel', title)
-        if liss_match or immigrant_match:
+        if liss_match or archive_match or immigrant_match:
             if liss_match:
                 logger.info("Matched on liss panel")
+                return False, title
+            if archive_match:
+                logger.info("Matched on liss data archive")
                 return False, title
             if immigrant_match:
                 logger.info("Matched on immigrant panel")
