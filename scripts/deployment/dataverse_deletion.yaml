@@ -158,3 +158,47 @@ deployments:
       settings_dict_name: "DANS"
 
     work_pool: *default_workpool
+
+  - name: erasmusmc-deletion
+    entrypoint: flows/entry_workflows/main_dataverse_deletion.py:dataverse_deletion_pipeline
+    tags: [ "d2d", "dataversenl", "deletion" ]
+    description: "Deletes metadata from Erasmusmc (Erasmus MC) from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "ERASMUSMC"
+
+    work_pool: *default_workpool
+
+  - name: eur-deletion
+    entrypoint: flows/entry_workflows/main_dataverse_deletion.py:dataverse_deletion_pipeline
+    tags: [ "d2d", "dataversenl", "deletion" ]
+    description: "Deletes metadata from eur (Erasmus University Rotterdam) from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "EUR"
+
+    work_pool: *default_workpool
+
+  - name: aumc-deletion
+    entrypoint: flows/entry_workflows/main_dataverse_deletion.py:dataverse_deletion_pipeline
+    tags: [ "d2d", "dataversenl", "deletion" ]
+    description: "Deletes metadata from AmsterdamUMC (Amsterdam UMC) from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "AUMC"
+
+    work_pool: *default_workpool
+
+  - name: hu-deletion
+    entrypoint: flows/entry_workflows/main_dataverse_deletion.py:dataverse_deletion_pipeline
+    tags: [ "d2d", "dataversenl", "deletion" ]
+    description: "Deletes metadata from HU (HU University of Applied Sciences Utrecht) from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "HU"
+
+    work_pool: *default_workpool
