@@ -20,7 +20,7 @@ def run_ingestion():
     data_providers = [
         'TWENTE', 'DELFT', 'AVANS', 'FONTYS', 'GRONINGEN', 'HANZE', 'HR',
         'LEIDEN', 'MAASTRICHT', 'TILBURG', 'TRIMBOS', 'UMCU', 'UTRECHT', 'VU',
-        'DANS', 'CBS', 'LISS', 'HSN', 'CID', 
+        'DANS', 'CBS', 'LISS', 'HSN', 'CID',
         'ERASMUSMC', 'EUR', 'AUMC', 'HU']
 
     parser = argparse.ArgumentParser(description="Run ingestion pipeline.")
