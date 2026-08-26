@@ -169,3 +169,47 @@ deployments:
       settings_dict_name: "DANS"
 
     work_pool: *default_workpool
+
+  - name: erasmusmc-ingest
+    entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
+    tags: [ "d2d", "dataversenl", "ingestion" ]
+    description: "Ingests metadata from Erasmusmc (Erasmus MC) from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "ERASMUSMC"
+
+    work_pool: *default_workpool
+
+  - name: eur-ingest
+    entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
+    tags: [ "d2d", "dataversenl", "ingestion" ]
+    description: "Ingests metadata from eur (Erasmus University Rotterdam) from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "EUR"
+
+    work_pool: *default_workpool
+
+  - name: aumc-ingest
+    entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
+    tags: [ "d2d", "dataversenl", "ingestion" ]
+    description: "Ingests metadata from AmsterdamUMC (Amsterdam UMC) from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "AUMC"
+
+    work_pool: *default_workpool
+
+  - name: hu-ingest
+    entrypoint: flows/entry_workflows/main_dataverse_ingestion.py:dataverse_ingestion_pipeline
+    tags: [ "d2d", "dataversenl", "ingestion" ]
+    description: "Ingests metadata from HU (HU University of Applied Sciences Utrecht) from dataversenl."
+    schedule: *every_day
+
+    parameters:
+      settings_dict_name: "HU"
+
+    work_pool: *default_workpool
