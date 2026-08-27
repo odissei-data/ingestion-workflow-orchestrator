@@ -1,5 +1,7 @@
 # Django and Docker commands
+ifneq ($(wildcard .env),)
 include .env
+endif
 
 PROJECT_NAME = prefect_docker
 PROJECT_SRV = ${PROJECT_NAME}
@@ -9,7 +11,10 @@ TARGET_BUCKET ?=
 DO_HARVEST ?= True
 FULL_HARVEST ?= False
 
-.PHONY = help
+.PHONY: help build start startbg stop down dev-build dev-build-with-service dev-full-build \
+	dev-start dev-down dev-full-down clean-all network network-add shell-be python-shell-be \
+	submodules setup-secrets setup-development-env setup-skosmos setup-dataverse-stack \
+	setup-env extract-dataverse-apikey ingest deploy
 .DEFAULT:
 	@echo "Usage: "
 	@make help
@@ -27,15 +32,20 @@ stop: ## Stop the running project.
 	@docker compose stop
 down: ## Downs the running project.
 	@docker compose down
-dev-build: ## Build and start the dev setup.
+dev-build: dev-build-with-service ## Build and start the dev setup.
+
+dev-build-with-service: ## Build and start Prefect and all development microservices (excluding the portal).
+	make setup-env
 	make setup-secrets
+	make setup-development-env
 	make submodules
 	make setup-skosmos
 	make network network_name=ingest
+	make network network_name=dataverse
 	@docker compose up --build -d
-	make network-add network_name=ingest container_name=prefect
 	@docker compose -f docker-compose-dev.yml up --build -d
 dev-full-build: ## Build and start the full dev setup including ODISSEI Dataverse portal.
+	make setup-env
 	make setup-secrets
 	make submodules
 	make setup-skosmos
@@ -127,14 +137,14 @@ clean-all: ## Complete cleanup - removes all generated files and Docker resource
 	@docker network rm ingest traefik dataverse 2>/dev/null || true
 	@echo "✓ Complete cleanup finished. Run 'make dev-build' or 'make dev-full-build' to start fresh."
 network: ## Creates the ingest network.
-	@if [ -z $$(docker network ls -q -f name=${network_name}) ]; then \
+	@if ! docker network inspect "${network_name}" >/dev/null 2>&1; then \
         docker network create ${network_name}; \
         echo "Network ${network_name} created."; \
     else \
         echo "Network ${network_name} already exists."; \
     fi
 network-add: ## Add a container to the ingest network.
-	@if [ $$(docker network inspect -f '{{range .Containers}}{{.Name}} {{end}}' ${network_name} | grep -w ${container_name}) ]; then \
+	@if docker network inspect -f '{{range .Containers}}{{.Name}} {{end}}' "${network_name}" | grep -qw -- "${container_name}"; then \
 		echo "Container ${container_name} is already connected to network ${network_name}."; \
 	else \
 		docker network connect ${network_name} ${container_name}; \
@@ -164,6 +174,24 @@ setup-secrets: ## Sets up .secrets.toml from example if it doesn't exist.
 		echo ".env.worker created."; \
 	else \
 		echo ".env.worker already exists."; \
+	fi
+
+setup-env: ## Sets up the base Docker environment file.
+	@if [ ! -f ".env" ]; then \
+		echo "Creating .env from dot_env_example..."; \
+		cp dot_env_example .env; \
+		echo ".env created. Review its values before using non-local environments."; \
+	else \
+		echo ".env already exists."; \
+	fi
+
+setup-development-env: ## Sets up the development microservice environment file.
+	@if [ ! -f ".env.development" ]; then \
+		echo "Creating .env.development from dot_env_development_example..."; \
+		cp dot_env_development_example .env.development; \
+		echo ".env.development created."; \
+	else \
+		echo ".env.development already exists."; \
 	fi
 setup-skosmos: ## Sets up Skosmos vocabulary data and configuration files.
 	@echo "Setting up Skosmos data and configuration..."
