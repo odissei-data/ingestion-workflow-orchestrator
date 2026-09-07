@@ -3,6 +3,8 @@ import os
 import requests
 from prefect import task, get_run_logger
 
+from configuration.config import settings
+
 GITHUB_USERNAME = os.getenv('GITHUB_USERNAME')
 DOCKERHUB_USERNAME = os.getenv('DOCKERHUB_USERNAME')
 
@@ -117,7 +119,7 @@ def store_workflow_version(version_dict):
     :return: A GET request.
     """
     logger = get_run_logger()
-    url = 'https://version-tracker.labs.dansdemo.nl/store'
+    url = settings.VERSION_TRACKER_STORE_URL
     headers = {
         'accept': 'application/json',
         'Content-Type': 'application/json'
@@ -130,4 +132,4 @@ def store_workflow_version(version_dict):
         return None
 
     version_id = response.json()['id']
-    return 'https://version-tracker.labs.dansdemo.nl/retrieve/' + version_id
+    return settings.VERSION_TRACKER_PUBLIC_RETRIEVE_URL.rstrip('/') + '/' + version_id

@@ -6,6 +6,8 @@ XSLT_TRANSFORMER_NAME="cid-oaipmh-to-dv-v1.xsl"
 PREFECT_SLACK_WEBHOOK_BLOCK="slack-webhook-for-odissei-ingest"
 MINT_DOIS = false
 SEMANTIC_ENRICHMENT = false
+VERSION_TRACKER_STORE_URL="https://version-tracker.labs.dansdemo.nl/store"
+VERSION_TRACKER_PUBLIC_RETRIEVE_URL="https://version-tracker.labs.dansdemo.nl/retrieve"
 
 [local]
 debug = true
@@ -29,6 +31,8 @@ HARVESTER_URL="https://oai-harvester.labs.dansdemo.nl"
 
 [staging]
 debug = false
+VERSION_TRACKER_STORE_URL="http://version-tracker:8086/store"
+VERSION_TRACKER_PUBLIC_RETRIEVE_URL="https://portal.staging.odissei.nl/version-tracker/retrieve"
 MINT_DOIS = false
 DATAVERSE_MAPPER_URL="https://dataverse-mapper.labs.dansdemo.nl"
 DANS_TRANSFORMER_SERVICE="https://transformer.labs.dansdemo.nl"
