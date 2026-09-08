@@ -339,29 +339,24 @@ def add_workflow_versioning_url(mapped_metadata, version):
     :param version: The version URL.
     :return: The metadata containing the version URL in the provenance block.
     """
-    keys = ['datasetVersion', 'metadataBlocks', 'provenance']
-    d = mapped_metadata
+    if not isinstance(version, str) or not version.strip():
+        raise ValueError('A workflow version URL is required')
 
-    for key in keys:
-        if key not in d:
-            d[key] = {}
-        d = d[key]
-
-    d['fields'] = [
-        {
-            "typeName": "workflow",
-            "multiple": False,
-            "typeClass": "compound",
-            "value": {
-                "workflowURI": {
-                    "typeName": "workflowURI",
-                    "multiple": False,
-                    "typeClass": "primitive",
-                    "value": version
-                },
-            }
+    provenance = mapped_metadata.setdefault('datasetVersion', {}).setdefault(
+        'metadataBlocks', {}).setdefault('provenance', {})
+    fields = provenance.setdefault('fields', [])
+    workflow = next((field for field in fields
+                     if field.get('typeName') == 'workflow'), None)
+    if workflow is None:
+        workflow = {
+            'typeName': 'workflow', 'multiple': False,
+            'typeClass': 'compound', 'value': {},
         }
-    ]
+        fields.append(workflow)
+    workflow['value']['workflowURI'] = {
+        'typeName': 'workflowURI', 'multiple': False,
+        'typeClass': 'primitive', 'value': version,
+    }
     return mapped_metadata
 
 

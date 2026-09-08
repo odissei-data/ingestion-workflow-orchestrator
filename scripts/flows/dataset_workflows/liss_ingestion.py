@@ -25,6 +25,9 @@ def liss_metadata_ingestion(json_metadata, version, settings_dict, file_name):
     :return: prefect.server.schemas.states Failed or Completed.
     """
 
+    if not version:
+        return Failed(message='Unable to store workflow version.')
+
     decoded_json = json.loads(json_metadata.decode())
 
     mapped_metadata = dataverse_mapper(

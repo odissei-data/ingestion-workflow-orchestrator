@@ -23,6 +23,9 @@ def cbs_metadata_ingestion(xml_metadata, version, settings_dict, file_name):
     :return: prefect.server.schemas.states Failed or Completed
     """
 
+    if not version:
+        return Failed(message='Unable to store workflow version.')
+
     xml_metadata_sanitized = sanitize_emails(xml_metadata)
     if not xml_metadata_sanitized:
         return Failed(message='Unable to sanitize emails from XML metadata.')

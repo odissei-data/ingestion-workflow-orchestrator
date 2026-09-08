@@ -19,6 +19,9 @@ def dataverse_metadata_ingestion(pid, version, settings_dict):
     :param settings_dict: dict, contains settings for the current workflow.
     :return: prefect.server.schemas.states Failed or Completed.
     """
+    if not version:
+        return Failed(message='Unable to store workflow version.')
+
     dataverse_json = dataverse_metadata_fetcher(
         "dataverse_json", pid, settings_dict
     )
