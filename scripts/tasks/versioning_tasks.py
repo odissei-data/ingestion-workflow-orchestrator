@@ -10,6 +10,7 @@ def get_service_version(service_url, service_name, endpoint):
     return {
         'name': service_name,
         'version': get_deployed_service_version(service_url),
+        'docker-image': settings.VERSION_TRACKER_IMAGES.get(service_name) or None,
         'endpoint': endpoint,
     }
 

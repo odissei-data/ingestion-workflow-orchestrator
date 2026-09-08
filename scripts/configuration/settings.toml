@@ -9,6 +9,14 @@ SEMANTIC_ENRICHMENT = false
 VERSION_TRACKER_STORE_URL="https://version-tracker.labs.dansdemo.nl/store"
 VERSION_TRACKER_PUBLIC_RETRIEVE_URL="https://version-tracker.labs.dansdemo.nl/retrieve"
 
+# Update these references when deploying different service images.
+[default.VERSION_TRACKER_IMAGES]
+DANS-transformer-service="ekoindarto/mts:0.1.7-dev-amd64"
+dataverse-mapper="ghcr.io/odissei-data/dataverse-mapper:v1.3.0"
+datacite-minter="ekoindarto/submitmd2dc-service:0.3.0"
+metadata-refiner="ghcr.io/odissei-data/metadata-refiner:v1.4.5"
+metadata-enhancer="ghcr.io/odissei-data/metadata-enhancer:v3.0.4"
+
 [local]
 debug = true
 MINT_DOIS = false
