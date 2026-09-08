@@ -6,7 +6,8 @@ from prefect.states import Completed, Failed
 from queries import DIST_DATE_QUERY
 from tasks.base_tasks import dataverse_mapper, \
     dataverse_import, update_publication_date, add_workflow_versioning_url, \
-    refine_metadata, xml2dvjson, dataverse_dataset_check_status, delete_dataset
+    refine_metadata, xml2dvjson, dataverse_dataset_check_status, delete_dataset, \
+    enrich_metadata
 from utils import generate_flow_run_name, failed_ingestion_hook
 
 
@@ -23,6 +24,9 @@ def cid_metadata_ingestion(xml_metadata, version, settings_dict, file_name):
     """
     logger = get_run_logger()
 
+    if not version:
+        return Failed(message='Unable to store workflow version.')
+
     json_metadata = xml2dvjson(xml_metadata)
     if not json_metadata:
         return Failed(message='Unable to transform from xml to json.')
@@ -34,6 +38,16 @@ def cid_metadata_ingestion(xml_metadata, version, settings_dict, file_name):
     doi = f'doi:{dv_json["datasetVersion"]["datasetPersistentId"]}'
     if not doi:
         return Failed(message='Unable to retrieve dataset doi.')
+
+    mapped_metadata = add_workflow_versioning_url(dv_json, version)
+    if not mapped_metadata:
+        return Failed(message='Unable to store workflow version.')
+
+    # Finish both language passes before any existing record is deleted.
+    for language in ('en', 'nl'):
+        mapped_metadata = enrich_metadata(mapped_metadata, f'elsst/{language}')
+        if not mapped_metadata:
+            return Failed(message=f'Unable to enrich metadata using ELSST ({language}).')
 
     dv_response_status = dataverse_dataset_check_status(doi, settings_dict.DESTINATION_DATAVERSE_URL)
     # The result of dv_response status will be 200 (Dataset exists)  or  404 (Dataset does not exist)
@@ -48,10 +62,6 @@ def cid_metadata_ingestion(xml_metadata, version, settings_dict, file_name):
         if not deleted_response:
             return Failed(message=f'Unable to delete dataset: {doi}.')
 
-    mapped_metadata = add_workflow_versioning_url(dv_json, version)
-
-    if not mapped_metadata:
-        return Failed(message='Unable to store workflow version.')
     import_response = dataverse_import(mapped_metadata, settings_dict, doi)
     if not import_response:
         return Failed(message='Unable to import dataset into Dataverse')

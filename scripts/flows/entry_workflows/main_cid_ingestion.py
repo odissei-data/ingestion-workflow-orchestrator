@@ -39,6 +39,7 @@ def cid_ingestion_pipeline(target_url: str = "",
     version = create_ingestion_workflow_versioning(
         transformer=True,
         refiner=False,
+        enhancer=True,
         settings=settings_dict
     )
 
