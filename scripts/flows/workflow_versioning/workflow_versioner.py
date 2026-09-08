@@ -6,7 +6,7 @@ from prefect import flow
 from configuration.config import settings as service_settings
 from tasks.versioning_tasks import get_service_version, store_workflow_version
 
-VERSION = os.getenv('VERSION')
+VERSION = os.getenv('APP_VERSION') or os.getenv('VERSION') or 'development'
 
 
 @flow

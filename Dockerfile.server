@@ -28,6 +28,10 @@ RUN chown -R prefect:prefect /app
 WORKDIR /app/scripts
 USER prefect
 
+ARG APP_VERSION
+ENV APP_VERSION=${APP_VERSION}
+LABEL org.opencontainers.image.version="${APP_VERSION}"
+
 LABEL org.opencontainers.image.source="https://github.com/odissei-data/ingestion-workflow-orchestrator"
 LABEL org.opencontainers.image.description="Prefect server for the ODISSEI ingestion workflow orchestrator."
 
