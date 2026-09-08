@@ -40,7 +40,9 @@ def cid_ingestion_pipeline(target_url: str = "",
         transformer=True,
         refiner=False,
         enhancer=True,
-        settings=settings_dict
+        settings=settings_dict,
+        transformer_endpoint=f'transform/{settings.XSLT_TRANSFORMER_NAME}',
+        enhancer_endpoints=('elsst/en', 'elsst/nl')
     )
 
     minio_client = utils.create_minio_client()

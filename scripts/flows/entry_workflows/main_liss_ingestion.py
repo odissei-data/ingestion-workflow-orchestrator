@@ -36,8 +36,10 @@ def liss_ingestion_pipeline(target_url: str = "",
         settings_dict.BUCKET_NAME = target_bucket
 
     version = create_ingestion_workflow_versioning(
-        transformer=True,
         mapper=True,
+        refiner=True,
+        enhancer=True,
+        settings=settings_dict,
     )
 
     minio_client = utils.create_minio_client()

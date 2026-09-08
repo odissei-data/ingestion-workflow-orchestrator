@@ -38,10 +38,12 @@ def cbs_ingestion_pipeline(target_url: str = "",
     version = create_ingestion_workflow_versioning(
         transformer=True,
         mapper=True,
-        minter=True,
+        minter=settings.MINT_DOIS,
         refiner=True,
         enhancer=True,
-        settings=settings.CBS
+        settings=settings_dict,
+        enhancer_endpoints=('variable', 'elsst/nl', 'cbs-taxonomy',
+                            'cbs-concepts', 'frequency')
     )
 
     minio_client = utils.create_minio_client()

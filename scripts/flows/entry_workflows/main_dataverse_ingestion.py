@@ -40,9 +40,9 @@ def dataverse_ingestion_pipeline(settings_dict_name: str,
         settings_dict.BUCKET_NAME = target_bucket
 
     version = create_ingestion_workflow_versioning(
-        transformer=True,
-        fetcher=True,
+        mapper=hasattr(settings_dict, 'MAPPING_FILE_PATH'),
         refiner=True,
+        enhancer=True,
         settings=settings_dict
     )
 
