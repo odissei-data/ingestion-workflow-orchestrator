@@ -43,7 +43,8 @@ def dataverse_ingestion_pipeline(settings_dict_name: str,
         mapper=hasattr(settings_dict, 'MAPPING_FILE_PATH'),
         refiner=True,
         enhancer=True,
-        settings=settings_dict
+        settings=settings_dict,
+        enhancer_endpoints=('elsst/all',)
     )
 
     minio_client = utils.create_minio_client()
