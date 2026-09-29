@@ -132,7 +132,7 @@ clean-all: ## Complete cleanup - removes all generated files and Docker resource
 	@rm -rf skosmos-data skosmos-config
 	@rm -rf docker-dev-volumes
 	@echo "Removing Docker volumes..."
-	@docker volume rm $$(docker volume ls -q | grep -E 'prefectdb|fuseki-data|skosmos-configuration|harvester-db-data|dataverse') 2>/dev/null || true
+	@docker volume rm $$(docker volume ls -q | grep -E 'prefectdb|fuseki-data|skosmos-configuration|harvester-db-data|version-tracker-data|dataverse') 2>/dev/null || true
 	@echo "Removing Docker networks..."
 	@docker network rm ingest traefik dataverse 2>/dev/null || true
 	@echo "✓ Complete cleanup finished. Run 'make dev-build' or 'make dev-full-build' to start fresh."

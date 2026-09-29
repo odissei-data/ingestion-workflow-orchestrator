@@ -1,4 +1,39 @@
 services:
+  version-tracker:
+    image: fjodorvr/version-tracker:0.1.0
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8086"]
+    environment:
+      MONGO_URI: mongodb://version-tracker-mongo:27017
+    ports:
+      - "127.0.0.1:8086:8086"
+    networks:
+      - ingest
+      - version-tracker-db
+    depends_on:
+      version-tracker-mongo:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8086/openapi.json', timeout=5)"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+  version-tracker-mongo:
+    image: mongo:7
+    volumes:
+      - version-tracker-data:/data/db
+    networks:
+      - version-tracker-db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped
+
   mts:
     image: ekoindarto/mts:0.1.7-dev-amd64
     container_name: mts
@@ -226,10 +261,13 @@ services:
       - fuseki-cache
 
 volumes:
+  version-tracker-data:
   harvester-db-data:
   fuseki-data:
   skosmos-configuration:
 
 networks:
+  version-tracker-db:
+    internal: true
   ingest:
     external: true

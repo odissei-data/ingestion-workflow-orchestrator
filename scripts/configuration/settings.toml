@@ -20,6 +20,8 @@ metadata-enhancer="ghcr.io/odissei-data/metadata-enhancer:v3.0.4"
 [local]
 debug = true
 MINT_DOIS = false
+VERSION_TRACKER_STORE_URL="http://version-tracker:8086/store"
+VERSION_TRACKER_PUBLIC_RETRIEVE_URL="http://localhost:8086/retrieve"
 DATAVERSE_MAPPER_URL="http://dataverse-mapper:8082"
 DANS_TRANSFORMER_SERVICE="http://mts:1745"
 EMAIL_SANITIZER_URL="http://email-sanitizer:7777/sanitize"
