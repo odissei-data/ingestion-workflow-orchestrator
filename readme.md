@@ -212,11 +212,11 @@ Follow these steps to run the failed metadata ingest:
 - run `make ingest TARGET_BUCKET=<bucket with failures> DO_HARVEST=False`,
   so that you don't harvest the metadata from the data provider into the specified bucket.
 
-## Minio file storage
+## S3 file storage
 
 The metadata that is used by the workflows is stored in s3 buckets. The key, id
 and url of the server of the s3 storage should be set in the `.secrets.toml` as
-`MINIO_SECRET`, `MINIO_KEY` and `MINIO_SERVER_URL`
+`S3_SECRET_KEY`, `S3_ACCESS_KEY` and `S3_ENDPOINT_URL`
 respectively.
 
 For a specific data provider a `BUCKET_NAME` should be added for that provider.

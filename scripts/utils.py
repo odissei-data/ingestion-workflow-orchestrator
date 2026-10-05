@@ -63,11 +63,11 @@ def workflow_executor(
         data_provider_workflow,
         version,
         settings_dict,
-        minio_client
+        s3_client
 ):
     """
     Executes the workflow of a give data provider for each metadata file.
-    The files are retrieved from minio storage using a boto client.
+    The files are retrieved from S3 storage using a boto client.
 
     Takes workflow flow that ingests a single metadata file of a data provider
     and executes that workflow for every metadata file in the given directory.
@@ -75,14 +75,14 @@ def workflow_executor(
     For Dataverse to Dataverse ingestion, the url and api key of the source
     Dataverse are required.
 
-    :param minio_client: The client connected to minio storage.
+    :param s3_client: The client connected to S3 storage.
     :param data_provider_workflow: The workflow to ingest the metadata file.
     :param version: dict containing all version info of the workflow.
     :param settings_dict: dict, containing all settings for the workflow.
     """
     logger = get_run_logger()
 
-    paginator = minio_client.get_paginator("list_objects_v2")
+    paginator = s3_client.get_paginator("list_objects_v2")
     bucket = settings_dict.BUCKET_NAME
     pages = paginator.paginate(
         Bucket=bucket,
@@ -96,7 +96,7 @@ def workflow_executor(
     for page in pages:
         for obj in page["Contents"]:
             file_name = obj['Key']
-            object_data = minio_client.get_object(
+            object_data = s3_client.get_object(
                 Bucket=bucket,
                 Key=file_name
             )
@@ -116,7 +116,7 @@ def workflow_executor(
 def identifier_list_workflow_executor(
         data_provider_workflow,
         settings_dict,
-        minio_client,
+        s3_client,
         object_name,
         version=None,
 ):
@@ -131,11 +131,11 @@ def identifier_list_workflow_executor(
     :param data_provider_workflow: A function representing the workflow.
     :param version: The version of the workflow to be executed.
     :param settings_dict: The settings including the BUCKET_NAME.
-    :param minio_client: An object representing the MinIO client.
+    :param s3_client: An object representing the S3 client.
     :return: 'SUCCESS' if the workflow succeeds, 'FAILED' otherwise.
     """
     bucket_name = settings_dict.BUCKET_NAME
-    identifiers_dict = retrieve_identifiers_from_bucket(minio_client, bucket_name,
+    identifiers_dict = retrieve_identifiers_from_bucket(s3_client, bucket_name,
                                                         object_name)
     if isinstance(identifiers_dict, State):
         return identifiers_dict
@@ -147,9 +147,9 @@ def identifier_list_workflow_executor(
             data_provider_workflow(pid, settings_dict, return_state=True)
 
 
-def retrieve_identifiers_from_bucket(minio_client, bucket_name, key):
+def retrieve_identifiers_from_bucket(s3_client, bucket_name, key):
     try:
-        file_data = minio_client.get_object(
+        file_data = s3_client.get_object(
             Bucket=bucket_name,
             Key=key)['Body'].read()
         identifiers_dict = json.loads(file_data)
@@ -197,16 +197,16 @@ def generate_dv_flow_run_name():
     return f"{flow_name}-{pid}"
 
 
-def create_minio_client():
-    """ Creates and returns a MinIO client using the specified configuration.
+def create_s3_client():
+    """ Creates and returns an S3 client using the specified configuration.
 
-    :return: botocore.client.S3: A MinIO client instance.
+    :return: botocore.client.S3: An S3 client instance.
     """
     return boto3.client(
         's3',
-        endpoint_url=settings.MINIO_SERVER_URL,
-        aws_access_key_id=settings.MINIO_KEY,
-        aws_secret_access_key=settings.MINIO_SECRET
+        endpoint_url=settings.S3_ENDPOINT_URL,
+        aws_access_key_id=settings.S3_ACCESS_KEY,
+        aws_secret_access_key=settings.S3_SECRET_KEY
     )
 
 
@@ -228,12 +228,12 @@ def failed_ingestion_hook(flow, flow_run, state):
     settings_dict = flow_run.parameters["settings_dict"]
     file_name = flow_run.parameters["file_name"]
 
-    minio_client = create_minio_client()
+    s3_client = create_s3_client()
     bucket_name = f"{settings_dict['ALIAS']}-{runtime.flow_run.get_parent_flow_run_id()}".replace("_", "").lower()
     logger.info(f"bucket name: {bucket_name}")
-    create_failed_flows_bucket(bucket_name, minio_client)
+    create_failed_flows_bucket(bucket_name, s3_client)
 
-    minio_client.copy_object(
+    s3_client.copy_object(
         Bucket=bucket_name,
         CopySource={'Bucket': settings_dict["BUCKET_NAME"], 'Key': file_name},
         Key=file_name
@@ -245,11 +245,11 @@ def failed_dataverse_ingestion_hook(flow, flow_run, state):
     settings_dict = flow_run.parameters["settings_dict"]
     pid = flow_run.parameters["pid"]
 
-    minio_client = create_minio_client()
+    s3_client = create_s3_client()
     bucket_name = f"{settings_dict['ALIAS']}-{runtime.flow_run.get_parent_flow_run_id()}".replace(
         "_", "").lower()
     logger.error(f"bucket name: {bucket_name}")
-    create_failed_flows_bucket(bucket_name, minio_client)
+    create_failed_flows_bucket(bucket_name, s3_client)
 
     update_identifiers_json(bucket_name, "identifiers.json", pid)
 
@@ -259,44 +259,44 @@ def failed_dataverse_deletion_hook(flow, flow_run, state):
     settings_dict = flow_run.parameters["settings_dict"]
     pid = flow_run.parameters["pid"]
 
-    minio_client = create_minio_client()
+    s3_client = create_s3_client()
     bucket_name = f"{settings_dict['ALIAS']}-{runtime.flow_run.get_parent_flow_run_id()}".replace(
         "_", "").lower()
     logger.error(f"bucket name: {bucket_name}")
-    create_failed_flows_bucket(bucket_name, minio_client)
+    create_failed_flows_bucket(bucket_name, s3_client)
 
     update_identifiers_json(bucket_name, "identifiers-deleted.json", pid)
 
 
 def update_identifiers_json(bucket_name, object_name, failed_pid):
-    minio_client = create_minio_client()
-    create_identifiers_json(minio_client, bucket_name, object_name)
-    identifiers_dict = retrieve_identifiers_from_bucket(minio_client, bucket_name,
+    s3_client = create_s3_client()
+    create_identifiers_json(s3_client, bucket_name, object_name)
+    identifiers_dict = retrieve_identifiers_from_bucket(s3_client, bucket_name,
                                                         object_name)
     identifiers_dict['pids'].append(failed_pid)
 
     updated_data = json.dumps(identifiers_dict).encode('utf-8')
-    minio_client.put_object(Bucket=bucket_name, Key=object_name,
+    s3_client.put_object(Bucket=bucket_name, Key=object_name,
                          Body=updated_data, ContentType='application/json')
 
 
-def create_identifiers_json(minio_client, bucket_name, object_name):
+def create_identifiers_json(s3_client, bucket_name, object_name):
     try:
-        minio_client.head_object(Bucket=bucket_name, Key=object_name)
+        s3_client.head_object(Bucket=bucket_name, Key=object_name)
     except ClientError as e:
         error_code = e.response.get("Error", {}).get("Code")
         if error_code == "404":
             # If identifiers.json does not exist, create it with an empty list
             empty_identifiers = {'pids': []}
-            minio_client.put_object(Bucket=bucket_name, Key=object_name,
+            s3_client.put_object(Bucket=bucket_name, Key=object_name,
                                  Body=json.dumps(empty_identifiers),
                                  ContentType='application/json')
         else:
             raise
 
 
-def create_failed_flows_bucket(bucket_name, minio_client: BaseClient):
-    """ Creates a new MinIO bucket for failed flows if it does not exist.
+def create_failed_flows_bucket(bucket_name, s3_client: BaseClient):
+    """ Creates a new S3 bucket for failed flows if it does not exist.
 
     This function is called by the failed workflow hook to create a bucket
     that stores the dataset files of all the failed sub flows of the current
@@ -307,17 +307,17 @@ def create_failed_flows_bucket(bucket_name, minio_client: BaseClient):
     an exception on the head_bucket function that checks if the bucket exists.
 
     :param bucket_name: The name of the bucket to be created.
-    :param minio_client: The MinIO client instance.
+    :param s3_client: The S3 client instance.
     """
     bucket_name = bucket_name
     logger = get_run_logger()
     try:
-        minio_client.head_bucket(Bucket=bucket_name)
+        s3_client.head_bucket(Bucket=bucket_name)
     except ClientError as e:
         error_code = e.response.get("Error", {}).get("Code")
         if error_code == "404":
             try:
-                minio_client.create_bucket(Bucket=bucket_name)
+                s3_client.create_bucket(Bucket=bucket_name)
                 logger.error(f'Bucket created with name: {bucket_name}.')
                 notify_failed_workflow(bucket_name)
             except Exception as e:
@@ -336,7 +336,7 @@ def notify_failed_workflow(bucket_name):
     logger = get_run_logger()
     message = f"{settings.ENV_FOR_DYNACONF.upper()} - One or more dataset ingestion/deletion workflows have failed. " \
     f"The dataset files of the failed workflows have been copied to the " \
-    f"bucket: {bucket_name} using the API at: {settings.MINIO_SERVER_URL}. Please check the logs of the failed flows " \
+    f"bucket: {bucket_name} using the API at: {settings.S3_ENDPOINT_URL}. Please check the logs of the failed flows " \
     f"for more information."
     logger.info(message)
     try:
