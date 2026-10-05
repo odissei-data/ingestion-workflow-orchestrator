@@ -7,9 +7,9 @@ CBS_VOCAB_URL=https://vocabs.cbs.nl
 ELSST_VOCAB_URL=https://thesauri.cessda.eu
 
 # ODISSEI Harvester Configuration
-S3_STORAGE_ENDPOINT=http://minioS3:9002
-AWS_ACCESS_KEY_ID=minioadmin
-AWS_SECRET_ACCESS_KEY=m38dZ93m@3m
+S3_STORAGE_ENDPOINT=http://seaweedfs:9002
+AWS_ACCESS_KEY_ID=s3admin
+AWS_SECRET_ACCESS_KEY=s3admin
 LISS_ENDPOINT_URL=https://www.dataarchive.lissdata.nl/oai-pmh
 LISS_ENDPOINT_USERNAME=development_user
 LISS_ENDPOINT_KEY=development_key

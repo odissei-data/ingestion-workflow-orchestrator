@@ -129,25 +129,18 @@ services:
     ports:
       - "7777:7777"
 
-  minioS3:
-    image: minio/minio:RELEASE.2025-09-07T16-13-09Z
+  seaweedfs:
+    image: chrislusf/seaweedfs:4.48
     restart: unless-stopped
-    container_name: minioS3
+    container_name: seaweedfs
     networks:
       - ingest
     volumes:
-      - /data/minio-data:/data
-    command:
-      - server
-      - /data
-      - --address
-      - ":9002"
-      - --console-address
-      - ":9003"
-    environment:
-      - MINIO_ROOT_USER=minioadmin
-      - MINIO_ROOT_PASSWORD=minioadmin
-      - MINIO_BROWSER_REDIRECT_URL=http://stash.localhost
+      - /data/seaweedfs-data:/data
+    command: [server, -dir=/data, -s3, -s3.port=9002]
+    # AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY become the S3 admin credentials.
+    env_file:
+      - .env.development
 
   harvester-db:
     image: postgres:15
@@ -190,7 +183,7 @@ services:
       - POSTGRES_DB_URL=postgresql://harvester:harvester_password@harvester-db:5432/harvester_db
     depends_on:
       - harvester-db
-      - minioS3
+      - seaweedfs
 
   # Skosmos Stack - Vocabulary management system
   fuseki:
