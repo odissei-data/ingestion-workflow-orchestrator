@@ -15,7 +15,7 @@ DANS-transformer-service="ekoindarto/mts:0.1.7-dev-amd64"
 dataverse-mapper="ghcr.io/odissei-data/dataverse-mapper:v1.3.0"
 datacite-minter="ekoindarto/submitmd2dc-service:0.3.0"
 metadata-refiner="ghcr.io/odissei-data/metadata-refiner:v1.4.5"
-metadata-enhancer="ghcr.io/odissei-data/metadata-enhancer:v3.0.4"
+metadata-enhancer="ghcr.io/odissei-data/metadata-enhancer:v3.0.7"
 
 [local]
 debug = true
