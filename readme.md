@@ -135,7 +135,7 @@ Subverses of dataverse.nl:
 
 ### Setup scheduled deploys using .yaml files
 
-The dataverse_deletion.yaml and dataverse_ingestion.yaml contain configuration for the deploy of the scheduled workflows. Deploying these yamls will setup the scheduled workflows and they will run automatically. Be **careful** with using this setup if this is not your intent. Deploy these yamls using the following command:
+The .yaml files in `scripts/deployment/` configure the scheduled workflows. Deploying them registers each workflow paused, so nothing runs until a deployment is resumed in the Prefect UI or API. Deploy these yamls using the following command:
 
 ```
 docker exec prefect-worker prefect deploy --prefect-file deployment/dataverse_ingestion.yaml --all

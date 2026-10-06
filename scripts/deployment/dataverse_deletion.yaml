@@ -21,6 +21,7 @@ deployments:
     tags: [ "d2d", "dataversenl", "deletion" ]
     description: "Deletes metadata from dataversenl."
     schedule: *every_day
+    paused: true
 
     parameters:
       settings_dict_name: "AVANS"
@@ -32,6 +33,7 @@ deployments:
     tags: [ "d2d", "dataversenl", "deletion" ]
     description: "Deletes metadata from fontys from dataversenl."
     schedule: *every_day
+    paused: true
 
     parameters:
       settings_dict_name: "FONTYS"
@@ -43,6 +45,7 @@ deployments:
     tags: [ "d2d", "dataversenl", "deletion" ]
     description: "Deletes metadata from dataversenl."
     schedule: *every_day
+    paused: true
 
     parameters:
       settings_dict_name: "GRONINGEN"
@@ -54,6 +57,7 @@ deployments:
     tags: [ "d2d", "dataversenl", "deletion" ]
     description: "Deletes metadata from dataversenl."
     schedule: *every_day
+    paused: true
 
     parameters:
       settings_dict_name: "HANZE"
@@ -65,6 +69,7 @@ deployments:
     tags: [ "d2d", "dataversenl", "deletion" ]
     description: "Deletes metadata from dataversenl."
     schedule: *every_day
+    paused: true
 
     parameters:
       settings_dict_name: "HR"
@@ -76,6 +81,7 @@ deployments:
     tags: [ "d2d", "dataversenl", "deletion" ]
     description: "Deletes metadata from leiden from dataversenl."
     schedule: *every_day
+    paused: true
 
     parameters:
       settings_dict_name: "LEIDEN"
@@ -87,6 +93,7 @@ deployments:
     tags: [ "d2d", "dataversenl", "deletion" ]
     description: "Deletes metadata from maastricht from dataversenl."
     schedule: *every_day
+    paused: true
 
     parameters:
       settings_dict_name: "MAASTRICHT"
@@ -98,6 +105,7 @@ deployments:
     tags: [ "d2d", "dataversenl", "deletion" ]
     description: "Deletes metadata from tilburg from dataversenl."
     schedule: *every_day
+    paused: true
 
     parameters:
       settings_dict_name: "TILBURG"
@@ -109,6 +117,7 @@ deployments:
     tags: [ "d2d", "dataversenl", "deletion" ]
     description: "Deletes metadata from trimbos from dataversenl."
     schedule: *every_day
+    paused: true
 
     parameters:
       settings_dict_name: "TRIMBOS"
@@ -120,6 +129,7 @@ deployments:
     tags: [ "d2d", "dataversenl", "deletion" ]
     description: "Deletes metadata from umcu from dataversenl."
     schedule: *every_day
+    paused: true
 
     parameters:
       settings_dict_name: "UMCU"
@@ -131,6 +141,7 @@ deployments:
     tags: [ "d2d", "dataversenl", "deletion" ]
     description: "Deletes metadata from utrecht from dataversenl."
     schedule: *every_day
+    paused: true
 
     parameters:
       settings_dict_name: "UTRECHT"
@@ -142,6 +153,7 @@ deployments:
     tags: [ "d2d", "dataversenl", "deletion" ]
     description: "Deletes metadata from vu from dataversenl."
     schedule: *every_day
+    paused: true
 
     parameters:
       settings_dict_name: "VU"
@@ -153,6 +165,7 @@ deployments:
     tags: [ "d2d", "dataversenl", "deletion" ]
     description: "Deletes metadata from dans from dataversenl."
     schedule: *every_day
+    paused: true
 
     parameters:
       settings_dict_name: "DANS"
@@ -164,6 +177,7 @@ deployments:
     tags: [ "d2d", "dataversenl", "deletion" ]
     description: "Deletes metadata from Erasmusmc (Erasmus MC) from dataversenl."
     schedule: *every_day
+    paused: true
 
     parameters:
       settings_dict_name: "ERASMUSMC"
@@ -175,6 +189,7 @@ deployments:
     tags: [ "d2d", "dataversenl", "deletion" ]
     description: "Deletes metadata from eur (Erasmus University Rotterdam) from dataversenl."
     schedule: *every_day
+    paused: true
 
     parameters:
       settings_dict_name: "EUR"
@@ -186,6 +201,7 @@ deployments:
     tags: [ "d2d", "dataversenl", "deletion" ]
     description: "Deletes metadata from AmsterdamUMC (Amsterdam UMC) from dataversenl."
     schedule: *every_day
+    paused: true
 
     parameters:
       settings_dict_name: "AUMC"
@@ -197,6 +213,7 @@ deployments:
     tags: [ "d2d", "dataversenl", "deletion" ]
     description: "Deletes metadata from HU (HU University of Applied Sciences Utrecht) from dataversenl."
     schedule: *every_day
+    paused: true
 
     parameters:
       settings_dict_name: "HU"

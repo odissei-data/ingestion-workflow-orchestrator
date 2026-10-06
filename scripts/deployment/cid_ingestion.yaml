@@ -21,5 +21,6 @@ deployments:
     tags: [ "cid", "ingest"]
     description: "Ingests metadata from CID."
     schedule: *every_day
+    paused: true
 
     work_pool: *default_workpool
