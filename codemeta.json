@@ -99,7 +99,6 @@
           "url": "https://portal.odissei.nl/"
         }
     ],
-    "version": "1.0.1",
     "contIntegration": "https://github.com/odissei-data/ingestion-workflow-orchestrator",
     "codemeta:continuousIntegration": {
         "id": "https://github.com/odissei-data/ingestion-workflow-orchestrator"

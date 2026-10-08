@@ -4,7 +4,6 @@ PROJECT_CONTAINER_NAME="prefect"
 PYTHONPATH="/app/scripts/"
 GITHUB_USERNAME="odissei-data"
 DOCKERHUB_USERNAME="fjodorvr"
-VERSION="development"
 ENV_FOR_DYNACONF=local
 PREFECT_SERVER_API_HOST='0.0.0.0'
 POSTGRES_USER=postgres

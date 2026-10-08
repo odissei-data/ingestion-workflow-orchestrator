@@ -1,6 +1,7 @@
 [tool.poetry]
 name = "prefect_docker"
-version = "3.2.0"
+# The release version is the git tag; images get it as APP_VERSION.
+version = "0.0.0"
 description = "Workflow for metadata ingestion into Dataverse"
 authors = ["Fjodor van Rijsselberg"]
 
