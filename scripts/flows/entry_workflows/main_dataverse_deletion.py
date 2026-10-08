@@ -5,6 +5,7 @@ from configuration.config import settings
 from flows.dataset_workflows.dataverse_deletion import dataverse_metadata_deletion
 from tasks.harvest_tasks import oai_harvest_metadata, \
     get_most_recent_publication_date
+from readiness import check_readiness
 
 
 @flow(name="Dataverse Deleted Pipeline")
@@ -23,6 +24,8 @@ def dataverse_deletion_pipeline(settings_dict_name: str,
     :param target_bucket: Name of the optional target S3 bucket.
     :param settings_dict_name: string, name of the settings you wish to use
     """
+    check_readiness()
+
     settings_dict = getattr(settings, settings_dict_name)
 
     if target_url:

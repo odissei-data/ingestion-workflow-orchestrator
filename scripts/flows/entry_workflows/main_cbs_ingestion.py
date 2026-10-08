@@ -5,6 +5,7 @@ from prefect import flow
 from flows.dataset_workflows.cbs_ingestion import cbs_metadata_ingestion
 from flows.workflow_versioning.workflow_versioner import \
     create_ingestion_workflow_versioning
+from readiness import check_readiness
 
 
 @flow
@@ -24,6 +25,8 @@ def cbs_ingestion_pipeline(target_url: str = "",
     :param target_url: Optional target dataverse url.
     :param target_key: API key of the optional target dataverse.
     """
+    check_readiness()
+
     settings_dict = settings.CBS
 
     if target_url:

@@ -7,6 +7,7 @@ from flows.workflow_versioning.workflow_versioner import \
     create_ingestion_workflow_versioning
 from tasks.harvest_tasks import oai_harvest_metadata, \
     get_most_recent_publication_date
+from readiness import check_readiness
 
 
 @flow(name="CID Ingestion Pipeline")
@@ -25,6 +26,8 @@ def cid_ingestion_pipeline(target_url: str = "",
     :param target_url: Optional target dataverse url.
     :param target_key: API key of the optional target dataverse.
     """
+    check_readiness()
+
     settings_dict = settings.CID
 
     if target_url:

@@ -5,10 +5,13 @@ from prefect import flow
 from configuration.config import settings
 from tasks.base_tasks import semantic_enrichment
 from tasks.base_tasks import extract_doi_from_dataverse
+from readiness import check_readiness
 
 
 @flow
 def enrichment_ingestion_pipeline(settings_dict_name: str):
+    check_readiness()
+
     settings_dict = getattr(settings, settings_dict_name)
 
     dois = extract_doi_from_dataverse(settings_dict, settings_dict.ALIAS)
