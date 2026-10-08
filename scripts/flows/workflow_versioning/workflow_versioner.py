@@ -35,7 +35,7 @@ def create_ingestion_workflow_versioning(
     if mapper:
         base = service_settings.DATAVERSE_MAPPER_URL.rstrip('/')
         version_dict['dataverse-mapper'] = get_service_version(
-            base + '/version', 'dataverse-mapper', base + '/mapper')
+            base + '/health', 'dataverse-mapper', base + '/mapper')
 
     if minter:
         endpoint = service_settings.DOI_MINTER_URL
@@ -45,13 +45,13 @@ def create_ingestion_workflow_versioning(
     if refiner:
         base = service_settings.METADATA_REFINER_URL.rstrip('/')
         version_dict['metadata-refiner'] = get_service_version(
-            base + '/version', 'metadata-refiner',
+            base + '/health', 'metadata-refiner',
             base + '/' + settings.REFINER_ENDPOINT.lstrip('/'))
 
     if enhancer:
         base = service_settings.METADATA_ENHANCER_URL.rstrip('/')
         version_dict['metadata-enhancer'] = get_service_version(
-            base + '/version', 'metadata-enhancer',
+            base + '/health', 'metadata-enhancer',
             [base + '/enrich/' + path for path in enhancer_endpoints])
 
     return store_workflow_version(version_dict)

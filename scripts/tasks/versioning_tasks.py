@@ -6,16 +6,18 @@ from configuration.config import settings
 
 @task
 def get_service_version(service_url, service_name, endpoint):
-    """Record the contacted service's version and processing endpoints."""
+    """Record the contacted service's version, image and processing endpoints."""
+    version, image = get_deployed_service_info(service_url)
     return {
         'name': service_name,
-        'version': get_deployed_service_version(service_url),
-        'docker-image': settings.VERSION_TRACKER_IMAGES.get(service_name) or None,
+        'version': version,
+        'docker-image': image,
         'endpoint': endpoint,
     }
 
 
-def get_deployed_service_version(service_url):
+def get_deployed_service_info(service_url):
+    """Return the version and image a service reports (image None if absent)."""
     logger = get_run_logger()
     response = None
     try:
@@ -25,7 +27,7 @@ def get_deployed_service_version(service_url):
         version = data.get('version') or data.get('info', {}).get('version')
         if not isinstance(version, str) or not version.strip():
             raise ValueError(f'Missing service version at {service_url}')
-        return version
+        return version, data.get('image')
     except (requests.RequestException, ValueError):
         logger.exception('Failed to read service version from %s; response: %s',
                          service_url,
