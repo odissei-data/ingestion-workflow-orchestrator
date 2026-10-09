@@ -1,6 +1,7 @@
 import requests
 from prefect import task, get_run_logger
 
+from configuration import config
 from configuration.config import settings
 
 
@@ -12,7 +13,8 @@ def get_service_version(service_url, service_name, endpoint):
         'name': service_name,
         'version': version,
         'docker-image': image,
-        'endpoint': endpoint,
+        'endpoint': ([config.public_url(url) for url in endpoint]
+                     if isinstance(endpoint, list) else config.public_url(endpoint)),
     }
 
 

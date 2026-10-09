@@ -2,6 +2,7 @@ import threading
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 import readiness
+from configuration import config
 
 
 class Stub(BaseHTTPRequestHandler):
@@ -45,3 +46,18 @@ def test_paths_keep_the_url_prefix(monkeypatch):
     checked = [url for url, _ in readiness.run_checks()]
     assert 'http://portal/version-tracker/ready' in checked
     assert 'http://portal/api/users/:me' in checked
+
+
+def test_results_show_public_urls(monkeypatch):
+    class Settings(dict):
+        __getattr__ = dict.__getitem__
+
+    urls = {name: 'http://service' for name, _ in readiness.CHECKS}
+    urls.update(ODISSEI_URL='http://portal/', ODISSEI_API_KEY='key',
+                DATAVERSE_MAPPER_URL='http://mapper:8082')
+    monkeypatch.setattr(readiness, 'settings', Settings(urls))
+    monkeypatch.setattr(config, 'settings', {
+        'PUBLIC_URLS': {'http://mapper:8082': 'https://mapper.example.org'}})
+    monkeypatch.setattr(readiness, 'check', lambda url, headers=None: 'ok')
+    checked = [url for url, _ in readiness.run_checks()]
+    assert 'https://mapper.example.org/health' in checked

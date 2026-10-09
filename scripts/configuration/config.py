@@ -9,3 +9,15 @@ settings = Dynaconf(
     ],
     environments=True,
 )
+
+
+def public_url(url):
+    """Return url with a known internal base replaced by its public base.
+
+    PUBLIC_URLS maps each service's internal base URL, which the worker calls,
+    to the URL it is published under, so records and logs show public URLs.
+    """
+    for internal, public in settings.get('PUBLIC_URLS', {}).items():
+        if url == internal or url.startswith(internal + '/'):
+            return public + url[len(internal):]
+    return url

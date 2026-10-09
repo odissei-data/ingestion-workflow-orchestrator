@@ -10,6 +10,7 @@ from urllib.parse import urljoin
 import requests
 from prefect import get_client, get_run_logger, task
 
+from configuration import config
 from configuration.config import settings
 
 # Setting holding the service URL, and the path to check on it. The paths are
@@ -37,9 +38,9 @@ def check(url, headers=None):
 
 
 def run_checks():
-    """Return (url, result) for every check."""
+    """Return (public url, result) for every check."""
     urls = [urljoin(settings[name], path) for name, path in CHECKS]
-    results = [(url, check(url)) for url in urls]
+    results = [(config.public_url(url), check(url)) for url in urls]
     # The worker's API token must be valid on the destination Dataverse.
     me = urljoin(settings.ODISSEI_URL, 'api/users/:me')
     results.append((me, check(me, {'X-Dataverse-key': settings.ODISSEI_API_KEY})))

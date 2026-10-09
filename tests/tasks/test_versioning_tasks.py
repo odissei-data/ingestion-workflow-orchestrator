@@ -3,6 +3,7 @@ from unittest.mock import Mock
 import pytest
 from prefect.logging import disable_run_logger
 
+from configuration import config
 from tasks import versioning_tasks
 
 
@@ -38,3 +39,10 @@ def test_openapi_version_has_no_image(monkeypatch):
 def test_missing_version_fails(monkeypatch):
     with pytest.raises(ValueError):
         _record(monkeypatch, {'status': 'ok'})
+
+
+def test_endpoints_are_recorded_by_their_public_url(monkeypatch):
+    monkeypatch.setattr(config, 'settings', {
+        'PUBLIC_URLS': {'http://mapper:8082': 'https://mapper.example.org'}})
+    record = _record(monkeypatch, {'status': 'ok', 'version': 'v2.1.0'})
+    assert record['endpoint'] == 'https://mapper.example.org/mapper'
