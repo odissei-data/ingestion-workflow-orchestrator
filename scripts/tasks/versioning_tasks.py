@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import requests
 from prefect import task, get_run_logger
 
@@ -16,6 +18,16 @@ def get_service_version(service_url, service_name, endpoint):
         'endpoint': ([config.public_url(url) for url in endpoint]
                      if isinstance(endpoint, list) else config.public_url(endpoint)),
     }
+
+
+def get_mapping_version(mapping_file_path):
+    """Return the source URL of the mapping version listed in mapping-versions."""
+    path = Path(mapping_file_path)
+    name = path.name.removesuffix('-mapping.json')
+    with open(path.parents[1] / 'mapping-versions') as f:
+        versions = dict(line.split() for line in f if line.strip())
+    return ('https://github.com/odissei-data/mappings/tree/'
+            f'{name}/{versions[name]}')
 
 
 def get_deployed_service_info(service_url):

@@ -4,7 +4,8 @@ from urllib.parse import urljoin
 
 from prefect import flow
 from configuration.config import settings as service_settings
-from tasks.versioning_tasks import get_service_version, store_workflow_version
+from tasks.versioning_tasks import get_mapping_version, get_service_version, \
+    store_workflow_version
 
 VERSION = os.getenv('APP_VERSION') or 'v0.0.0-dev'
 
@@ -36,6 +37,8 @@ def create_ingestion_workflow_versioning(
         base = service_settings.DATAVERSE_MAPPER_URL.rstrip('/')
         version_dict['dataverse-mapper'] = get_service_version(
             base + '/health', 'dataverse-mapper', base + '/mapper')
+        version_dict['dataverse-mapper']['mapping'] = get_mapping_version(
+            settings.MAPPING_FILE_PATH)
 
     if minter:
         endpoint = service_settings.DOI_MINTER_URL

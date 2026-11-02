@@ -46,3 +46,10 @@ def test_endpoints_are_recorded_by_their_public_url(monkeypatch):
         'PUBLIC_URLS': {'http://mapper:8082': 'https://mapper.example.org'}})
     record = _record(monkeypatch, {'status': 'ok', 'version': 'v2.1.0'})
     assert record['endpoint'] == 'https://mapper.example.org/mapper'
+
+
+def test_mapping_version_comes_from_mapping_versions(tmp_path):
+    (tmp_path / 'mapping-versions').write_text('base v1.0.0\ncbs v1.2.0\n')
+    assert versioning_tasks.get_mapping_version(
+        tmp_path / 'mappings' / 'cbs-mapping.json') == (
+        'https://github.com/odissei-data/mappings/tree/cbs/v1.2.0')
