@@ -41,7 +41,6 @@ on the metadata provided by the data provider.
 | Dans Transformer Service | Transforms from XML to JSON (or from/to other formats).                                                                           | https://transformer.labs.dansdemo.nl/docs       | [GitHub](https://github.com/ekoi/dans-transformer-service)                                |
 | Metadata Refiner         | Refines JSON metadata.                                                                                                            | https://metadata-enhancer.labs.dansdemo.nl/docs | [GitHub](https://github.com/odissei-data/metadata-refiner)                                |
 | Metadata Enhancer        | Enriches JSON metadata.                                                                                                           | https://metadata-refiner.labs.dansdemo.nl/docs  | [GitHub](https://github.com/odissei-data/metadata-enhancer)                               |
-| Email Sanitizer          | Removes all emails from the metadata.                                                                                             | https://emailsanitizer.labs.dansdemo.nl/docs    | [GitHub](https://github.com/thomasve-DANS/email-sanitize-microservice)                    |
 | Version Tracker          | Stores JSON containing version information.                                                                                       | https://version-tracker.labs.dansdemo.nl/docs   | [GitHub](https://github.com/odissei-data/version-tracker)                                 |
 | DOI Minter               | Mints a DOI for a dataset. Should be used with **CAUTION** since if used with production settings this will mint a permanent DOI. | https://dataciteminter.labs.dansdemo.nl/docs    | [GitHub](https://github.com/ekoi/submitmd2dc-service/tree/using-dans-transformer-service) |
 | OAI-PMH Harvester        | Harvester service to harvest the metadata from data providers using OAI-PMH.                                                      |                                                 | [GitHub](https://github.com/odissei-data/odissei-harvester)                               |
@@ -315,8 +314,7 @@ using Prefect, a workflow management library in Python.
 
 ### Workflow Steps
 
-1. **Email Sanitizer**: The XML metadata is passed through the Email Sanitizer
-   service to remove any sensitive email information.
+1. **Email Removal**: All email addresses are removed from the XML metadata.
 
 2. **XML to JSON Transformation**: The sanitized XML metadata is transformed
    into JSON format using the Dans Transformer Service.

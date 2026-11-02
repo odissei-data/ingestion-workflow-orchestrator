@@ -1,4 +1,5 @@
 import json
+import re
 from datetime import timedelta
 
 from pyDataverse.api import NativeApi
@@ -360,37 +361,20 @@ def add_workflow_versioning_url(mapped_metadata, version):
     return mapped_metadata
 
 
-@task(timeout_seconds=300, retries=1, cache_expiration=timedelta(minutes=10))
-def sanitize_emails(xml_metadata, replacement_email: str = None):
-    """ sends data to a services that sanitizes the emails out of the data.
+EMAIL_ADDRESS = re.compile(
+    r"""([-!#-'*+/-9=?A-Z^-~]+(\.[-!#-'*+/-9=?A-Z^-~]+)*|"([]!#-[^-~ \t]|(\[\t -~]))+")"""
+    r"""@([-!#-'*+/-9=?A-Z^-~]+(\.[-!#-'*+/-9=?A-Z^-~]+)*|\[[\t -Z^-~]*])""")
 
-    Emails get replaced by empty string if no replacement email is specified.
+
+@task
+def sanitize_emails(xml_metadata, replacement_email: str = ""):
+    """ Replaces every email address in the metadata.
+
     :param xml_metadata: The data to sanitize.
-    :param replacement_email: The email to replace any found emails with.
+    :param replacement_email: The text that replaces each email address.
     """
-    logger = get_run_logger()
-
-    if replacement_email is None:
-        replacement_email = ""
-
-    headers = {
-        'accept': 'application/json',
-        'Content-Type': 'application/json'
-    }
-
-    data = {
-        'data': xml_metadata.decode('utf-8'),
-        'replacement_email': replacement_email
-    }
-    response = requests.post(
-        settings.EMAIL_SANITIZER_URL, headers=headers,
-        data=json.dumps(data))
-
-    if not response.ok:
-        logger.info(response.text)
-        return None
-    data = response.json()
-    return data['data'].encode('utf-8')
+    return EMAIL_ADDRESS.sub(
+        replacement_email, xml_metadata.decode('utf-8')).encode('utf-8')
 
 
 @task(timeout_seconds=300, retries=1, cache_expiration=timedelta(minutes=10))
