@@ -63,6 +63,16 @@
         "name": "NWO",
         "@id": "https://www.nwo.nl"
       }
+    },
+    {
+      "@id": "https://doi.org/10.61686/QNBFQ52894",
+      "@type": "Grant",
+      "name": "The Macroscope (NWO Grant 184.037.001)",
+      "funder": {
+        "@type": "Organization",
+        "name": "NWO",
+        "@id": "https://www.nwo.nl"
+      }
     }
   ],
   "identifier": "https://github.com/odissei-data/ingestion-workflow-orchestrator",
