@@ -1,85 +1,102 @@
 {
-    "@context": [
-        "https://w3id.org/codemeta/3.0",
-        "http://schema.org",
-        "https://w3id.org/software-types",
-        "https://w3id.org/software-iodata"
-    ],
-    "type": "SoftwareSourceCode",
-    "applicationCategory": [ 
-        { "@id": "https://www.narcis.nl/classification/D60000"}
-        ],
-    "author": [
-        {
-            "id": "https://ror.org/008pnp284",
-            "type": "Organization",
-            "affiliation": {
-                "@type": "Organization",
-                "@id": "https://ror.org/008pnp284",
-                "name": "DANS"
-            },
-            "name": "DANS"
-        }
-    ],
-    "codeRepository": "https://github.com/odissei-data/ingestion-workflow-orchestrator",
-    "dateCreated": "2022-09-01",
-    "description": "This software can be used to run the different workflows used for ingesting dataset metadata into the Dataverse instance of the ODISSEI Portal. The different flows and tasks used in these workflows are created using Prefect.",
-    "funding": 
-    [
-        {
-            "@type": "Grant",
-            "name": "ODISSEI: Better Infrastructure, Better Science, Better Society (NWO Grant 184.035.014)",
-            "funder": {
-                "@type": "Organization",
-                "name": "NWO",
-                "@id": "https://www.nwo.nl"
-                }
-            },
-            {
-                "@type": "Grant",
-                "name": "Building a FAIR Expertise Hub for the social sciences",
-                "funder": {
-                    "@type": "Organization",
-                    "name": "PDI-SSH",
-                    "url": "https://pdi-ssh.nl/nl/2021/11/gehonoreerde-projecten-2021-call/"
-                }
-            },
-            {
-                "@type": "Grant",
-                "name": "Social Science and Humanities Open Cloud for the Netherlands (SSHOC-NL, NWO Grant 184.036.020)",
-                "funder": {
-                    "@type": "Organization",
-                    "name": "NWO",
-                    "@id": "https://www.nwo.nl"
-                    }
-            }
-        ],
-    "identifier": "https://github.com/odissei-data/ingestion-workflow-orchestrator",
-    "keywords": [
-        "ODISSEI",
-        "ODISSEI portal"
-    ],
-    "name": "ODISSEI Portal Ingestion Workflow Orchestrator",
-    "readme": "https://github.com/odissei-data/ingestion-workflow-orchestrator/blob/main/readme.md",
-    "buildInstructions": "https://github.com/odissei-data/ingestion-workflow-orchestrator/blob/main/README.md",
-    "license": "http://www.apache.org/licenses/LICENSE-2.0",
-    "programmingLanguage": "Python",
-    "softwareHelp": [
-        {
-          "@id": "https://github.com/odissei-data/ingestion-workflow-orchestrator",
-          "@type": "Guide",
-          "name": "ODISSEI Portal GitHub",
-          "url": "https://github.com/odissei-data/"
-        }
-    ],
-    "contIntegration": "https://github.com/odissei-data/ingestion-workflow-orchestrator",
-    "codemeta:continuousIntegration": {
-        "id": "https://github.com/odissei-data/ingestion-workflow-orchestrator"
-    },
-    "developmentStatus": [ "https://www.repostatus.org/#active", "https://w3id.org/research-technology-readiness-levels#Level8Complete" ],
-    "issueTracker": "https://github.com/odissei-data/ingestion-workflow-orchestrator/issues",
-    "referencePublication": {
-        "@type": "Article",
-        "id": "https://doi.org/10.5281/zenodo.20411584"
+  "@context": [
+    "https://w3id.org/codemeta/3.0",
+    "http://schema.org",
+    "https://w3id.org/software-types",
+    "https://w3id.org/software-iodata"
+  ],
+  "type": "SoftwareSourceCode",
+  "applicationCategory": [
+    { "@id": "https://www.narcis.nl/classification/D60000" }
+  ],
+  "author": [
+    {
+      "@id": "https://ror.org/008pnp284",
+      "@type": "Organization",
+      "name": "DANS",
+      "email": "info@odissei-data.nl"
     }
+  ],
+  "maintainer": {
+    "@id": "https://ror.org/008pnp284",
+    "@type": "Organization",
+    "name": "DANS",
+    "email": "info@odissei-data.nl"
+  },
+  "producer": {
+    "@id": "https://ror.org/008pnp284",
+    "@type": "Organization",
+    "name": "DANS"
+  },
+  "sourceOrganization": {
+    "@id": "https://ror.org/03m8v6t10",
+    "@type": "Organization",
+    "name": "ODISSEI"
+  },
+  "codeRepository": "https://github.com/odissei-data/ingestion-workflow-orchestrator",
+  "dateCreated": "2022-09-01",
+  "description": "This software can be used to run the different workflows used for ingesting dataset metadata into the Dataverse instance of the ODISSEI Portal. The different flows and tasks used in these workflows are created using Prefect.",
+  "funding": [
+    {
+      "@type": "Grant",
+      "name": "ODISSEI: Better Infrastructure, Better Science, Better Society (NWO Grant 184.035.014)",
+      "funder": {
+        "@type": "Organization",
+        "name": "NWO",
+        "@id": "https://www.nwo.nl"
+      }
+    },
+    {
+      "@type": "Grant",
+      "name": "Building a FAIR Expertise Hub for the social sciences",
+      "funder": {
+        "@type": "Organization",
+        "name": "PDI-SSH",
+        "url": "https://pdi-ssh.nl/nl/2021/11/gehonoreerde-projecten-2021-call/"
+      }
+    },
+    {
+      "@type": "Grant",
+      "name": "Social Science and Humanities Open Cloud for the Netherlands (SSHOC-NL, NWO Grant 184.036.020)",
+      "funder": {
+        "@type": "Organization",
+        "name": "NWO",
+        "@id": "https://www.nwo.nl"
+      }
+    }
+  ],
+  "identifier": "https://github.com/odissei-data/ingestion-workflow-orchestrator",
+  "keywords": [
+    "ODISSEI",
+    "Dataverse",
+    "Prefect",
+    "metadata ingestion",
+    "harvesting",
+    "social sciences"
+  ],
+  "name": "ODISSEI Portal Ingestion Workflow Orchestrator",
+  "readme": "https://github.com/odissei-data/ingestion-workflow-orchestrator/blob/main/readme.md",
+  "buildInstructions": "https://github.com/odissei-data/ingestion-workflow-orchestrator/blob/main/readme.md",
+  "license": "https://spdx.org/licenses/Apache-2.0",
+  "programmingLanguage": "Python",
+  "softwareHelp": [
+    {
+      "@id": "https://github.com/odissei-data/ingestion-workflow-orchestrator",
+      "@type": "Guide",
+      "name": "ODISSEI Portal GitHub",
+      "url": "https://github.com/odissei-data/"
+    }
+  ],
+  "version": "4.3.1",
+  "continuousIntegration": "https://github.com/odissei-data/ingestion-workflow-orchestrator/actions",
+  "developmentStatus": [
+    "https://www.repostatus.org/#active",
+    "https://w3id.org/research-technology-readiness-levels#Level9Proven"
+  ],
+  "issueTracker": "https://github.com/odissei-data/ingestion-workflow-orchestrator/issues",
+  "referencePublication": {
+    "@type": "Article",
+    "id": "https://doi.org/10.5281/zenodo.20411584",
+    "name": "ODISSEI Portal Development In Macroscope"
+  }
 }
