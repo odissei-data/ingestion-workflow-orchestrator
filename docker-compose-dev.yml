@@ -111,24 +111,6 @@ services:
     networks:
       - ingest
 
-  emailsanitizer:
-    image: thomasve/emailsanitizer:0.1.5
-    container_name: "email-sanitizer"
-    command:
-      [
-        "uvicorn",
-        "main:app",
-        "--proxy-headers",
-        "--host",
-        "0.0.0.0",
-        "--port",
-        "7777",
-      ]
-    networks:
-      - ingest
-    ports:
-      - "7777:7777"
-
   seaweedfs:
     image: chrislusf/seaweedfs:4.48
     restart: unless-stopped
