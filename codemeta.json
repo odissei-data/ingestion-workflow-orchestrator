@@ -7,50 +7,23 @@
     ],
     "type": "SoftwareSourceCode",
     "applicationCategory": [ 
-        { "@id": "https://w3id.org/nwo-research-fields#CommunicationScience"},
-        { "@id": "https://w3id.org/nwo-research-fields#Demography"},
-        { "@id": "https://w3id.org/nwo-research-fields#Economics"}, 
-        { "@id": "https://w3id.org/nwo-research-fields#LifeSciences"}, 
-        { "@id": "https://w3id.org/nwo-research-fields#Medicine"}, 
-        { "@id": "https://w3id.org/nwo-research-fields#Psychology"}, 
-        { "@id": "https://w3id.org/nwo-research-fields#EducationalSciences"},
-        { "@id": "https://w3id.org/nwo-research-fields#Pedagogics"},
-        { "@id": "https://w3id.org/nwo-research-fields#Law"}, 
-        { "@id": "https://w3id.org/nwo-research-fields#PublicAdministrationAndPoliticalScience"}, 
-        { "@id": "https://w3id.org/nwo-research-fields#GeographyPlanning"}, 
-        { "@id": "https://w3id.org/nwo-research-fields#Sociology"},
-        { "@id": "https://vocabs.dariah.eu/tadirah/disseminating"}
+        { "@id": "https://www.narcis.nl/classification/D60000"}
         ],
     "author": [
         {
-            "id": "https://orcid.org/0009-0002-8007-5119",
-            "type": "Person",
+            "id": "https://ror.org/008pnp284",
+            "type": "Organization",
             "affiliation": {
                 "@type": "Organization",
                 "@id": "https://ror.org/008pnp284",
                 "name": "DANS"
             },
-            "familyName": "van Rijsselberg",
-            "givenName": "Fjodor"
+            "name": "DANS"
         }
     ],
     "codeRepository": "https://github.com/odissei-data/ingestion-workflow-orchestrator",
-    "contributor": [
-        {
-            "@id": "https://orcid.org/0000-0002-0079-2533",
-            "@type": "Person",
-            "affiliation": {  
-                "@type": "Organization",
-                "@id": "https://ror.org/008xxew50",
-                "name": "VU Amsterdam"
-            },
-            "email": "a.valdestilhas@vu.nl",
-            "familyName": "Valdestilhas",
-            "givenName": "Andre"
-        }
-    ],
-    "dateCreated": "2022-11-24",
-    "description": "Orchestrator for all ODISSEI-related ingestion workflows.",
+    "dateCreated": "2022-09-01",
+    "description": "This software can be used to run the different workflows used for ingesting dataset metadata into the Dataverse instance of the ODISSEI Portal. The different flows and tasks used in these workflows are created using Prefect.",
     "funding": 
     [
         {
@@ -84,19 +57,19 @@
     "identifier": "https://github.com/odissei-data/ingestion-workflow-orchestrator",
     "keywords": [
         "ODISSEI",
-        "portal"
+        "ODISSEI portal"
     ],
-    "name": "ODISSEI portal back-end",
-    "readme": "https://github.com/odissei-data/ingestion-workflow-orchestrator/blob/main/README.md",
+    "name": "ODISSEI Portal Ingestion Workflow Orchestrator",
+    "readme": "https://github.com/odissei-data/ingestion-workflow-orchestrator/blob/main/readme.md",
     "buildInstructions": "https://github.com/odissei-data/ingestion-workflow-orchestrator/blob/main/README.md",
     "license": "http://www.apache.org/licenses/LICENSE-2.0",
     "programmingLanguage": "Python",
     "softwareHelp": [
         {
           "@id": "https://github.com/odissei-data/ingestion-workflow-orchestrator",
-          "@type": "Source code",
-          "name": "ODISSEI portal back-end",
-          "url": "https://portal.odissei.nl/"
+          "@type": "Guide",
+          "name": "ODISSEI Portal GitHub",
+          "url": "https://github.com/odissei-data/"
         }
     ],
     "contIntegration": "https://github.com/odissei-data/ingestion-workflow-orchestrator",
@@ -106,7 +79,7 @@
     "developmentStatus": [ "https://www.repostatus.org/#active", "https://w3id.org/research-technology-readiness-levels#Level8Complete" ],
     "issueTracker": "https://github.com/odissei-data/ingestion-workflow-orchestrator/issues",
     "referencePublication": {
-        "@type": "ScholarlyArticle",
-        "id": "https://kg.odissei.nl/odissei/-/stories/ODISSEI-Knowledge-Graph-the-story"
+        "@type": "Article",
+        "id": "https://doi.org/10.5281/zenodo.20411584"
     }
 }
