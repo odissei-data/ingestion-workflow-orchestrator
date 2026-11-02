@@ -175,6 +175,8 @@ cython_debug/
 /cbs-output/
 
 /resources/test-data
+/resources/mappings/
+/resources/templates/
 
 /letsencrypt
 /local-metadata/

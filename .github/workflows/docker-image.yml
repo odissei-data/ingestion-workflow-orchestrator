@@ -20,8 +20,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          submodules: recursive
           fetch-depth: 0
+
+      - name: Download mappings
+        run: ./fetch-mappings.sh
 
       - name: Login to GHCR
         uses: docker/login-action@v3

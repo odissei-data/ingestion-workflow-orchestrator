@@ -13,7 +13,7 @@ FULL_HARVEST ?= False
 
 .PHONY: help build start startbg stop down dev-build dev-build-with-service dev-full-build \
 	dev-start dev-down dev-full-down clean-all network network-add shell-be python-shell-be \
-	submodules setup-secrets setup-development-env setup-skosmos setup-dataverse-stack \
+	mappings setup-secrets setup-development-env setup-skosmos setup-dataverse-stack \
 	setup-env extract-dataverse-apikey ingest deploy
 .DEFAULT:
 	@echo "Usage: "
@@ -22,7 +22,7 @@ FULL_HARVEST ?= False
 help: ## Show this help.
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$|^[a-zA-Z_-]+:.*$$' Makefile | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 build: ## Build and start project.
-	make submodules
+	make mappings
 	@docker compose up --build --detach
 start: ## Start project running in a non-detached mode.
 	@docker compose up
@@ -38,7 +38,7 @@ dev-build-with-service: ## Build and start Prefect and all development microserv
 	make setup-env
 	make setup-secrets
 	make setup-development-env
-	make submodules
+	make mappings
 	make setup-skosmos
 	make network network_name=ingest
 	make network network_name=dataverse
@@ -47,7 +47,7 @@ dev-build-with-service: ## Build and start Prefect and all development microserv
 dev-full-build: ## Build and start the full dev setup including ODISSEI Dataverse portal.
 	make setup-env
 	make setup-secrets
-	make submodules
+	make mappings
 	make setup-skosmos
 	make setup-dataverse-stack
 	make network network_name=ingest
@@ -155,11 +155,8 @@ shell-be: ## Enter system shell in backend container
 	@docker compose exec prefect bash
 python-shell-be: ## Enter into IPython shell in backend container
 	@docker compose exec prefect python -m IPython
-submodules: ## Sets up the submodules and checks out their main branch.
-	git submodule init
-	git submodule update --remote
-	git submodule foreach git checkout main
-	git submodule foreach git pull origin main
+mappings: ## Downloads the mappings and templates listed in resources/mapping-versions.
+	./fetch-mappings.sh
 setup-secrets: ## Sets up .secrets.toml from example if it doesn't exist.
 	@if [ ! -f "scripts/configuration/.secrets.toml" ]; then \
 		echo "Creating .secrets.toml from secrets_example.toml..."; \

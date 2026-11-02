@@ -301,6 +301,19 @@ changes based on the current environment.
 "BUCKET_NAME" = "path/to/s3/bucket"
 ```
 
+## Mappings
+
+The mappings and templates come from the
+[mappings](https://github.com/odissei-data/mappings) repository. Each mapping
+is released with its own tag, for example `cbs/v1.1.0`.
+`resources/mapping-versions` lists the version of each mapping that this
+repository uses, one `<mapping> <version>` pair per line. `make mappings`
+downloads those versions into `resources/`, and the image build does the same.
+The version used is recorded in the provenance of every ingested dataset.
+
+To release a mapping change, tag it in the mappings repository, update its line
+in `resources/mapping-versions`, and release this repository.
+
 ## Dataset Workflow Examples
 
 ### CBS Metadata Ingestion Workflow
