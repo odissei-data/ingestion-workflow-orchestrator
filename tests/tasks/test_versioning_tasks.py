@@ -1,9 +1,11 @@
+from types import SimpleNamespace
 from unittest.mock import Mock
 
 import pytest
 from prefect.logging import disable_run_logger
 
 from configuration import config
+from flows.workflow_versioning import workflow_versioner
 from tasks import versioning_tasks
 
 
@@ -53,3 +55,28 @@ def test_mapping_version_comes_from_mapping_versions(tmp_path):
     assert versioning_tasks.get_mapping_version(
         tmp_path / 'mappings' / 'cbs-mapping.json') == (
         'https://github.com/odissei-data/mappings/tree/cbs/v1.2.0')
+
+
+def _workflow_version(monkeypatch, **services):
+    monkeypatch.setattr(workflow_versioner, 'service_settings', SimpleNamespace(
+        DANS_TRANSFORMER_SERVICE='http://transformer',
+        DATAVERSE_MAPPER_URL='http://mapper'))
+    monkeypatch.setattr(workflow_versioner, 'get_service_version',
+                        lambda url, name, endpoint: {'name': name})
+    monkeypatch.setattr(workflow_versioner, 'get_mapping_version',
+                        lambda path: 'tag')
+    monkeypatch.setattr(workflow_versioner, 'store_workflow_version',
+                        lambda version: version)
+    return workflow_versioner.create_ingestion_workflow_versioning.fn(
+        settings=SimpleNamespace(MAPPING_FILE_PATH='mapping.json'), **services)
+
+
+def test_transformer_without_mapper_records_the_mapping(monkeypatch):
+    version = _workflow_version(monkeypatch, transformer=True)
+    assert version['DANS-transformer-service']['mapping'] == 'tag'
+
+
+def test_transformer_with_mapper_records_the_mapping_on_the_mapper(monkeypatch):
+    version = _workflow_version(monkeypatch, transformer=True, mapper=True)
+    assert 'mapping' not in version['DANS-transformer-service']
+    assert version['dataverse-mapper']['mapping'] == 'tag'

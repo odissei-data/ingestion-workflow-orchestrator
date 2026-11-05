@@ -32,6 +32,10 @@ def create_ingestion_workflow_versioning(
         version_dict['DANS-transformer-service'] = get_service_version(
             base + '/openapi.json', 'DANS-transformer-service',
             base + '/' + transformer_endpoint)
+        if not mapper:
+            # Without the mapper, the transformer's XSLT is the mapping.
+            version_dict['DANS-transformer-service']['mapping'] = \
+                get_mapping_version(settings.MAPPING_FILE_PATH)
 
     if mapper:
         base = service_settings.DATAVERSE_MAPPER_URL.rstrip('/')
