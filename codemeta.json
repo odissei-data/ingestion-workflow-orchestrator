@@ -38,6 +38,7 @@
   "description": "This software can be used to run the different workflows used for ingesting dataset metadata into the Dataverse instance of the ODISSEI Portal. The different flows and tasks used in these workflows are created using Prefect.",
   "funding": [
     {
+      "@id": "https://doi.org/10.61686/YOBPB32624",
       "@type": "Grant",
       "name": "ODISSEI: Better Infrastructure, Better Science, Better Society (NWO Grant 184.035.014)",
       "funder": {
@@ -56,6 +57,7 @@
       }
     },
     {
+      "@id": "https://doi.org/10.61686/HJNII42376",
       "@type": "Grant",
       "name": "Social Science and Humanities Open Cloud for the Netherlands (SSHOC-NL, NWO Grant 184.036.020)",
       "funder": {
