@@ -14,14 +14,14 @@
       "@id": "https://ror.org/008pnp284",
       "@type": "Organization",
       "name": "DANS",
-      "email": "info@odissei-data.nl"
+      "email": "fairsupport@odissei-data.nl"
     }
   ],
   "maintainer": {
     "@id": "https://ror.org/008pnp284",
     "@type": "Organization",
     "name": "DANS",
-    "email": "info@odissei-data.nl"
+    "email": "fairsupport@odissei-data.nl"
   },
   "producer": {
     "@id": "https://ror.org/008pnp284",
