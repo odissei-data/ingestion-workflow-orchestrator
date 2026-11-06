@@ -50,7 +50,7 @@ def liss_metadata_ingestion(json_metadata, version, settings_dict, file_name):
     if not mapped_metadata:
         return Failed(message='Unable to refine metadata.')
 
-    mapped_metadata = add_workflow_versioning_url(mapped_metadata, version)
+    mapped_metadata = add_workflow_versioning_url(mapped_metadata, version, doi)
     if not mapped_metadata:
         return Failed(message='Unable to store workflow version.')
 

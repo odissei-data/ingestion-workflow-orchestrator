@@ -9,6 +9,7 @@ from prefect import task, get_run_logger
 import requests
 
 import utils
+from tasks.versioning_tasks import store_workflow_version
 
 
 @task(timeout_seconds=300, retries=1, cache_expiration=timedelta(minutes=10))
@@ -330,18 +331,20 @@ def doi_minter(metadata):
 
 
 @task(timeout_seconds=300, retries=1, cache_expiration=timedelta(minutes=10))
-def add_workflow_versioning_url(mapped_metadata, version):
-    """ Adds the workflow versioning URL to the metadata.
+def add_workflow_versioning_url(mapped_metadata, version, identifier):
+    """ Stores the workflow version of a dataset and links it in the metadata.
 
-    The workflow version URL that was created is added to the provenance
-    metadata block.
+    The run's version record is stored with the dataset's source identifier,
+    and its URL is added to the provenance metadata block.
 
     :param mapped_metadata: The Dataverse formatted metadata.
-    :param version: The version URL.
+    :param version: The version record of the workflow run.
+    :param identifier: The identifier of the record at its source.
     :return: The metadata containing the version URL in the provenance block.
     """
-    if not isinstance(version, str) or not version.strip():
-        raise ValueError('A workflow version URL is required')
+    version = store_workflow_version({
+        **version, 'source': {**version.get('source', {}),
+                              'identifier': identifier}})
 
     provenance = mapped_metadata.setdefault('datasetVersion', {}).setdefault(
         'metadataBlocks', {}).setdefault('provenance', {})

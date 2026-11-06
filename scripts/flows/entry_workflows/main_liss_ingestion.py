@@ -38,13 +38,6 @@ def liss_ingestion_pipeline(target_url: str = "",
     if target_bucket:
         settings_dict.BUCKET_NAME = target_bucket
 
-    version = create_ingestion_workflow_versioning(
-        mapper=True,
-        refiner=True,
-        enhancer=True,
-        settings=settings_dict,
-    )
-
     s3_client = utils.create_s3_client()
 
     if do_harvest:
@@ -58,6 +51,15 @@ def liss_ingestion_pipeline(target_url: str = "",
             "start_liss_harvest",
             timestamp if timestamp else None
         )
+
+    version = create_ingestion_workflow_versioning(
+        mapper=True,
+        refiner=True,
+        enhancer=True,
+        settings=settings_dict,
+        source=utils.metadata_source(
+            settings_dict, 'LISS API', do_harvest)
+    )
 
     utils.workflow_executor(
         liss_metadata_ingestion,

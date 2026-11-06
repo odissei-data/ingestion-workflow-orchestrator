@@ -68,8 +68,6 @@ def _workflow_version(monkeypatch, **services):
                         lambda url, name, endpoint: {'name': name})
     monkeypatch.setattr(workflow_versioner, 'get_mapping_version',
                         lambda path: 'tag')
-    monkeypatch.setattr(workflow_versioner, 'store_workflow_version',
-                        lambda version: version)
     return workflow_versioner.create_ingestion_workflow_versioning.fn(
         settings=SimpleNamespace(MAPPING_FILE_PATH='mapping.json'), **services)
 
@@ -92,3 +90,8 @@ def test_orchestrator_source_comes_from_the_build(monkeypatch):
     assert version['workflow_orchestrator']['source-code'] == (
         'https://github.com/odissei-data/'
         'ingestion-workflow-orchestrator/releases/tag/v1.2.3')
+
+
+def test_source_is_recorded(monkeypatch):
+    version = _workflow_version(monkeypatch, source={'provider': 'DataverseNL'})
+    assert version['source'] == {'provider': 'DataverseNL'}

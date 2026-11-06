@@ -47,7 +47,9 @@ def cbs_metadata_ingestion(xml_metadata, version, settings_dict, file_name):
     if not mapped_metadata:
         return Failed(message='Unable to refine metadata.')
 
-    mapped_metadata = add_workflow_versioning_url(mapped_metadata, version)
+    cbs_id = jmespath.search(CBS_ID_QUERY, mapped_metadata)
+    mapped_metadata = add_workflow_versioning_url(mapped_metadata, version,
+                                                  cbs_id)
     if not mapped_metadata:
         return Failed(message='Unable to store workflow version.')
 
@@ -56,7 +58,6 @@ def cbs_metadata_ingestion(xml_metadata, version, settings_dict, file_name):
         if not doi:
             return Failed(message='Failed to mint or update DOI with Datacite API')
     else:
-        cbs_id = jmespath.search(CBS_ID_QUERY, mapped_metadata)
         doi = "doi:10.57934/" + cbs_id
 
     mapped_metadata = enrich_metadata(mapped_metadata, 'variable')

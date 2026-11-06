@@ -46,7 +46,8 @@ def cbs_ingestion_pipeline(target_url: str = "",
         enhancer=True,
         settings=settings_dict,
         enhancer_endpoints=('variable', 'elsst/nl', 'cbs-taxonomy',
-                            'cbs-concepts', 'frequency')
+                            'cbs-concepts', 'frequency'),
+        source=utils.metadata_source(settings_dict, 'metadata delivery', False)
     )
 
     s3_client = utils.create_s3_client()

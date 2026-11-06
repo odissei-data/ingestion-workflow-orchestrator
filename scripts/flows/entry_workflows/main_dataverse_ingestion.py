@@ -42,14 +42,6 @@ def dataverse_ingestion_pipeline(settings_dict_name: str,
     if target_bucket:
         settings_dict.BUCKET_NAME = target_bucket
 
-    version = create_ingestion_workflow_versioning(
-        mapper=hasattr(settings_dict, 'MAPPING_FILE_PATH'),
-        refiner=True,
-        enhancer=True,
-        settings=settings_dict,
-        enhancer_endpoints=('elsst/all',)
-    )
-
     s3_client = utils.create_s3_client()
 
     if do_harvest:
@@ -73,6 +65,18 @@ def dataverse_ingestion_pipeline(settings_dict_name: str,
             harvest_params['timestamp'] = timestamp
 
         oai_harvest_metadata(**harvest_params)
+
+    version = create_ingestion_workflow_versioning(
+        mapper=hasattr(settings_dict, 'MAPPING_FILE_PATH'),
+        refiner=True,
+        enhancer=True,
+        settings=settings_dict,
+        enhancer_endpoints=('elsst/all',),
+        source=utils.metadata_source(
+            settings_dict, 'OAI-PMH', do_harvest,
+            endpoint=f'{settings_dict.SOURCE_DATAVERSE_URL}/oai',
+            oai_set=getattr(settings_dict, 'OAI_SET', None))
+    )
 
     utils.identifier_list_workflow_executor(
         dataverse_metadata_ingestion,

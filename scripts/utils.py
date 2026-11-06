@@ -1,5 +1,6 @@
 import re
 import json
+from datetime import datetime, timezone
 
 import boto3
 from botocore.client import BaseClient
@@ -10,6 +11,22 @@ from prefect.states import Failed, State
 from prefect.blocks.notifications import SlackWebhook
 
 from configuration.config import settings
+
+
+def metadata_source(settings_dict, method, harvested, endpoint=None,
+                    oai_set=None):
+    """Describe where a run's metadata comes from, for the version record.
+
+    harvested-on is None when the run ingests what an earlier harvest stored.
+    """
+    source = {'provider': settings_dict.PROVIDER_NAME, 'method': method}
+    if endpoint:
+        source['endpoint'] = endpoint
+    if oai_set:
+        source['set'] = oai_set
+    source['harvested-on'] = datetime.now(timezone.utc).isoformat(
+        timespec='seconds') if harvested else None
+    return source
 
 
 def retrieve_license_name(license_string):

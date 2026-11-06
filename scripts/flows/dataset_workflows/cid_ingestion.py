@@ -39,7 +39,7 @@ def cid_metadata_ingestion(xml_metadata, version, settings_dict, file_name):
     if not doi:
         return Failed(message='Unable to retrieve dataset doi.')
 
-    mapped_metadata = add_workflow_versioning_url(dv_json, version)
+    mapped_metadata = add_workflow_versioning_url(dv_json, version, doi)
     if not mapped_metadata:
         return Failed(message='Unable to store workflow version.')
 

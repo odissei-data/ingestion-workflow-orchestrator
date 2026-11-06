@@ -4,8 +4,7 @@ from urllib.parse import urljoin
 
 from prefect import flow
 from configuration.config import settings as service_settings
-from tasks.versioning_tasks import get_mapping_version, get_service_version, \
-    store_workflow_version
+from tasks.versioning_tasks import get_mapping_version, get_service_version
 
 VERSION = os.getenv('APP_VERSION') or 'v0.0.0-dev'
 
@@ -19,9 +18,10 @@ def create_ingestion_workflow_versioning(
         enhancer: bool = False,
         settings=None,
         transformer_endpoint='transform-xml-to-json/true',
-        enhancer_endpoints=('elsst/en',)
+        enhancer_endpoints=('elsst/en',),
+        source=None
 ):
-    """Record the configured services used by this ingestion workflow."""
+    """Describe the services and source of this ingestion workflow run."""
     version_dict = {
         'workflow_orchestrator': {
             'name': 'ingestion-workflow-orchestrator',
@@ -30,6 +30,9 @@ def create_ingestion_workflow_versioning(
         },
         'created_on': datetime.now().strftime('%d-%m-%Y %H:%M:%S'),
     }
+
+    if source:
+        version_dict['source'] = source
 
     if transformer:
         base = service_settings.DANS_TRANSFORMER_SERVICE.rstrip('/')
@@ -65,4 +68,4 @@ def create_ingestion_workflow_versioning(
             base + '/health', 'metadata-enhancer',
             [base + '/enrich/' + path for path in enhancer_endpoints])
 
-    return store_workflow_version(version_dict)
+    return version_dict

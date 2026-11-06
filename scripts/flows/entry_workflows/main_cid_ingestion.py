@@ -39,15 +39,6 @@ def cid_ingestion_pipeline(target_url: str = "",
     if target_bucket:
         settings_dict.BUCKET_NAME = target_bucket
  
-    version = create_ingestion_workflow_versioning(
-        transformer=True,
-        refiner=False,
-        enhancer=True,
-        settings=settings_dict,
-        transformer_endpoint=f'transform/{settings.XSLT_TRANSFORMER_NAME}',
-        enhancer_endpoints=('elsst/en', 'elsst/nl')
-    )
-
     s3_client = utils.create_s3_client()
 
     if do_harvest:
@@ -71,6 +62,19 @@ def cid_ingestion_pipeline(target_url: str = "",
             harvest_params['timestamp'] = timestamp
 
         oai_harvest_metadata(**harvest_params)
+
+    version = create_ingestion_workflow_versioning(
+        transformer=True,
+        refiner=False,
+        enhancer=True,
+        settings=settings_dict,
+        transformer_endpoint=f'transform/{settings.XSLT_TRANSFORMER_NAME}',
+        enhancer_endpoints=('elsst/en', 'elsst/nl'),
+        source=utils.metadata_source(
+            settings_dict, 'OAI-PMH', do_harvest,
+            endpoint=f'{settings_dict.SOURCE_DATAVERSE_URL}/oai',
+            oai_set=getattr(settings_dict, 'OAI_SET', None))
+    )
 
     utils.workflow_executor(
         cid_metadata_ingestion,

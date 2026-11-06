@@ -41,7 +41,7 @@ def dataverse_metadata_ingestion(pid, version, settings_dict):
     if not dataverse_json:
         return Failed(message='Unable to refine metadata.')
 
-    dataverse_json = add_workflow_versioning_url(dataverse_json, version)
+    dataverse_json = add_workflow_versioning_url(dataverse_json, version, pid)
     if not dataverse_json:
         return Failed(message='Unable to store workflow version.')
 
