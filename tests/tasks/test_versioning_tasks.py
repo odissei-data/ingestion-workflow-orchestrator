@@ -23,11 +23,13 @@ def _record(monkeypatch, body):
 def test_version_and_image_come_from_the_health_route(monkeypatch):
     record = _record(monkeypatch, {
         'status': 'ok', 'version': 'v2.1.0',
-        'image': 'ghcr.io/odissei-data/dataverse-mapper:v2.1.0'})
+        'image': 'ghcr.io/odissei-data/dataverse-mapper:v2.1.0',
+        'source': 'https://github.com/odissei-data/dataverse-mapper/releases/tag/v2.1.0'})
     assert record == {
         'name': 'dataverse-mapper',
         'version': 'v2.1.0',
         'docker-image': 'ghcr.io/odissei-data/dataverse-mapper:v2.1.0',
+        'source-code': 'https://github.com/odissei-data/dataverse-mapper/releases/tag/v2.1.0',
         'endpoint': 'http://mapper:8082/mapper',
     }
 
@@ -36,6 +38,7 @@ def test_openapi_version_has_no_image(monkeypatch):
     record = _record(monkeypatch, {'info': {'version': '0.3.0'}})
     assert record['version'] == '0.3.0'
     assert record['docker-image'] is None
+    assert record['source-code'] is None
 
 
 def test_missing_version_fails(monkeypatch):
@@ -80,3 +83,12 @@ def test_transformer_with_mapper_records_the_mapping_on_the_mapper(monkeypatch):
     version = _workflow_version(monkeypatch, transformer=True, mapper=True)
     assert 'mapping' not in version['DANS-transformer-service']
     assert version['dataverse-mapper']['mapping'] == 'tag'
+
+
+def test_orchestrator_source_comes_from_the_build(monkeypatch):
+    monkeypatch.setenv('APP_SOURCE', 'https://github.com/odissei-data/'
+                       'ingestion-workflow-orchestrator/releases/tag/v1.2.3')
+    version = _workflow_version(monkeypatch)
+    assert version['workflow_orchestrator']['source-code'] == (
+        'https://github.com/odissei-data/'
+        'ingestion-workflow-orchestrator/releases/tag/v1.2.3')

@@ -9,12 +9,13 @@ from configuration.config import settings
 
 @task
 def get_service_version(service_url, service_name, endpoint):
-    """Record the contacted service's version, image and processing endpoints."""
-    version, image = get_deployed_service_info(service_url)
+    """Record the contacted service's version, image, source and endpoints."""
+    version, image, source = get_deployed_service_info(service_url)
     return {
         'name': service_name,
         'version': version,
         'docker-image': image,
+        'source-code': source,
         'endpoint': ([config.public_url(url) for url in endpoint]
                      if isinstance(endpoint, list) else config.public_url(endpoint)),
     }
@@ -31,7 +32,7 @@ def get_mapping_version(mapping_file_path):
 
 
 def get_deployed_service_info(service_url):
-    """Return the version and image a service reports (image None if absent)."""
+    """Return the version, image and source a service reports (None if absent)."""
     logger = get_run_logger()
     response = None
     try:
@@ -41,7 +42,7 @@ def get_deployed_service_info(service_url):
         version = data.get('version') or data.get('info', {}).get('version')
         if not isinstance(version, str) or not version.strip():
             raise ValueError(f'Missing service version at {service_url}')
-        return version, data.get('image')
+        return version, data.get('image'), data.get('source')
     except (requests.RequestException, ValueError):
         logger.exception('Failed to read service version from %s; response: %s',
                          service_url,

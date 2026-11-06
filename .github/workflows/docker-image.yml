@@ -44,6 +44,7 @@ jobs:
           push: true
           build-args: |
             APP_VERSION=${{ github.ref_name }}
+            APP_SOURCE=${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ github.ref_name }}
           tags: |
             ${{ env.SERVER_IMAGE }}:${{ github.ref_name }}
             ${{ env.SERVER_IMAGE }}:${{ github.sha }}
@@ -58,6 +59,7 @@ jobs:
           push: true
           build-args: |
             APP_VERSION=${{ github.ref_name }}
+            APP_SOURCE=${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ github.ref_name }}
           tags: |
             ${{ env.WORKER_IMAGE }}:${{ github.ref_name }}
             ${{ env.WORKER_IMAGE }}:${{ github.sha }}

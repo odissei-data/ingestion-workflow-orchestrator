@@ -30,6 +30,8 @@ USER prefect
 
 ARG APP_VERSION
 ENV APP_VERSION=${APP_VERSION}
+ARG APP_SOURCE
+ENV APP_SOURCE=${APP_SOURCE}
 LABEL org.opencontainers.image.version="${APP_VERSION}"
 
 LABEL org.opencontainers.image.source="https://github.com/odissei-data/ingestion-workflow-orchestrator"

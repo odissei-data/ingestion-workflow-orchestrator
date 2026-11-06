@@ -23,7 +23,11 @@ def create_ingestion_workflow_versioning(
 ):
     """Record the configured services used by this ingestion workflow."""
     version_dict = {
-        'workflow_orchestrator': VERSION,
+        'workflow_orchestrator': {
+            'name': 'ingestion-workflow-orchestrator',
+            'version': VERSION,
+            'source-code': os.getenv('APP_SOURCE') or None,
+        },
         'created_on': datetime.now().strftime('%d-%m-%Y %H:%M:%S'),
     }
 
