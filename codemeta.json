@@ -7,7 +7,12 @@
   ],
   "type": "SoftwareSourceCode",
   "applicationCategory": [
-    { "@id": "https://www.narcis.nl/classification/D60000" }
+    { "@id": "https://www.narcis.nl/classification/D60000" },
+    { "@id": "https://vocabs.dariah.eu/tadirah/gathering" },
+    { "@id": "https://vocabs.dariah.eu/tadirah/converting" },
+    { "@id": "https://vocabs.dariah.eu/tadirah/enriching" },
+    { "@id": "https://vocabs.dariah.eu/tadirah/publishing" },
+    { "@id": "https://w3id.org/nwo-research-fields#Sociology" }
   ],
   "author": [
     {
@@ -78,6 +83,12 @@
     }
   ],
   "identifier": "https://github.com/odissei-data/ingestion-workflow-orchestrator",
+  "isSourceCodeOf": [
+    {
+      "@type": "ServerApplication",
+      "name": "ODISSEI Portal Ingestion Workflow Orchestrator"
+    }
+  ],
   "keywords": [
     "ODISSEI",
     "Dataverse",
@@ -99,7 +110,7 @@
       "url": "https://github.com/odissei-data/"
     }
   ],
-  "version": "4.3.1",
+  "version": "4.5.2",
   "continuousIntegration": "https://github.com/odissei-data/ingestion-workflow-orchestrator/actions",
   "developmentStatus": [
     "https://www.repostatus.org/#active",
