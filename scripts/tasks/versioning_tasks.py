@@ -59,7 +59,8 @@ def store_workflow_version(version_dict):
         retrieve_url = settings.VERSION_TRACKER_PUBLIC_RETRIEVE_URL.rstrip('/')
         if not retrieve_url:
             raise ValueError('VERSION_TRACKER_PUBLIC_RETRIEVE_URL is required')
-        response = requests.post(store_url, json=version_dict, timeout=30)
+        auth = (settings.VERSION_TRACKER_USER, settings.VERSION_TRACKER_PASSWORD)
+        response = requests.post(store_url, json=version_dict, auth=auth, timeout=30)
         response.raise_for_status()
         version_id = response.json().get('id')
         if not isinstance(version_id, str) or not version_id.strip():

@@ -95,3 +95,18 @@ def test_orchestrator_source_comes_from_the_build(monkeypatch):
 def test_source_is_recorded(monkeypatch):
     version = _workflow_version(monkeypatch, source={'provider': 'DataverseNL'})
     assert version['source'] == {'provider': 'DataverseNL'}
+
+
+def test_store_logs_in_to_the_version_tracker(monkeypatch):
+    post = Mock(return_value=Mock(json=Mock(return_value={'id': 'abc'})))
+    monkeypatch.setattr(versioning_tasks.requests, 'post', post)
+    monkeypatch.setattr(versioning_tasks, 'settings', SimpleNamespace(
+        VERSION_TRACKER_STORE_URL='http://portal/store',
+        VERSION_TRACKER_PUBLIC_RETRIEVE_URL='http://portal/retrieve/',
+        VERSION_TRACKER_USER='worker',
+        VERSION_TRACKER_PASSWORD='secret'))
+    with disable_run_logger():
+        url = versioning_tasks.store_workflow_version({'a': 1})
+    post.assert_called_once_with('http://portal/store', json={'a': 1},
+                                 auth=('worker', 'secret'), timeout=30)
+    assert url == 'http://portal/retrieve/abc'
